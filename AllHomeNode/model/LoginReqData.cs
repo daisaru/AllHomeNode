@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.model
 {
-    public class User
+    public class LoginReqData
     {
-        public string NickName { get; set; }
-        public string RealName { get; set; }
         public string Mobile { get; set; }
-        public string Email { get; set; }
         public string Password { get; set; }
-        public string RandomCode { get; set; }
-        public Address Address { get; set; }
+        public string OldToken { get; set; }
     }
 }

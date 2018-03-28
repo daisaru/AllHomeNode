@@ -10,10 +10,10 @@ namespace AllHomeNode.Repository
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetAll();
-        User Get(string mobile);
-        User Add(User item);
+        IEnumerable<UserData> GetAll();
+        UserData Get(string mobile);
+        UserData Add(UserData item);
         void Remove(string mobile);
-        bool Update(User item)
+        bool Update(UserData item);
     }
 }

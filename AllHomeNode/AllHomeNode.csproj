@@ -67,10 +67,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="controller\DeviceController.cs" />
+    <Compile Include="controller\UserController.cs" />
+    <Compile Include="model\BindDeviceReqData.cs" />
+    <Compile Include="model\CommandUtil.cs" />
+    <Compile Include="model\ControlPointData.cs" />
+    <Compile Include="model\controlpoints\Vent_EAWADA.cs" />
+    <Compile Include="model\DeviceData.cs" />
+    <Compile Include="model\GetAllDevicesRspData.cs" />
+    <Compile Include="model\GetAllDevicesReqData.cs" />
+    <Compile Include="model\GetControlPointsReqData.cs" />
+    <Compile Include="model\GetControlPointsRspData.cs" />
+    <Compile Include="model\GetDeviceTokenReqData.cs" />
+    <Compile Include="model\GetDeviceTokenRspData.cs" />
+    <Compile Include="model\GetRandomCodeReqData.cs" />
+    <Compile Include="model\LoginRspData.cs" />
     <Compile Include="model\Address.cs" />
-    <Compile Include="model\User.cs" />
+    <Compile Include="model\LoginReqData.cs" />
+    <Compile Include="model\ResetPasswordReqData.cs" />
+    <Compile Include="model\ReturnResult.cs" />
+    <Compile Include="model\RoomData.cs" />
+    <Compile Include="model\ShareDeviceReqData.cs" />
+    <Compile Include="model\UserData.cs" />
+    <Compile Include="model\UserDeviceData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\DeviceRepository.cs" />
+    <Compile Include="Repository\IDeviceRepository.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="StartUp.cs" />
@@ -79,8 +102,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="controller\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
