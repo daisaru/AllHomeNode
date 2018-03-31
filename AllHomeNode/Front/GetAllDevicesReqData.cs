@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AllHomeNode.model
+namespace AllHomeNode.Front
 {
-    public class BindDeviceReqData
+    public class GetAllDevicesReqData
     {
         public string Mobile { get; set; }
-        public string DeviceId { get; set; }
-        public string DeviceName { get; set; }
         public string Token { get; set; }
     }
 }

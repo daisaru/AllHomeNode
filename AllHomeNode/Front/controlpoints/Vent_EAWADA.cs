@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AllHomeNode.model.controlpoints
+namespace AllHomeNode.Front.controlpoints
 {
     public enum Vent_EAWADA
     {

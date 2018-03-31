@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AllHomeNode.model
+namespace AllHomeNode.Front
 {
-    public class GetAllDevicesRspData
+    public class GetUserInfoRspData
     {
         public string Result { get; set; }
-        public List<UserDeviceData> Devices { get; set; }
+        public UserData User { get; set; }
     }
 }

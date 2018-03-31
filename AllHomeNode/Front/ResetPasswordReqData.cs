@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AllHomeNode.model
+namespace AllHomeNode.Front
 {
-    public class LoginReqData
+    public class ResetPasswordReqData
     {
         public string Mobile { get; set; }
+        public string RandomCode { get; set; }
         public string Password { get; set; }
-        public string OldToken { get; set; }
+        public string Token { get; set; }
     }
 }

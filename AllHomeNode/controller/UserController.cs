@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-using AllHomeNode.model;
+using AllHomeNode.Front;
 using AllHomeNode.Repository;
 using AllHomeNode.Auth;
 
@@ -22,14 +22,20 @@ namespace AllHomeNode.controller
             return repository.GetAll();
         }
 
-        // GET /api/user/?mobile=mobile
-        public IEnumerable<UserData> GetUsersByMobile(string mobile)
+        // 获取用户信息
+        // POST /api/user/fetchuserinfo
+        public GetUserInfoRspData FetchUserInfo([FromBody]GetUserInfoReqData item)
         {
-            List<UserData> datas = repository
+            UserData data = repository
                 .GetAll()
-                .Where(r => string.Equals(r.Mobile, mobile))
-                .Select(r => r).ToList();
-            return datas;
+                .Where(r => string.Equals(r.Mobile, item.Mobile))
+                .Select(r => r).ToList()[0];
+            data.Password = "";
+            data.RandomCode = "";
+            GetUserInfoRspData ret = new GetUserInfoRspData();
+            ret.Result = CommandUtil.RETURN.SUCCESS;
+            ret.User = data;
+            return ret;
         }
 
         // 注册用户

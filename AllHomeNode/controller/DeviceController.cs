@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-using AllHomeNode.model;
-using AllHomeNode.model.controlpoints;
+using AllHomeNode.Front;
+using AllHomeNode.Front.controlpoints;
 using AllHomeNode.Repository;
 using AllHomeNode.Auth;
 

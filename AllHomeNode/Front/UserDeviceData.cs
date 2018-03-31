@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AllHomeNode.model
+namespace AllHomeNode.Front
 {
-    public class DeviceData
+    public class UserDeviceData
     {
         public string DeviceId { get; set; }
         public string DeviceName { get; set; }
-
+        public string Privilege { get; set; }
     }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AllHomeNode.model
+namespace AllHomeNode.Front
 {
-    public class GetControlPointsReqData
+    public class LoginReqData
     {
         public string Mobile { get; set; }
-        public string DeviceId { get; set; }
-        public string Token { get; set; }
+        public string Password { get; set; }
+        public string OldToken { get; set; }
     }
 }
