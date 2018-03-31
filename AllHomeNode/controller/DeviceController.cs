@@ -8,46 +8,30 @@ using System.Web.Http;
 using AllHomeNode.model;
 using AllHomeNode.model.controlpoints;
 using AllHomeNode.Repository;
+using AllHomeNode.Auth;
 
 namespace AllHomeNode.controller
 {
     public class DeviceController : ApiController
     {
-        private readonly IDeviceRepository repository = new DeviceRepository();
+        private DeviceRepository repository = new DeviceRepository();
 
         // 获取用户名下所有绑定网关设备
         // POST api/device/fetchalldevices
-        public GetAllDevicesRspData FetchAllDevices()
+        public GetAllDevicesRspData FetchAllDevices([FromBody]GetAllDevicesReqData item)
         {
-            List<UserDeviceData> devices = new List<UserDeviceData>();
-            for (int i = 0; i < 5; i++)
-            {
-                UserDeviceData data = new UserDeviceData();
-                data.DeviceId = "id=" + i;
-                data.DeviceName = "name=" + i;
-                data.Privilege = CommandUtil.PRIVILEGE.CONTROL;
-                devices.Add(data);                
-            }
-
+            List<UserDeviceData> devices = repository.GetAllBindDevices(item.Mobile).ToList();
             GetAllDevicesRspData ret = new GetAllDevicesRspData();
             ret.Result = CommandUtil.RETURN.SUCCESS;
             ret.Devices = devices;
             return ret;
         }
 
-        //// GET /api/device/?DeviceId=deviceId
-        //public IEnumerable<UserData> GetDevicesById(string deviceId)
-        //{
-        //    return repository
-        //        .GetAll()
-        //        .Where(r => string.Equals(r.Mobile, mobile))
-        //        .Select(r => r);
-        //}
-
-        // 绑定设备
+        // 绑定设备及已绑设备信息更新(管理员)
         // POST api/device/bind
         public ReturnResult Bind([FromBody]BindDeviceReqData item)
         {
+            repository.BindDeviceWithUser(item.Mobile, item.DeviceId, item.DeviceName);
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
             return ret;
@@ -57,6 +41,7 @@ namespace AllHomeNode.controller
         // POST api/device/share
         public ReturnResult Share([FromBody]ShareDeviceReqData item)
         {
+            repository.ShareDeviceWithFriend(item.Friend, item.DeviceId, item.Privilege);
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
             return ret;
@@ -66,6 +51,7 @@ namespace AllHomeNode.controller
         // POST api/device/sharerevoke
         public ReturnResult ShareRevoke([FromBody]ShareDeviceReqData item)
         {
+            repository.RevokeShareWithFriend(item.Friend, item.DeviceId);
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
             return ret;
@@ -76,6 +62,11 @@ namespace AllHomeNode.controller
         public GetDeviceTokenRspData FetchAccessToken([FromBody]GetDeviceTokenReqData item)
         {
             GetDeviceTokenRspData ret = new GetDeviceTokenRspData();
+            Token token = DeviceToken.Intance().GetandRefreshToken(item.Mobile, item.DeviceId);
+            ret.Result = CommandUtil.RETURN.SUCCESS;
+            ret.DeviceToken = token.TokenString;
+            ret.DeviceTokenLife = token.TokenLife.ToString();
+            ret.TimeStamp = token.StartTime.ToString();
             return ret;
         }
 
@@ -84,32 +75,8 @@ namespace AllHomeNode.controller
         public GetControlPointsRspData FetchControlPoints([FromBody]GetControlPointsReqData item)
         {
             GetControlPointsRspData ret = new GetControlPointsRspData();
+            ret.Rooms = repository.GetAllControlPoints(item.DeviceId).ToList();
             ret.Result = CommandUtil.RETURN.SUCCESS;
-            for(int i = 0; i < 3; i++)
-            {
-                RoomData room = new RoomData();
-                room.Name = "房间" + i;
-                { 
-                    ControlPointData aircon = new ControlPointData();
-                    aircon.Name = "空调" + i;
-                    aircon.Code = Guid.NewGuid().ToString("N");
-                    aircon.Brand = "DAIKIN";
-                    aircon.Model = "DK100001";
-                    aircon.Type = CommandUtil.CONTROLPOINT_TYPE.AIRCON;
-                    aircon.Point = ((int)Vent_EAWADA.ONOFF).ToString();
-                    room.ControlPoints.Add(aircon);
-                    ControlPointData vent = new ControlPointData();
-                    vent.Name = "新风" + i;
-                    vent.Code = Guid.NewGuid().ToString("N");
-                    vent.Brand = "EAWADA";
-                    vent.Model = "E0001";
-                    vent.Type = CommandUtil.CONTROLPOINT_TYPE.VENT;
-                    vent.Point = ((int)Vent_EAWADA.ONOFF).ToString();
-                    room.ControlPoints.Add(vent);
-                }
-                ret.Rooms.Add(room);
-            }
-
             return ret;
         }
     }

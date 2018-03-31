@@ -8,7 +8,7 @@ namespace AllHomeNode.model
 {
     public class DeviceData
     {
-        public string DevieId { get; set; }
+        public string DeviceId { get; set; }
         public string DeviceName { get; set; }
 
     }

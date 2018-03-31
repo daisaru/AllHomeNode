@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>AllHomeNode</RootNamespace>
     <AssemblyName>AllHomeNode</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,27 +33,61 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Owin, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr3.Runtime.3.5.1\lib\net40-client\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.2.0.2\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    <Reference Include="FluentNHibernate, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentNHibernate.2.1.0\lib\net461\FluentNHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Hosting, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Hosting.2.0.2\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+    <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net461\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.4.0.0\lib\net451\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.4.0.0\lib\net451\Microsoft.Owin.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.10.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.10.6\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=5.1.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.5.1.0\lib\net461\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Linq.EagerFetching, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.EagerFetching.2.2.0\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
@@ -67,41 +102,78 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="controller\DeviceController.cs" />
-    <Compile Include="controller\UserController.cs" />
-    <Compile Include="model\BindDeviceReqData.cs" />
-    <Compile Include="model\CommandUtil.cs" />
-    <Compile Include="model\ControlPointData.cs" />
-    <Compile Include="model\controlpoints\Vent_EAWADA.cs" />
-    <Compile Include="model\DeviceData.cs" />
-    <Compile Include="model\GetAllDevicesRspData.cs" />
-    <Compile Include="model\GetAllDevicesReqData.cs" />
-    <Compile Include="model\GetControlPointsReqData.cs" />
-    <Compile Include="model\GetControlPointsRspData.cs" />
-    <Compile Include="model\GetDeviceTokenReqData.cs" />
-    <Compile Include="model\GetDeviceTokenRspData.cs" />
-    <Compile Include="model\GetRandomCodeReqData.cs" />
-    <Compile Include="model\LoginRspData.cs" />
-    <Compile Include="model\Address.cs" />
-    <Compile Include="model\LoginReqData.cs" />
-    <Compile Include="model\ResetPasswordReqData.cs" />
-    <Compile Include="model\ReturnResult.cs" />
-    <Compile Include="model\RoomData.cs" />
-    <Compile Include="model\ShareDeviceReqData.cs" />
-    <Compile Include="model\UserData.cs" />
-    <Compile Include="model\UserDeviceData.cs" />
+    <Compile Include="Auth\DeviceToken.cs" />
+    <Compile Include="Auth\ServiceToken.cs" />
+    <Compile Include="Auth\Token.cs" />
+    <Compile Include="Controller\DeviceController.cs" />
+    <Compile Include="Controller\UserController.cs" />
+    <Compile Include="Database\Manager\ControlPointManager.cs" />
+    <Compile Include="Database\Manager\DeviceManager.cs" />
+    <Compile Include="Database\Manager\DeviceRoomBindManager.cs" />
+    <Compile Include="Database\Manager\RoomManager.cs" />
+    <Compile Include="Database\Manager\UserDeviceBindManager.cs" />
+    <Compile Include="Database\Manager\UserManager.cs" />
+    <Compile Include="Database\Model\ControlPoint.cs" />
+    <Compile Include="Database\Model\Device.cs" />
+    <Compile Include="Database\Model\DeviceRoomBind.cs" />
+    <Compile Include="Database\Model\MapControlPoint.cs" />
+    <Compile Include="Database\Model\MapDevice.cs" />
+    <Compile Include="Database\Model\MapDeviceRoomBind.cs" />
+    <Compile Include="Database\Model\MapRoom.cs" />
+    <Compile Include="Database\Model\MapUser.cs" />
+    <Compile Include="Database\Model\MapUserDeviceBind.cs" />
+    <Compile Include="Database\MySQLHelper.cs" />
+    <Compile Include="Database\Model\Room.cs" />
+    <Compile Include="Database\Model\User.cs" />
+    <Compile Include="Database\Model\UserDeviceBind.cs" />
+    <Compile Include="Database\NHibernateHelper.cs" />
+    <Compile Include="Device\BindDeviceReqData.cs" />
+    <Compile Include="Device\CommandUtil.cs" />
+    <Compile Include="Device\ControlPointData.cs" />
+    <Compile Include="Device\controlpoints\Vent_EAWADA.cs" />
+    <Compile Include="Device\DeviceData.cs" />
+    <Compile Include="Device\GetAllDevicesRspData.cs" />
+    <Compile Include="Device\GetAllDevicesReqData.cs" />
+    <Compile Include="Device\GetControlPointsReqData.cs" />
+    <Compile Include="Device\GetControlPointsRspData.cs" />
+    <Compile Include="Device\GetDeviceTokenReqData.cs" />
+    <Compile Include="Device\GetDeviceTokenRspData.cs" />
+    <Compile Include="Device\GetRandomCodeReqData.cs" />
+    <Compile Include="Device\LoginRspData.cs" />
+    <Compile Include="Device\Address.cs" />
+    <Compile Include="Device\LoginReqData.cs" />
+    <Compile Include="Device\ResetPasswordReqData.cs" />
+    <Compile Include="Device\ReturnResult.cs" />
+    <Compile Include="Device\RoomData.cs" />
+    <Compile Include="Device\ShareDeviceReqData.cs" />
+    <Compile Include="Device\UserData.cs" />
+    <Compile Include="Device\UserDeviceData.cs" />
+    <Compile Include="Help\LogHelper.cs" />
+    <Compile Include="Help\SecurityHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DeviceRepository.cs" />
-    <Compile Include="Repository\IDeviceRepository.cs" />
-    <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="StartUp.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="docs\MySqlCommand.xml" />
+    <Content Include="docs\MySqlCommandBuilder.xml" />
+    <Content Include="docs\MySqlConnection.xml" />
+    <Content Include="docs\MySqlConnectionStringBuilder.xml" />
+    <Content Include="docs\MySqlDataAdapter.xml" />
+    <Content Include="docs\MySqlDataReader.xml" />
+    <Content Include="docs\MySqlException.xml" />
+    <Content Include="docs\MySqlHelper.xml" />
+    <Content Include="docs\MySqlParameter.xml" />
+    <Content Include="docs\MySqlParameterCollection.xml" />
+    <Content Include="docs\MySqlTransaction.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

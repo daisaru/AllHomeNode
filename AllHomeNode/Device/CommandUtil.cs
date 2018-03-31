@@ -18,6 +18,7 @@ namespace AllHomeNode.model
         {
             public static string READ = "Read";
             public static string CONTROL = "Control";
+            public static string ADMIN = "Admin";
         }
 
         public static class CONTROLPOINT_TYPE

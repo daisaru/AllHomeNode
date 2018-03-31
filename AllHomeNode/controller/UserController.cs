@@ -8,12 +8,13 @@ using System.Web.Http;
 
 using AllHomeNode.model;
 using AllHomeNode.Repository;
+using AllHomeNode.Auth;
 
 namespace AllHomeNode.controller
 {
     public class UserController : ApiController
     {
-        private readonly IUserRepository repository = new UserRepository();
+        private UserRepository repository = new UserRepository();
 
         // GET /api/user
         public IEnumerable<UserData> GetAllUsers()
@@ -24,16 +25,18 @@ namespace AllHomeNode.controller
         // GET /api/user/?mobile=mobile
         public IEnumerable<UserData> GetUsersByMobile(string mobile)
         {
-            return repository
+            List<UserData> datas = repository
                 .GetAll()
                 .Where(r => string.Equals(r.Mobile, mobile))
-                .Select(r => r);
+                .Select(r => r).ToList();
+            return datas;
         }
 
         // 注册用户
         // POST api/user/register
         public ReturnResult Register([FromBody]UserData item)
         {
+            repository.Add(item);
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
             return ret;
@@ -43,6 +46,7 @@ namespace AllHomeNode.controller
         // POST api/user/update
         public ReturnResult Update([FromBody]UserData item)
         {
+            repository.Update(item);
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
             return ret;
@@ -52,23 +56,42 @@ namespace AllHomeNode.controller
         // POST api/user/login
         public ReturnResult Login([FromBody]LoginReqData item)
         {
-            LoginRspData ret = new LoginRspData();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
-            ret.TimeStamp = "111";
-            ret.Token = "sdfsdfsdf";
-            ret.TokenLife = "100";
+            bool ret = repository.Login(item.Mobile, item.Password);
 
-            return ret;
+            LoginRspData rsp = new LoginRspData();
+            if (ret)
+            {
+                rsp.Result = CommandUtil.RETURN.SUCCESS;
+                Token token = ServiceToken.Intance().GetandRefreshToken(item.Mobile);
+                rsp.Token = token.TokenString;
+                rsp.TimeStamp = token.StartTime.ToString();
+                rsp.TokenLife = token.TokenLife.ToString();
+            }
+            else
+            {
+                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+            }
+
+
+            return rsp;
         }
 
         // 重置密码
         // POST api/user/resetpassword
         public ReturnResult ResetPassword([FromBody] ResetPasswordReqData item)
         {
-            ReturnResult ret = new ReturnResult();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
+            bool ret = repository.ResetPassword(item.Mobile, item.Password);
+            ReturnResult rsp = new ReturnResult();
+            if(ret)
+            {
+                rsp.Result = CommandUtil.RETURN.SUCCESS;
+            }
+            else
+            {
+                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+            }
 
-            return ret;
+            return rsp;
         }
 
         // 获取短信验证码
