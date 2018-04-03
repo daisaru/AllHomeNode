@@ -5,16 +5,20 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Reflection;
 
 using AllHomeNode.Front;
 using AllHomeNode.Repository;
 using AllHomeNode.Auth;
+using AllHomeNode.Help;
 
 namespace AllHomeNode.controller
 {
     public class UserController : ApiController
     {
         private UserRepository repository = new UserRepository();
+
+        public LogHelper Log { get; set; }
 
         // GET /api/user
         public IEnumerable<UserData> GetAllUsers()
@@ -26,6 +30,9 @@ namespace AllHomeNode.controller
         // POST /api/user/fetchuserinfo
         public GetUserInfoRspData FetchUserInfo([FromBody]GetUserInfoReqData item)
         {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
             UserData data = repository
                 .GetAll()
                 .Where(r => string.Equals(r.Mobile, item.Mobile))
@@ -42,6 +49,9 @@ namespace AllHomeNode.controller
         // POST api/user/register
         public ReturnResult Register([FromBody]UserData item)
         {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
             repository.Add(item);
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
@@ -52,6 +62,9 @@ namespace AllHomeNode.controller
         // POST api/user/update
         public ReturnResult Update([FromBody]UserData item)
         {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
             repository.Update(item);
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
@@ -62,6 +75,9 @@ namespace AllHomeNode.controller
         // POST api/user/login
         public ReturnResult Login([FromBody]LoginReqData item)
         {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
             bool ret = repository.Login(item.Mobile, item.Password);
 
             LoginRspData rsp = new LoginRspData();
@@ -86,6 +102,9 @@ namespace AllHomeNode.controller
         // POST api/user/resetpassword
         public ReturnResult ResetPassword([FromBody] ResetPasswordReqData item)
         {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
             bool ret = repository.ResetPassword(item.Mobile, item.Password);
             ReturnResult rsp = new ReturnResult();
             if(ret)
@@ -101,9 +120,12 @@ namespace AllHomeNode.controller
         }
 
         // 获取短信验证码
-        // POST api/user/getrandomcode
-        public ReturnResult GetRandomCode([FromBody] GetRandomCodeReqData item)
+        // POST api/user/fetchrandomcode
+        public ReturnResult fetchRandomCode([FromBody] GetRandomCodeReqData item)
         {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
 

@@ -214,6 +214,22 @@ namespace AllHomeNode.Repository
             return datas;
         }
 
+        private ControlPoint FillControlPointObject(ControlPointData item, string idRoom)
+        {
+            ControlPoint cp = new ControlPoint();
+            cp.Id = Guid.NewGuid().ToString("N");
+            cp.Id_Room = idRoom;
+            cp.Code = item.Code;
+            cp.Point = item.Point;
+            cp.Name = item.Name;
+            cp.Brand = item.Brand;
+            cp.Type = item.Type;
+            cp.Model = item.Model;
+            cp.TimeStamp = DateTime.Now;
+
+            return cp;
+        }
+
         private ControlPointData FillControlPointDataObject(ControlPoint item)
         {
             ControlPointData data = new ControlPointData();
@@ -258,6 +274,63 @@ namespace AllHomeNode.Repository
             }
 
             return result;
+        }
+
+        public bool RegisterDevice(string deviceId, string deviceName)
+        {
+            DeviceManager devMgr = new DeviceManager();
+            List<Device> devices = devMgr.GetDeviceByDeviceId(deviceId).ToList();
+
+            if(devices.Count == 0)
+            {
+                // new register
+                Device dev = new Device();
+                dev.Id = Guid.NewGuid().ToString("N");
+                dev.DeviceId = deviceId;
+                dev.DeviceName = deviceName;
+                dev.TimeStamp = DateTime.Now;
+
+                devMgr.Add(dev);
+            }
+
+            return true;
+        }
+
+        public bool UploadCtrlPoints(string deviceId, List<RoomData> rooms)
+        {
+            DeviceManager devMgr = new DeviceManager();
+            Device dev = devMgr.GetDeviceByDeviceId(deviceId).ToList()[0];
+
+            RoomManager roomMgr = new RoomManager();
+            DeviceRoomBindManager drBindMgr = new DeviceRoomBindManager();
+            ControlPointManager cpMgr = new ControlPointManager();
+
+            foreach(RoomData r in rooms)
+            {
+                Room roomTmp = new Room();
+                roomTmp.Id = Guid.NewGuid().ToString("N");
+                roomTmp.Name = r.Name;
+                roomTmp.TimeStamp = DateTime.Now;
+
+                roomMgr.Add(roomTmp);
+
+                DeviceRoomBind drBindTmp = new DeviceRoomBind();
+                drBindTmp.Id = Guid.NewGuid().ToString("N");
+                drBindTmp.Id_Device = dev.Id;
+                drBindTmp.Id_Room = roomTmp.Id;
+                drBindTmp.TimeStamp = DateTime.Now;
+
+                drBindMgr.Add(drBindTmp);
+
+                List<ControlPointData> controlpoints = r.ControlPoints;
+                foreach(ControlPointData cpdata in controlpoints)
+                {
+                    ControlPoint cp = FillControlPointObject(cpdata, roomTmp.Id);
+                    cpMgr.Add(cp);
+                }
+            }
+
+            return true;
         }
     }
 }

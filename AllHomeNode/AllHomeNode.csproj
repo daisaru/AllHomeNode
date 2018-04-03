@@ -132,6 +132,10 @@
     <Compile Include="Front\ControlPointData.cs" />
     <Compile Include="Front\controlpoints\Vent_EAWADA.cs" />
     <Compile Include="Front\DeviceData.cs" />
+    <Compile Include="Front\GatewayRegisterReqData.cs" />
+    <Compile Include="Front\GatewayUploadCtrlPointsReqData.cs" />
+    <Compile Include="Front\GatewayUploadCtrlPointsRspData.cs" />
+    <Compile Include="Front\GatewayRegisterRspData.cs" />
     <Compile Include="Front\GetAllDevicesRspData.cs" />
     <Compile Include="Front\GetAllDevicesReqData.cs" />
     <Compile Include="Front\GetControlPointsReqData.cs" />
@@ -150,6 +154,7 @@
     <Compile Include="Front\ShareDeviceReqData.cs" />
     <Compile Include="Front\UserData.cs" />
     <Compile Include="Front\UserDeviceData.cs" />
+    <Compile Include="Help\JsonHelper.cs" />
     <Compile Include="Help\LogHelper.cs" />
     <Compile Include="Help\SecurityHelper.cs" />
     <Compile Include="Program.cs" />

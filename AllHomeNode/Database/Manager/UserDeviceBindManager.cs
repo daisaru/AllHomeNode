@@ -31,6 +31,7 @@ namespace AllHomeNode.Database.Manager
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                     return false;
                 }
             }
@@ -48,6 +49,7 @@ namespace AllHomeNode.Database.Manager
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                     return false;
                 }
             }
