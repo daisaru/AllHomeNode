@@ -33,5 +33,19 @@ namespace AllHomeNode.Controller
             ret.AirQuality = data;
             return ret;
         }
+
+        // 获取一段时间电量消耗数据
+        // POST /api/data/fetchpowerconsumedata
+        public GetPowerConsumeRspData FetchPowerConsumeData([FromBody]GetPowerConsumeReqData item)
+        {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            List<PowerConsumeData> data = repository.GetHistoryPowerConsumeData(item.DeviceId, item.StartTime, item.EndTime).ToList();
+            GetPowerConsumeRspData ret = new GetPowerConsumeRspData();
+            ret.Result = CommandUtil.RETURN.SUCCESS;
+            ret.PowerConsume = data;
+            return ret;
+        }
     }
 }

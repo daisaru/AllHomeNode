@@ -42,5 +42,26 @@ namespace AllHomeNode.Repository
             }
             return airData;
         }
+
+        private PowerConsumeData FillPowerConsumeData(PowerData data)
+        {
+            PowerConsumeData ret = new PowerConsumeData();
+            ret.PowerConsume = data.PowerConsume;
+            ret.TimeStamp = data.TimeStamp.ToString();
+            return ret;
+        }
+
+        public IEnumerable<PowerConsumeData> GetHistoryPowerConsumeData(string deviceId, DateTime startTime, DateTime endTime)
+        {
+            List<PowerConsumeData> powerConsumeData = new List<PowerConsumeData>();
+            PowerDataManager powerDataMgr = new PowerDataManager();
+            List<PowerData> datas = powerDataMgr.GetHistoryPowerConsume(deviceId, startTime, endTime).ToList();
+            foreach (PowerData data in datas)
+            {
+                PowerConsumeData tmp = FillPowerConsumeData(data);
+                powerConsumeData.Add(tmp);
+            }
+            return powerConsumeData;
+        }
     }
 }
