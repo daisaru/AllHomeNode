@@ -105,17 +105,21 @@
     <Compile Include="Auth\DeviceToken.cs" />
     <Compile Include="Auth\ServiceToken.cs" />
     <Compile Include="Auth\Token.cs" />
+    <Compile Include="Controller\DataController.cs" />
     <Compile Include="Controller\DeviceController.cs" />
     <Compile Include="Controller\UserController.cs" />
+    <Compile Include="Database\Manager\AirDataManager.cs" />
     <Compile Include="Database\Manager\ControlPointManager.cs" />
     <Compile Include="Database\Manager\DeviceManager.cs" />
     <Compile Include="Database\Manager\DeviceRoomBindManager.cs" />
     <Compile Include="Database\Manager\RoomManager.cs" />
     <Compile Include="Database\Manager\UserDeviceBindManager.cs" />
     <Compile Include="Database\Manager\UserManager.cs" />
+    <Compile Include="Database\Model\AirData.cs" />
     <Compile Include="Database\Model\ControlPoint.cs" />
     <Compile Include="Database\Model\Device.cs" />
     <Compile Include="Database\Model\DeviceRoomBind.cs" />
+    <Compile Include="Database\Model\MapAirData.cs" />
     <Compile Include="Database\Model\MapControlPoint.cs" />
     <Compile Include="Database\Model\MapDevice.cs" />
     <Compile Include="Database\Model\MapDeviceRoomBind.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="Database\Model\User.cs" />
     <Compile Include="Database\Model\UserDeviceBind.cs" />
     <Compile Include="Database\NHibernateHelper.cs" />
+    <Compile Include="Front\AirQualityData.cs" />
     <Compile Include="Front\BindDeviceReqData.cs" />
     <Compile Include="Front\CommandUtil.cs" />
     <Compile Include="Front\ControlPointData.cs" />
@@ -136,6 +141,8 @@
     <Compile Include="Front\GatewayUploadCtrlPointsReqData.cs" />
     <Compile Include="Front\GatewayUploadCtrlPointsRspData.cs" />
     <Compile Include="Front\GatewayRegisterRspData.cs" />
+    <Compile Include="Front\GetAirQualityReqData.cs" />
+    <Compile Include="Front\GetAirQualityRspData.cs" />
     <Compile Include="Front\GetAllDevicesRspData.cs" />
     <Compile Include="Front\GetAllDevicesReqData.cs" />
     <Compile Include="Front\GetControlPointsReqData.cs" />
@@ -159,6 +166,7 @@
     <Compile Include="Help\SecurityHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\DeviceRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="StartUp.cs" />
