@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using System.Reflection;
+using System.Threading;
 
 using Microsoft.Owin.Hosting;
 using AllHomeNode.Database;
@@ -12,8 +14,7 @@ using AllHomeNode.Database.Manager;
 using AllHomeNode.Help;
 using MySql.Data;
 using MySql.Data.MySqlClient;
-using System.Reflection;
-using System.Threading;
+using AllHomeNode.Service.SMS;
 
 namespace AllHomeNode
 {
@@ -46,6 +47,16 @@ namespace AllHomeNode
                 // Start OWIN host   
                 WebApp.Start<StartUp>(url: baseAddress);
                 LogHelper.WriteLog(LogLevel.Warn, t, "OWIN Selfhost is started.");
+
+                // Start SMS Service
+                Configuration_SMS _configSMS = new Configuration_SMS();
+                _configSMS.AppId = 1400082480;
+                _configSMS.AppKey = "d40aaca2c8bb41b607ad33b3bc7a63ff";
+                _configSMS.TemplateId = 106928;
+                _configSMS.SignatureName = "大猿实验室";
+                Service_SMS smsService = Service_SMS.Instance();
+                smsService.InitializeService(_configSMS);
+                smsService.ServiceStart();
 
                 //Create HttpCient and make a request to api/ user
                 //HttpClient client = new HttpClient();

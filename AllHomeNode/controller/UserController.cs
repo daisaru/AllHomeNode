@@ -11,6 +11,7 @@ using AllHomeNode.Front;
 using AllHomeNode.Repository;
 using AllHomeNode.Auth;
 using AllHomeNode.Help;
+using AllHomeNode.Service.SMS;
 
 namespace AllHomeNode.controller
 {
@@ -125,6 +126,9 @@ namespace AllHomeNode.controller
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            Service_SMS _smsService = Service_SMS.Instance();
+            _smsService.SendRandomCode(item.Mobile);
 
             ReturnResult ret = new ReturnResult();
             ret.Result = CommandUtil.RETURN.SUCCESS;
