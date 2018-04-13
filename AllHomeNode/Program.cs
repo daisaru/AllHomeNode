@@ -15,6 +15,7 @@ using AllHomeNode.Help;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using AllHomeNode.Service.SMS;
+using AllHomeNode.Service.MQTT;
 
 namespace AllHomeNode
 {
@@ -49,6 +50,7 @@ namespace AllHomeNode
                 LogHelper.WriteLog(LogLevel.Warn, t, "OWIN Selfhost is started.");
 
                 // Start SMS Service
+                #region
                 Configuration_SMS _configSMS = new Configuration_SMS();
                 _configSMS.AppId = 1400082480;
                 _configSMS.AppKey = "d40aaca2c8bb41b607ad33b3bc7a63ff";
@@ -57,6 +59,20 @@ namespace AllHomeNode
                 Service_SMS smsService = Service_SMS.Instance();
                 smsService.InitializeService(_configSMS);
                 smsService.ServiceStart();
+                #endregion
+
+                // Start MQTT Service
+                #region
+                Configuration_MQTT _configMQTT = new Configuration_MQTT();
+                _configMQTT.BrokerURL = "115.159.78.40";
+                _configMQTT.Port = 1883;
+                _configMQTT.Username = "admin";
+                _configMQTT.Password = "admin";
+                _configMQTT.ClientID = "AllHomeNodeServer";
+                _configMQTT.ReceiveTopic = "from/device/server/#";
+                Service_Monitor monitorService = Service_Monitor.Instance();
+                monitorService.StartService(_configMQTT);
+                #endregion
 
                 //Create HttpCient and make a request to api/ user
                 //HttpClient client = new HttpClient();

@@ -45,6 +45,9 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -179,6 +182,14 @@
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\DeviceRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="Service\MQTT\CommandDownload.cs" />
+    <Compile Include="Service\MQTT\CommandHelper.cs" />
+    <Compile Include="Service\MQTT\CommandUpload.cs" />
+    <Compile Include="Service\MQTT\Configuration_MQTT.cs" />
+    <Compile Include="Service\MQTT\Enums.cs" />
+    <Compile Include="Service\MQTT\Message.cs" />
+    <Compile Include="Service\MQTT\MQTT.cs" />
+    <Compile Include="Service\MQTT\Service_Monitor.cs" />
     <Compile Include="Service\SMS\Configuration_SMS.cs" />
     <Compile Include="Service\SMS\Message_SMS.cs" />
     <Compile Include="Service\SMS\Service_SMS.cs" />
