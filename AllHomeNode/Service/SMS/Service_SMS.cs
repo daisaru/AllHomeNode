@@ -69,6 +69,8 @@ namespace AllHomeNode.Service.SMS
             msg.TimeStamp = DateTime.Now;
             msg.Send = false;
 
+            if (_queue.ContainsKey(mobile))
+                _queue.Remove(mobile);
             _queue.Add(mobile, msg);
             
             return msg;
@@ -88,16 +90,12 @@ namespace AllHomeNode.Service.SMS
                 }
                 else
                 {
+                    _queue.Remove(mobile);
                     return false;
                 }
             }
 
             return false;
-        }
-
-        public void SendSMS(Message_SMS msg)
-        {
-            _queue.Add(msg.Mobile, msg);
         }
 
         private void Run()

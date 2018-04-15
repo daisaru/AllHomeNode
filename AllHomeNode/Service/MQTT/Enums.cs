@@ -9,6 +9,7 @@ namespace AllHomeNode.Service.MQTT
     public class FIXEDCONTROLPOINTS
     {
         public const string TIMESYNC = "LOCALSERVICE_0000000000000000001";
+        public const string UPGRADE = "LOCALSERVICE_0000000000000000002";
     }
     public class Enums
     {
@@ -25,7 +26,8 @@ namespace AllHomeNode.Service.MQTT
             TIME = 2,
             EVENT = 3,
             TIMEANDEVENT = 4,
-            SENARIO = 5
+            SENARIO = 5,
+            ADMIN = 6
         }
     }
 }
