@@ -53,9 +53,17 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            repository.Add(item);
+            UserData user = repository.Add(item);
             ReturnResult ret = new ReturnResult();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
+            if (user != null)
+            {
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+            }
+            else
+            {
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+            }
+
             return ret;
         }
 
@@ -66,9 +74,17 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            repository.Update(item);
+            bool success = repository.Update(item);
             ReturnResult ret = new ReturnResult();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
+            if(success)
+            {
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+            }
+            else
+            {
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+            }
+
             return ret;
         }
 

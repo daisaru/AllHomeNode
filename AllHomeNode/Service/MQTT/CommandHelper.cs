@@ -26,9 +26,9 @@ namespace AllHomeNode.Service.MQTT
         {
             CommandDownload cmd = new CommandDownload();
             cmd.Code = FIXEDCONTROLPOINTS.TIMESYNC;
-            cmd.Method = Enums.METHOD.WRITEREAD.ToString();
-            cmd.Mode = Enums.MODE.ADMIN.ToString();
-            cmd.ModeParameter = "";
+            cmd.Method = Enums.METHOD.WRITEREAD;
+            cmd.Mode = Enums.MODE.LOCAL;
+            cmd.ModeParameter.ModeSubType = Enums.MODESUBTYPE.ADMIN;
             cmd.DeviceToken = "";
             cmd.Value = DateTime.Now.ToString();
             cmd.TimeStamp = DateTime.Now.ToString();

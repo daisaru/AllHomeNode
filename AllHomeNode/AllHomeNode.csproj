@@ -182,6 +182,7 @@
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\DeviceRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="Service\ModeParas.cs" />
     <Compile Include="Service\MQTT\CommandDownload.cs" />
     <Compile Include="Service\MQTT\CommandHelper.cs" />
     <Compile Include="Service\MQTT\CommandUpload.cs" />

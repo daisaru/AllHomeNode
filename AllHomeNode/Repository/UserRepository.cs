@@ -71,8 +71,12 @@ namespace AllHomeNode.Repository
         public UserData Get(string mobile)
         {
             UserManager userMgr = new UserManager();
-            User user = userMgr.GetUserByMobile(mobile).ToList()[0];
-            UserData data = FillUserDataObject(user);
+            List<User> users = userMgr.GetUserByMobile(mobile).ToList();
+            if(users == null || users.Count == 0)
+            {
+                return null;
+            }
+            UserData data = FillUserDataObject(users[0]);
             return data;
         }
 
@@ -82,6 +86,13 @@ namespace AllHomeNode.Repository
             {
                 throw new ArgumentNullException("user item");
             }
+
+            UserData tmp = Get(item.Mobile);
+            if(tmp == null)
+            {
+                return null;
+            }
+
             User user = FillUserObject(item);
             user.Id = Guid.NewGuid().ToString("N");
             user.TimeStamp = DateTime.Now;
@@ -96,6 +107,13 @@ namespace AllHomeNode.Repository
             {
                 throw new ArgumentNullException("user item");
             }
+
+            UserData tmp = Get(item.Mobile);
+            if (tmp == null)
+            {
+                return false;
+            }
+
             User user = FillUserObject(item);
             UserManager userMgr = new UserManager();
             User olduser = userMgr.GetUserByMobile(user.Mobile).ToList()[0];

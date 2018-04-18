@@ -1,10 +1,11 @@
-﻿using AllHomeNode.Help;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using AllHomeNode.Help;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace AllHomeNode.Service.MQTT
@@ -103,7 +104,7 @@ namespace AllHomeNode.Service.MQTT
             {
                 case FIXEDCONTROLPOINTS.TIMESYNC:
                     {
-                        // TODO
+                        Console.WriteLine(msg.cmdReq.Value);
                         break;
                     }
                 default:
