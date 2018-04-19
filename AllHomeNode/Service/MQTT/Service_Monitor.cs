@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AllHomeNode.Front;
 using AllHomeNode.Help;
+using AllHomeNode.Repository;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace AllHomeNode.Service.MQTT
@@ -47,7 +49,7 @@ namespace AllHomeNode.Service.MQTT
             _workerThread = new Thread(new ThreadStart(Run));
             _workerThread.Start();
 
-            _timeSyncTimer = new Timer(new TimerCallback(TimerUp), null, 0, 60000);
+            _timeSyncTimer = new Timer(new TimerCallback(TimerUp), null, 0, 600000);
         }
 
         // 发送心跳包
@@ -104,7 +106,17 @@ namespace AllHomeNode.Service.MQTT
             {
                 case FIXEDCONTROLPOINTS.TIMESYNC:
                     {
-                        Console.WriteLine(msg.cmdReq.Value);
+                        string[] data = msg.cmdUpload.Value.Split(new char[] { ' ' });
+                        HeartbeatData hbData = new HeartbeatData();
+                        hbData.DeviceId = data[0];
+                        hbData.SoftwareVersion = data[1];
+                        hbData.HardwareVersion = "";
+                        hbData.DeviceTime = DateTime.Parse(msg.cmdUpload.TimeStamp);
+                        hbData.TimeStamp = DateTime.Now;
+
+                        DeviceRepository repository = new DeviceRepository();
+                        repository.AddHeartBeat(hbData);
+
                         break;
                     }
                 default:

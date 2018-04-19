@@ -66,6 +66,32 @@ namespace AllHomeNode.Repository
             return item;
         }
 
+        public bool AddHeartBeat(HeartbeatData item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("device item");
+            }
+            try
+            {
+                Heartbeat data = new Heartbeat();
+                data.DeviceId = item.DeviceId;
+                data.HardwareVersion = item.HardwareVersion;
+                data.SoftwareVersion = item.SoftwareVersion;
+                data.DeviceTime = item.DeviceTime;
+                data.TimeStamp = DateTime.Now;
+                DeviceManager deviceMgr = new DeviceManager();
+                deviceMgr.AddHeartbeat(data);
+            }
+            catch(Exception exp)
+            {
+                Console.WriteLine("ERROR:" + exp.Message);
+                return false;
+            }
+
+            return true;
+        }
+
         public bool Update(DeviceData item)
         {
             if (item == null)

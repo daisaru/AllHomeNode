@@ -99,5 +99,14 @@ namespace AllHomeNode.Database.Manager
                 return list;
             }
         }
+
+        public void AddHeartbeat(Heartbeat item)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                session.Save(item);
+                session.Flush();
+            }
+        }
     }
 }

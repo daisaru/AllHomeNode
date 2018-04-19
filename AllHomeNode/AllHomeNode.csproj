@@ -127,10 +127,12 @@
     <Compile Include="Database\Model\ControlPoint.cs" />
     <Compile Include="Database\Model\Device.cs" />
     <Compile Include="Database\Model\DeviceRoomBind.cs" />
+    <Compile Include="Database\Model\Heartbeat.cs" />
     <Compile Include="Database\Model\MapAirData.cs" />
     <Compile Include="Database\Model\MapControlPoint.cs" />
     <Compile Include="Database\Model\MapDevice.cs" />
     <Compile Include="Database\Model\MapDeviceRoomBind.cs" />
+    <Compile Include="Database\Model\MapHeartbeat.cs" />
     <Compile Include="Database\Model\MapPowerData.cs" />
     <Compile Include="Database\Model\MapRoom.cs" />
     <Compile Include="Database\Model\MapUser.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="Front\GetRandomCodeReqData.cs" />
     <Compile Include="Front\GetUserInfoReqData.cs" />
     <Compile Include="Front\GetUserInfoRspData.cs" />
+    <Compile Include="Front\HeartbeatData.cs" />
     <Compile Include="Front\LoginRspData.cs" />
     <Compile Include="Front\Address.cs" />
     <Compile Include="Front\LoginReqData.cs" />

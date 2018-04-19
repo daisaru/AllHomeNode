@@ -69,7 +69,7 @@ namespace AllHomeNode
                 _configMQTT.Username = "admin";
                 _configMQTT.Password = "admin";
                 _configMQTT.ClientID = "AllHomeNodeServer";
-                _configMQTT.ReceiveTopic = "from/device/server/#";
+                _configMQTT.ReceiveTopic = "from/device/service/#";
                 Service_Monitor monitorService = Service_Monitor.Instance();
                 monitorService.StartService(_configMQTT);
                 #endregion

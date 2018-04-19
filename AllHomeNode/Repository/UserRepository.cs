@@ -88,7 +88,7 @@ namespace AllHomeNode.Repository
             }
 
             UserData tmp = Get(item.Mobile);
-            if(tmp == null)
+            if(tmp != null)
             {
                 return null;
             }

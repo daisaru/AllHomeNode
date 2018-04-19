@@ -10,7 +10,7 @@ namespace AllHomeNode.Service.MQTT
     {
         public string id { get; set; }
         public string topic { get; set; }
-        public CommandDownload cmdReq { get; set; }
+        public CommandDownload cmdDownload { get; set; }
         public CommandUpload cmdUpload { get; set; }
     }
 }
