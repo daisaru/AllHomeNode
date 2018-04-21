@@ -10,7 +10,9 @@ namespace AllHomeNode.Database.Model
     {
         public virtual string Id { get; set; }
         public virtual string DeviceId { get; set; }
+        public virtual string CPCode { get; set; }
         public virtual string PowerConsume { get; set; }
+        public virtual string PowerType { get; set; }
         public virtual DateTime TimeStamp { get; set; }
     }
 }

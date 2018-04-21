@@ -41,11 +41,13 @@ namespace AllHomeNode.Controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            List<PowerConsumeData> data = repository.GetHistoryPowerConsumeData(item.DeviceId, item.StartTime, item.EndTime).ToList();
+            List<PowerConsumeData> data = repository.GetHistoryPowerConsumeData(item.DeviceId, item.StartTime, item.EndTime, item.IsDetail).ToList();
             GetPowerConsumeRspData ret = new GetPowerConsumeRspData();
             ret.Result = CommandUtil.RETURN.SUCCESS;
             ret.PowerConsume = data;
             return ret;
         }
+
+
     }
 }

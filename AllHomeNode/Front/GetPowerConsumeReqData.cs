@@ -13,5 +13,6 @@ namespace AllHomeNode.Front
         public string Token { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public bool IsDetail { get; set; }
     }
 }

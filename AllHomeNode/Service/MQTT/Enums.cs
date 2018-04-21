@@ -13,6 +13,13 @@ namespace AllHomeNode.Service.MQTT
     }
     public class Enums
     {
+        public enum POWERCONSUMERTYPE
+        {
+            RESERVE = 0,
+            LIGHT = 1,          // 照明
+            AIRCONTROL = 2,     // 空调
+        }
+
         public enum DEVICETYPE
         {
             GATEWAY = 0,    // 智能网关 
