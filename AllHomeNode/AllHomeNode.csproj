@@ -190,6 +190,9 @@
     <Compile Include="Service\MQTT\CommandHelper.cs" />
     <Compile Include="Service\MQTT\CommandUpload.cs" />
     <Compile Include="Service\MQTT\Configuration_MQTT.cs" />
+    <Compile Include="Service\MQTT\Device\DEVICE.cs" />
+    <Compile Include="Service\MQTT\Device\SWITCH_JSY.cs" />
+    <Compile Include="Service\MQTT\Device\VENT_EAWADA.cs" />
     <Compile Include="Service\MQTT\Enums.cs" />
     <Compile Include="Service\MQTT\Message.cs" />
     <Compile Include="Service\MQTT\MQTT.cs" />

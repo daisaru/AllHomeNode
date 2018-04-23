@@ -56,6 +56,15 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
+        public IList<ControlPoint> GetControlPointByCode(string code)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<ControlPoint> controlPoint = session.QueryOver<ControlPoint>().Where(c => c.Code == code).List();
+                return controlPoint;
+            }
+        }
+
         public IList<ControlPoint> GetControlPointByRoom(string roomId)
         {
             using (var session = NHibernateHelper.OpenSession())

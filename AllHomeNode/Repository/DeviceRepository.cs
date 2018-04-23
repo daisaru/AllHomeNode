@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AllHomeNode.Front;
 using AllHomeNode.Database.Manager;
 using AllHomeNode.Database.Model;
+using AllHomeNode.Service.MQTT.Device;
 
 namespace AllHomeNode.Repository
 {
@@ -70,7 +71,7 @@ namespace AllHomeNode.Repository
         {
             if (item == null)
             {
-                throw new ArgumentNullException("device item");
+                throw new ArgumentNullException("AddHeartBeat");
             }
             try
             {
@@ -83,7 +84,7 @@ namespace AllHomeNode.Repository
                 DeviceManager deviceMgr = new DeviceManager();
                 deviceMgr.AddHeartbeat(data);
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 Console.WriteLine("ERROR:" + exp.Message);
                 return false;
@@ -147,9 +148,9 @@ namespace AllHomeNode.Repository
 
             bool bIsUpdate = false;
             UserDeviceBind needUpdate = null;
-            foreach(UserDeviceBind udbind in binds)
+            foreach (UserDeviceBind udbind in binds)
             {
-                if(udbind.Id_User == user.Id && udbind.Id_Device == device.Id)
+                if (udbind.Id_User == user.Id && udbind.Id_Device == device.Id)
                 {
                     bIsUpdate = true;
                     needUpdate = udbind;
@@ -157,7 +158,7 @@ namespace AllHomeNode.Repository
                 }
             }
 
-            if(bIsUpdate)
+            if (bIsUpdate)
             {
                 needUpdate.Privilege = privilege;
                 needUpdate.TimeStamp = DateTime.Now;
@@ -190,11 +191,11 @@ namespace AllHomeNode.Repository
             UserDeviceBindManager bindMgr = new UserDeviceBindManager();
 
             List<UserDeviceBind> binds = bindMgr.GetUserDeviceBindByUserId(user.Id).ToList();
-            if(binds.Count > 0)
+            if (binds.Count > 0)
             {
-                foreach(UserDeviceBind udbind in binds)
+                foreach (UserDeviceBind udbind in binds)
                 {
-                    if(udbind.Id_Device == id)
+                    if (udbind.Id_Device == id)
                     {
                         udbind.DeviceGivenName = deviceName;
                         udbind.TimeStamp = DateTime.Now;
@@ -224,7 +225,7 @@ namespace AllHomeNode.Repository
             User user = userManager.GetUserByMobile(mobile).ToList()[0];
             UserDeviceBindManager userDeviceBindManager = new UserDeviceBindManager();
             List<UserDeviceBind> userdevices = userDeviceBindManager.GetUserDeviceBindByUserId(user.Id).ToList();
-            foreach(UserDeviceBind userdevicebind in userdevices)
+            foreach (UserDeviceBind userdevicebind in userdevices)
             {
                 UserDeviceData data = new UserDeviceData();
 
@@ -268,6 +269,14 @@ namespace AllHomeNode.Repository
             return data;
         }
 
+        public ControlPointData GetControlPointByCode(string code)
+        {
+            ControlPointManager cpMgr = new ControlPointManager();
+            List<ControlPoint> cps = cpMgr.GetControlPointByCode(code).ToList();
+            ControlPointData ret = FillControlPointDataObject(cps[0]);
+            return ret;
+        }
+
         public IEnumerable<RoomData> GetAllControlPoints(string deviceId)
         {
             DeviceManager deviceMgr = new DeviceManager();
@@ -280,7 +289,7 @@ namespace AllHomeNode.Repository
             ControlPointManager cpMgr = new ControlPointManager();
 
             List<RoomData> result = new List<RoomData>();
-            foreach(DeviceRoomBind drBind in drBinds)
+            foreach (DeviceRoomBind drBind in drBinds)
             {
                 string idRoom = drBind.Id_Room;
                 Room room = roomMgr.GetRoomByRoomId(idRoom).ToList()[0];
@@ -290,7 +299,7 @@ namespace AllHomeNode.Repository
 
                 List<ControlPoint> contolpoints = cpMgr.GetControlPointByRoom(idRoom).ToList();
                 List<ControlPointData> controlpointdata = roomData.ControlPoints;
-                foreach(ControlPoint cp in contolpoints)
+                foreach (ControlPoint cp in contolpoints)
                 {
                     ControlPointData cpData = FillControlPointDataObject(cp);
                     controlpointdata.Add(cpData);
@@ -307,7 +316,7 @@ namespace AllHomeNode.Repository
             DeviceManager devMgr = new DeviceManager();
             List<Device> devices = devMgr.GetDeviceByDeviceId(deviceId).ToList();
 
-            if(devices.Count == 0)
+            if (devices.Count == 0)
             {
                 // new register
                 Device dev = new Device();
@@ -331,7 +340,7 @@ namespace AllHomeNode.Repository
             DeviceRoomBindManager drBindMgr = new DeviceRoomBindManager();
             ControlPointManager cpMgr = new ControlPointManager();
 
-            foreach(RoomData r in rooms)
+            foreach (RoomData r in rooms)
             {
                 Room roomTmp = new Room();
                 roomTmp.Id = Guid.NewGuid().ToString("N");
@@ -349,7 +358,7 @@ namespace AllHomeNode.Repository
                 drBindMgr.Add(drBindTmp);
 
                 List<ControlPointData> controlpoints = r.ControlPoints;
-                foreach(ControlPointData cpdata in controlpoints)
+                foreach (ControlPointData cpdata in controlpoints)
                 {
                     ControlPoint cp = FillControlPointObject(cpdata, roomTmp.Id);
                     cpMgr.Add(cp);

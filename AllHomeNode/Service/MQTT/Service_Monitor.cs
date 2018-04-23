@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using AllHomeNode.Front;
 using AllHomeNode.Help;
 using AllHomeNode.Repository;
+using AllHomeNode.Service.MQTT.Device;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using static AllHomeNode.Service.MQTT.Enums;
 
 namespace AllHomeNode.Service.MQTT
 {
@@ -121,6 +123,27 @@ namespace AllHomeNode.Service.MQTT
                     }
                 default:
                     {
+                        CommandUpload cmdUpload = msg.cmdUpload;
+                        string code = cmdUpload.Code;
+                        string data = cmdUpload.Data;
+
+                        DeviceRepository repository = new DeviceRepository();
+                        ControlPointData cpData = repository.GetControlPointByCode(code);
+                        DEVICETYPE deviceType = (DEVICETYPE)Enum.Parse(typeof(DEVICETYPE), cpData.Type, true);
+
+                        DataRepository dataRepo = new DataRepository();
+
+                        if(deviceType == DEVICETYPE.VENT)
+                        {
+                            VENT_EAWADA eawadaObj = JsonHelper.FromJSON<VENT_EAWADA>(data);
+                            bool ret = dataRepo.AddAirData(eawadaObj);
+                        }
+                        else if(deviceType == DEVICETYPE.POWER)
+                        {
+                            SWITCH_JSY jsyObj = JsonHelper.FromJSON<SWITCH_JSY>(data);
+                            bool ret = dataRepo.AddPowerData(jsyObj, code);
+                        }
+
                         break;
                     }
             }

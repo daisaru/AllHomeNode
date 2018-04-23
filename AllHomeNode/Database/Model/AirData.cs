@@ -8,7 +8,7 @@ namespace AllHomeNode.Database.Model
 {
     class AirData
     {
-        public virtual string Id { get; set; }
+        public virtual int Id { get; set; }
         public virtual string DeviceId { get; set; }
         public virtual string ONOFF { get; set; }
         public virtual string FAN_SPEED { get; set; }
