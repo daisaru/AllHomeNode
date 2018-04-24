@@ -26,10 +26,23 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            List<UserDeviceData> devices = repository.GetAllBindDevices(item.Mobile).ToList();
             GetAllDevicesRspData ret = new GetAllDevicesRspData();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
-            ret.Devices = devices;
+
+            try
+            {
+                List<UserDeviceData> devices = repository.GetAllBindDevices(item.Mobile).ToList();
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+                ret.Devices = devices;
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Devices = null;
+                return ret;
+            }
+
             return ret;
         }
 
@@ -40,9 +53,21 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            repository.BindDeviceWithUser(item.Mobile, item.DeviceId, item.DeviceName);
             ReturnResult ret = new ReturnResult();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
+
+            try
+            {
+                repository.BindDeviceWithUser(item.Mobile, item.DeviceId, item.DeviceName);
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
+            }
+
             return ret;
         }
 
@@ -53,9 +78,21 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            repository.ShareDeviceWithFriend(item.Friend, item.DeviceId, item.Privilege);
             ReturnResult ret = new ReturnResult();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
+
+            try
+            {
+                repository.ShareDeviceWithFriend(item.Friend, item.DeviceId, item.Privilege);
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
+            }
+              
             return ret;
         }
 
@@ -66,9 +103,20 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            repository.RevokeShareWithFriend(item.Friend, item.DeviceId);
             ReturnResult ret = new ReturnResult();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
+
+            try
+            {
+                repository.RevokeShareWithFriend(item.Friend, item.DeviceId);
+            }
+            catch (Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
+            }
+            
             return ret;
         }
 
@@ -80,11 +128,26 @@ namespace AllHomeNode.controller
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
             GetDeviceTokenRspData ret = new GetDeviceTokenRspData();
-            Token token = DeviceToken.Intance().GetandRefreshToken(item.Mobile, item.DeviceId);
-            ret.Result = CommandUtil.RETURN.SUCCESS;
-            ret.DeviceToken = token.TokenString;
-            ret.DeviceTokenLife = token.TokenLife.ToString();
-            ret.TimeStamp = token.StartTime.ToString();
+
+            try
+            {
+                Token token = DeviceToken.Intance().GetandRefreshToken(item.Mobile, item.DeviceId);
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+                ret.DeviceToken = token.TokenString;
+                ret.DeviceTokenLife = token.TokenLife.ToString();
+                ret.TimeStamp = token.StartTime.ToString();
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.DeviceToken = "";
+                ret.DeviceTokenLife = "";
+                ret.TimeStamp = DateTime.Now.ToString();
+                return ret;
+            }
+
             return ret;
         }
 
@@ -96,8 +159,21 @@ namespace AllHomeNode.controller
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
             GetControlPointsRspData ret = new GetControlPointsRspData();
-            ret.Rooms = repository.GetAllControlPoints(item.DeviceId).ToList();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
+
+            try
+            {
+                ret.Rooms = repository.GetAllControlPoints(item.DeviceId).ToList();
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Rooms = null;
+                return ret;
+            }
+
             return ret;
         }
 
@@ -108,19 +184,31 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            bool ret = repository.RegisterDevice(item.DeviceId, item.DeviceName);
-
             GatewayRegisterRspData rsp = new GatewayRegisterRspData();
-            if(ret == true)
-            {
-                rsp.Result = CommandUtil.RETURN.SUCCESS;
-            }
-            else
-            {
-                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
-            }
 
-            rsp.TimeStamp = DateTime.Now.ToString();
+            try
+            {
+                bool ret = repository.RegisterDevice(item.DeviceId, item.DeviceName);
+
+                if (ret == true)
+                {
+                    rsp.Result = CommandUtil.RETURN.SUCCESS;
+                }
+                else
+                {
+                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                }
+
+                rsp.TimeStamp = DateTime.Now.ToString();
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.TimeStamp = DateTime.Now.ToString();
+                return rsp;
+            }
 
             return rsp;
         }
@@ -132,17 +220,30 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            bool ret = repository.UploadCtrlPoints(item.DeviceId, item.Rooms);
             GatewayUploadCtrlPointsRspData rsp = new GatewayUploadCtrlPointsRspData();
-            if (ret == true)
+
+            try
             {
-                rsp.Result = CommandUtil.RETURN.SUCCESS;
+                bool ret = repository.UploadCtrlPoints(item.DeviceId, item.Rooms);
+
+                if (ret == true)
+                {
+                    rsp.Result = CommandUtil.RETURN.SUCCESS;
+                }
+                else
+                {
+                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                }
+                rsp.TimeStamp = DateTime.Now.ToString();
             }
-            else
+            catch(Exception exp)
             {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
                 rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.TimeStamp = DateTime.Now.ToString();
+                return rsp;
             }
-            rsp.TimeStamp = DateTime.Now.ToString();
 
             return rsp;
         }

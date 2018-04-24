@@ -27,10 +27,23 @@ namespace AllHomeNode.Controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            List<AirQualityData> data = repository.GetHistoryAirData(item.DeviceId, item.StartTime, item.EndTime).ToList();
             GetAirQualityRspData ret = new GetAirQualityRspData();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
-            ret.AirQuality = data;
+
+            try
+            {
+                List<AirQualityData> data = repository.GetHistoryAirData(item.DeviceId, item.StartTime, item.EndTime).ToList();
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+                ret.AirQuality = data;
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.AirQuality = null;
+                return ret;
+            }
+
             return ret;
         }
 
@@ -41,13 +54,24 @@ namespace AllHomeNode.Controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            List<PowerConsumeData> data = repository.GetHistoryPowerConsumeData(item.DeviceId, item.StartTime, item.EndTime, item.IsDetail).ToList();
             GetPowerConsumeRspData ret = new GetPowerConsumeRspData();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
-            ret.PowerConsume = data;
+
+            try
+            {
+                List<PowerConsumeData> data = repository.GetHistoryPowerConsumeData(item.DeviceId, item.StartTime, item.EndTime, item.IsDetail).ToList();
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+                ret.PowerConsume = data;
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.PowerConsume = null;
+                return ret;
+            }
+
             return ret;
         }
-
-
     }
 }

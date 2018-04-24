@@ -24,7 +24,8 @@ namespace AllHomeNode.controller
         // GET /api/user
         public IEnumerable<UserData> GetAllUsers()
         {
-            return repository.GetAll();
+            //return repository.GetAll();
+            return null;
         }
 
         // 获取用户信息
@@ -34,15 +35,29 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            UserData data = repository
-                .GetAll()
-                .Where(r => string.Equals(r.Mobile, item.Mobile))
-                .Select(r => r).ToList()[0];
-            data.Password = "";
-            data.RandomCode = "";
             GetUserInfoRspData ret = new GetUserInfoRspData();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
-            ret.User = data;
+
+            try
+            {
+                UserData data = repository
+                                .GetAll()
+                                .Where(r => string.Equals(r.Mobile, item.Mobile))
+                                .Select(r => r).ToList()[0];
+                data.Password = "";
+                data.RandomCode = "";
+
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+                ret.User = data;
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.User = null;
+                return ret;
+            }
+
             return ret;
         }
 
@@ -53,15 +68,27 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            UserData user = repository.Add(item);
             ReturnResult ret = new ReturnResult();
-            if (user != null)
+
+            try
             {
-                ret.Result = CommandUtil.RETURN.SUCCESS;
+                UserData user = repository.Add(item);
+
+                if (user != null)
+                {
+                    ret.Result = CommandUtil.RETURN.SUCCESS;
+                }
+                else
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                }
             }
-            else
+            catch(Exception exp)
             {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
                 ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
             }
 
             return ret;
@@ -74,15 +101,27 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            bool success = repository.Update(item);
             ReturnResult ret = new ReturnResult();
-            if(success)
+
+            try
             {
-                ret.Result = CommandUtil.RETURN.SUCCESS;
+                bool success = repository.Update(item);
+
+                if (success)
+                {
+                    ret.Result = CommandUtil.RETURN.SUCCESS;
+                }
+                else
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                }
             }
-            else
+            catch(Exception exp)
             {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
                 ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
             }
 
             return ret;
@@ -95,22 +134,38 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            bool ret = repository.Login(item.Mobile, item.Password);
-
             LoginRspData rsp = new LoginRspData();
-            if (ret)
-            {
-                rsp.Result = CommandUtil.RETURN.SUCCESS;
-                Token token = ServiceToken.Intance().GetandRefreshToken(item.Mobile);
-                rsp.Token = token.TokenString;
-                rsp.TimeStamp = token.StartTime.ToString();
-                rsp.TokenLife = token.TokenLife.ToString();
-            }
-            else
-            {
-                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
-            }
 
+            try
+            {
+                bool ret = repository.Login(item.Mobile, item.Password);
+
+                if (ret)
+                {
+                    Token token = ServiceToken.Intance().GetandRefreshToken(item.Mobile);
+                    rsp.Result = CommandUtil.RETURN.SUCCESS;
+                    rsp.Token = token.TokenString;
+                    rsp.TimeStamp = token.StartTime.ToString();
+                    rsp.TokenLife = token.TokenLife.ToString();
+                }
+                else
+                {
+                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    rsp.Token = "";
+                    rsp.TimeStamp = "";
+                    rsp.TokenLife = "";
+                }
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.Token = "";
+                rsp.TimeStamp = "";
+                rsp.TokenLife = "";
+                return rsp;
+            }
 
             return rsp;
         }
@@ -122,15 +177,27 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            bool ret = repository.ResetPassword(item.Mobile, item.Password);
             ReturnResult rsp = new ReturnResult();
-            if(ret)
+
+            try
             {
-                rsp.Result = CommandUtil.RETURN.SUCCESS;
+                bool ret = repository.ResetPassword(item.Mobile, item.Password);
+
+                if (ret)
+                {
+                    rsp.Result = CommandUtil.RETURN.SUCCESS;
+                }
+                else
+                {
+                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                }
             }
-            else
+            catch(Exception exp)
             {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
                 rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return rsp;
             }
 
             return rsp;
@@ -143,11 +210,22 @@ namespace AllHomeNode.controller
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            Service_SMS _smsService = Service_SMS.Instance();
-            _smsService.SendRandomCode(item.Mobile);
-
             ReturnResult ret = new ReturnResult();
-            ret.Result = CommandUtil.RETURN.SUCCESS;
+
+            try
+            {
+                Service_SMS _smsService = Service_SMS.Instance();
+                _smsService.SendRandomCode(item.Mobile);
+
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
+            }
 
             return ret;
         }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,8 +22,8 @@ namespace AllHomeNode.Service.MQTT
 
         private Timer _timeSyncTimer = null;
 
-        private Queue<Message> _qSend = new Queue<Message>();
-        private Queue<Message> QSend
+        private ConcurrentQueue<Message> _qSend = new ConcurrentQueue<Message>();
+        public ConcurrentQueue<Message> QSend
         {
             get { return _qSend; }
             set { _qSend = value; }
@@ -71,16 +73,25 @@ namespace AllHomeNode.Service.MQTT
         private void MQTT_Received(object sender, MqttMsgPublishEventArgs e)
         {
             string msgStr = ASCIIEncoding.ASCII.GetString(e.Message);
-            CommandUpload rsp = JsonHelper.FromJSON<CommandUpload>(msgStr);
 
-            Message msg = new Message();
-            msg.id = Guid.NewGuid().ToString();
-            msg.topic = e.Topic;
-            msg.cmdUpload = rsp;
-            _qSend.Enqueue(msg);
-            if (_qSend.Count >= 1)
+            try
             {
-                _sendQEvent.Set();
+                CommandUpload rsp = JsonHelper.FromJSON<CommandUpload>(msgStr);
+
+                Message msg = new Message();
+                msg.id = Guid.NewGuid().ToString();
+                msg.topic = e.Topic;
+                msg.cmdUpload = rsp;
+                _qSend.Enqueue(msg);
+                if (_qSend.Count >= 1)
+                {
+                    _sendQEvent.Set();
+                }
+            }
+            catch(Exception exp)
+            {
+                Type t = MethodBase.GetCurrentMethod().DeclaringType;
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
             }
         }
 
@@ -88,14 +99,27 @@ namespace AllHomeNode.Service.MQTT
         {
             while (true)
             {
-                if (_qSend.Count <= 0)
+                try
                 {
-                    _sendQEvent.WaitOne();
+                    if (_qSend.Count <= 0)
+                    {
+                        _sendQEvent.WaitOne();
+                    }
+
+                    Message msg = null;
+                    bool ret = _qSend.TryDequeue(out msg);
+
+                    if(ret == true)
+                    {
+                        ProcessMsg(msg);
+                    }
                 }
-
-                Message msg = _qSend.Dequeue();
-
-                ProcessMsg(msg);
+                catch(Exception exp)
+                {
+                    Console.WriteLine(exp.Message);
+                    Type t = MethodBase.GetCurrentMethod().DeclaringType;
+                    LogHelper.WriteLog(LogLevel.Error, t, exp);
+                }
 
                 Thread.Sleep(10);
             }
