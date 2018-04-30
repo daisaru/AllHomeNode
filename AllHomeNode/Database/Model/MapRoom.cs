@@ -14,6 +14,7 @@ namespace AllHomeNode.Database.Model
             Id(x => x.Id).Column("Id");
 
             Map(x => x.Name).Column("Name");
+            Map(x => x.Size).Column("Size");
             Map(x => x.TimeStamp).Column("TimeStamp");
 
             Table("tb_room");

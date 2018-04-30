@@ -296,6 +296,7 @@ namespace AllHomeNode.Repository
 
                 RoomData roomData = new RoomData();
                 roomData.Name = room.Name;
+                roomData.Size = room.Size;
 
                 List<ControlPoint> contolpoints = cpMgr.GetControlPointByRoom(idRoom).ToList();
                 List<ControlPointData> controlpointdata = roomData.ControlPoints;
@@ -345,6 +346,7 @@ namespace AllHomeNode.Repository
                 Room roomTmp = new Room();
                 roomTmp.Id = Guid.NewGuid().ToString("N");
                 roomTmp.Name = r.Name;
+                roomTmp.Size = r.Size;
                 roomTmp.TimeStamp = DateTime.Now;
 
                 roomMgr.Add(roomTmp);

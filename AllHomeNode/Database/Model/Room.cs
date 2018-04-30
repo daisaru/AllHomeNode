@@ -11,6 +11,7 @@ namespace AllHomeNode.Database.Model
     {
         public virtual string Id { get; set; }
         public virtual string Name { get; set; }
+        public virtual string Size { get; set; }
         public virtual DateTime TimeStamp { get; set; }
     }
 }

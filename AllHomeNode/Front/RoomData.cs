@@ -13,6 +13,7 @@ namespace AllHomeNode.Front
             ControlPoints = new List<ControlPointData>();
         }
         public string Name { get; set; }
+        public string Size { get; set; }
         public List<ControlPointData> ControlPoints {get;set;}
     }
 }
