@@ -28,6 +28,16 @@ namespace AllHomeNode.controller
 
             GetAllDevicesRspData ret = new GetAllDevicesRspData();
 
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                ret.Devices = null;
+                return ret;
+            }
+
             try
             {
                 List<UserDeviceData> devices = repository.GetAllBindDevices(item.Mobile).ToList();
@@ -55,6 +65,15 @@ namespace AllHomeNode.controller
 
             ReturnResult ret = new ReturnResult();
 
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                return ret;
+            }
+
             try
             {
                 repository.BindDeviceWithUser(item.Mobile, item.DeviceId, item.DeviceName);
@@ -79,6 +98,15 @@ namespace AllHomeNode.controller
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
             ReturnResult ret = new ReturnResult();
+
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                return ret;
+            }
 
             try
             {
@@ -105,6 +133,15 @@ namespace AllHomeNode.controller
 
             ReturnResult ret = new ReturnResult();
 
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                return ret;
+            }
+
             try
             {
                 repository.RevokeShareWithFriend(item.Friend, item.DeviceId);
@@ -128,6 +165,18 @@ namespace AllHomeNode.controller
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
             GetDeviceTokenRspData ret = new GetDeviceTokenRspData();
+
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                ret.DeviceToken = "";
+                ret.DeviceTokenLife = "";
+                ret.TimeStamp = DateTime.Now.ToString();
+                return ret;
+            }
 
             try
             {
@@ -159,6 +208,16 @@ namespace AllHomeNode.controller
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
             GetControlPointsRspData ret = new GetControlPointsRspData();
+
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                ret.Rooms = null;
+                return ret;
+            }
 
             try
             {

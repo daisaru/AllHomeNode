@@ -29,6 +29,16 @@ namespace AllHomeNode.Controller
 
             GetAirQualityRspData ret = new GetAirQualityRspData();
 
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                ret.AirQuality = null;
+                return ret;
+            }
+
             try
             {
                 List<AirQualityData> data = repository.GetHistoryAirData(item.DeviceId, item.StartTime, item.EndTime).ToList();
@@ -55,6 +65,16 @@ namespace AllHomeNode.Controller
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
             GetPowerConsumeRspData ret = new GetPowerConsumeRspData();
+
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                ret.PowerConsume = null;
+                return ret;
+            }
 
             try
             {

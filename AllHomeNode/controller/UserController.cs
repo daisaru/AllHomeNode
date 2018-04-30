@@ -37,6 +37,16 @@ namespace AllHomeNode.controller
 
             GetUserInfoRspData ret = new GetUserInfoRspData();
 
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if(checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                ret.User = null;
+                return ret;
+            }
+
             try
             {
                 UserData data = repository
@@ -67,8 +77,17 @@ namespace AllHomeNode.controller
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
-
+            
             ReturnResult ret = new ReturnResult();
+
+            bool checkRandomCode = Service_SMS.Instance().CheckRandomCode(item.Mobile, item.RandomCode);
+            if (checkRandomCode == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "RandomCode Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_RANDOMCODE_INVALID;
+                return ret;
+            }
 
             try
             {
@@ -102,6 +121,15 @@ namespace AllHomeNode.controller
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
             ReturnResult ret = new ReturnResult();
+            
+            bool checkRandomCode = Service_SMS.Instance().CheckRandomCode(item.Mobile, item.RandomCode);
+            if (checkRandomCode == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "RandomCode Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_RANDOMCODE_INVALID;
+                return ret;
+            }
 
             try
             {
@@ -179,6 +207,24 @@ namespace AllHomeNode.controller
 
             ReturnResult rsp = new ReturnResult();
 
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                rsp.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                return rsp;
+            }
+
+            bool checkRandomCode = Service_SMS.Instance().CheckRandomCode(item.Mobile, item.RandomCode);
+            if (checkRandomCode == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "RandomCode Invalid");
+
+                rsp.Result = CommandUtil.RETURN.ERROR_RANDOMCODE_INVALID;
+                return rsp;
+            }
+
             try
             {
                 bool ret = repository.ResetPassword(item.Mobile, item.Password);
@@ -212,6 +258,15 @@ namespace AllHomeNode.controller
 
             ReturnResult ret = new ReturnResult();
 
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                return ret;
+            }
+
             try
             {
                 Service_SMS _smsService = Service_SMS.Instance();
@@ -229,7 +284,5 @@ namespace AllHomeNode.controller
 
             return ret;
         }
-
-
     }
 }
