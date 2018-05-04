@@ -17,6 +17,7 @@ namespace AllHomeNode.Database.Model
             Map(x => x.Id_Device).Column("Id_Device");
             Map(x => x.DeviceGivenName).Column("DeviceGivenName");
             Map(x => x.Privilege).Column("Privilege");
+            Map(x => x.Time).Column("Time");
             Map(x => x.TimeStamp).Column("TimeStamp");
 
             Table("tb_userdevicebind");

@@ -149,10 +149,13 @@
     <Compile Include="Front\ControlPointData.cs" />
     <Compile Include="Front\controlpoints\Vent_EAWADA.cs" />
     <Compile Include="Front\DeviceData.cs" />
+    <Compile Include="Front\DeviceShareData.cs" />
     <Compile Include="Front\GatewayRegisterReqData.cs" />
     <Compile Include="Front\GatewayUploadCtrlPointsReqData.cs" />
     <Compile Include="Front\GatewayUploadCtrlPointsRspData.cs" />
     <Compile Include="Front\GatewayRegisterRspData.cs" />
+    <Compile Include="Front\GetDeviceShareInfoReqData.cs" />
+    <Compile Include="Front\GetDeviceShareRspData.cs" />
     <Compile Include="Front\GetPowerConsumeRspData.cs" />
     <Compile Include="Front\GetPowerConsumeReqData.cs" />
     <Compile Include="Front\GetAirQualityReqData.cs" />
@@ -209,17 +212,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="docs\MySqlCommand.xml" />
-    <Content Include="docs\MySqlCommandBuilder.xml" />
-    <Content Include="docs\MySqlConnection.xml" />
-    <Content Include="docs\MySqlConnectionStringBuilder.xml" />
-    <Content Include="docs\MySqlDataAdapter.xml" />
-    <Content Include="docs\MySqlDataReader.xml" />
-    <Content Include="docs\MySqlException.xml" />
-    <Content Include="docs\MySqlHelper.xml" />
-    <Content Include="docs\MySqlParameter.xml" />
-    <Content Include="docs\MySqlParameterCollection.xml" />
-    <Content Include="docs\MySqlTransaction.xml" />
+    <Content Include="Database\Model\docs\MySqlCommand.xml" />
+    <Content Include="Database\Model\docs\MySqlCommandBuilder.xml" />
+    <Content Include="Database\Model\docs\MySqlConnection.xml" />
+    <Content Include="Database\Model\docs\MySqlConnectionStringBuilder.xml" />
+    <Content Include="Database\Model\docs\MySqlDataAdapter.xml" />
+    <Content Include="Database\Model\docs\MySqlDataReader.xml" />
+    <Content Include="Database\Model\docs\MySqlException.xml" />
+    <Content Include="Database\Model\docs\MySqlHelper.xml" />
+    <Content Include="Database\Model\docs\MySqlParameter.xml" />
+    <Content Include="Database\Model\docs\MySqlParameterCollection.xml" />
+    <Content Include="Database\Model\docs\MySqlTransaction.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

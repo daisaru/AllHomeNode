@@ -111,6 +111,37 @@ namespace AllHomeNode.Repository
             deviceMgr.Delete(deviceId);
         }
 
+        public IEnumerable<DeviceShareData> GetDeviceShareData(string mobile, string deviceId)
+        {
+            List<DeviceShareData> datas = new List<DeviceShareData>();
+
+            UserManager userManager = new UserManager();
+            User user = userManager.GetUserByMobile(mobile).ToList()[0];
+
+            DeviceManager deviceMgr = new DeviceManager();
+            Device device = deviceMgr.GetDeviceByDeviceId(deviceId).ToList()[0];
+
+            UserDeviceBindManager userDeviceBindManager = new UserDeviceBindManager();
+            List<UserDeviceBind> userdevices = userDeviceBindManager.GetUserDeviceBindByUserIdAndDeviceId(user.Id, device.Id).ToList();
+
+            foreach (UserDeviceBind userdevicebind in userdevices)
+            {
+                DeviceShareData data = new DeviceShareData();
+                data.Time = userdevicebind.Time;
+                data.Privilege = userdevicebind.Privilege;
+                data.UserId = user.Mobile;
+                if(data.Time.Equals("0") == false)
+                {
+                    DateTime overTime = DateTime.Parse(data.Time);
+                    if(DateTime.Now < overTime)
+                    {
+                        datas.Add(data);
+                    }
+                }
+            }
+            return datas;
+        }
+
         public void RevokeShareWithFriend(string friend, string deviceId)
         {
             UserManager userMgr = new UserManager();
@@ -135,7 +166,7 @@ namespace AllHomeNode.Repository
             bindMgr.Delete(needDelete);
         }
 
-        public void ShareDeviceWithFriend(string friend, string deviceId, string privilege)
+        public void ShareDeviceWithFriend(string friend, string deviceId, string privilege, string time)
         {
             UserManager userMgr = new UserManager();
             User user = userMgr.GetUserByMobile(friend).ToList()[0];
@@ -161,6 +192,15 @@ namespace AllHomeNode.Repository
             if (bIsUpdate)
             {
                 needUpdate.Privilege = privilege;
+                if(time.Equals("0") == false)
+                {
+                    needUpdate.Time = DateTime.Now.AddHours(int.Parse(time)).ToString();
+                }
+                else
+                {
+                    needUpdate.Time = time;
+                }
+
                 needUpdate.TimeStamp = DateTime.Now;
 
                 bindMgr.Update(needUpdate);
@@ -172,6 +212,16 @@ namespace AllHomeNode.Repository
                 bind.Id_Device = device.Id;
                 bind.Id_User = user.Id;
                 bind.Privilege = privilege;
+
+                if (time.Equals("0") == false)
+                {
+                    bind.Time = DateTime.Now.AddHours(int.Parse(time)).ToString();
+                }
+                else
+                {
+                    bind.Time = time;
+                }
+
                 bind.DeviceGivenName = device.DeviceName;
                 bind.TimeStamp = DateTime.Now;
 
@@ -211,6 +261,7 @@ namespace AllHomeNode.Repository
                 bind.Id_Device = device.Id;
                 bind.Id_User = user.Id;
                 bind.Privilege = CommandUtil.PRIVILEGE.ADMIN;
+                bind.Time = "0";
                 bind.DeviceGivenName = deviceName;
                 bind.TimeStamp = DateTime.Now;
 

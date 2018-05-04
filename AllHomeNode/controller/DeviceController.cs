@@ -19,6 +19,43 @@ namespace AllHomeNode.controller
     {
         private DeviceRepository repository = new DeviceRepository();
 
+        // 获取用户名下某网关的分享信息
+        // POST api/device/fetchshareinfo
+        public GetDeviceShareInfoRspData FetchShareInfo([FromBody]GetDeviceShareInfoReqData item)
+        {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            GetDeviceShareInfoRspData ret = new GetDeviceShareInfoRspData();
+
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                ret.Shares = null;
+                return ret;
+            }
+
+            try
+            {
+                List<DeviceShareData> shares = repository.GetDeviceShareData(item.Mobile, item.DeviceId).ToList();
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+                ret.Shares = shares;
+            }
+            catch (Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Shares = null;
+                return ret;
+            }
+
+            return ret;
+        }
+
         // 获取用户名下所有绑定网关设备
         // POST api/device/fetchalldevices
         public GetAllDevicesRspData FetchAllDevices([FromBody]GetAllDevicesReqData item)
@@ -110,7 +147,7 @@ namespace AllHomeNode.controller
 
             try
             {
-                repository.ShareDeviceWithFriend(item.Friend, item.DeviceId, item.Privilege);
+                repository.ShareDeviceWithFriend(item.Friend, item.DeviceId, item.Privilege, item.Time);
                 ret.Result = CommandUtil.RETURN.SUCCESS;
             }
             catch(Exception exp)

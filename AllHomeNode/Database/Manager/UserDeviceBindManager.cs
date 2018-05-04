@@ -59,7 +59,18 @@ namespace AllHomeNode.Database.Manager
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<UserDeviceBind> list = session.QueryOver<UserDeviceBind>().Where(c => c.Id_User == userId).List();
+                IList<UserDeviceBind> list = session.QueryOver<UserDeviceBind>().Where(
+                    c => c.Id_User == userId).List();
+                return list;
+            }
+        }
+
+        public IList<UserDeviceBind> GetUserDeviceBindByUserIdAndDeviceId(string userId, string deviceId)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<UserDeviceBind> list = session.QueryOver<UserDeviceBind>().Where(
+                    c => c.Id_User != userId && c.Id_Device == deviceId).List();
                 return list;
             }
         }

@@ -14,6 +14,7 @@ namespace AllHomeNode.Database.Model
         public virtual string Id_Device { get; set; }
         public virtual string DeviceGivenName { get; set; }
         public virtual string Privilege { get; set; }
+        public virtual string Time { get; set; }
         public virtual DateTime TimeStamp { get; set; }
     }
 }
