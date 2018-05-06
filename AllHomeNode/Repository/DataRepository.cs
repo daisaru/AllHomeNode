@@ -46,66 +46,67 @@ namespace AllHomeNode.Repository
             return airData;
         }
 
-        private PowerConsumeData FillPowerConsumeData(PowerData data)
+        private PowerConsumeData FillPowerConsumeData(PowerDataSummary data)
         {
             PowerConsumeData ret = new PowerConsumeData();
-            ret.PowerConsume = data.PowerConsume;
-            ret.PowerType = data.PowerType;
-            ret.TimeStamp = data.TimeStamp.ToString();
+            ret.Power_Light = data.Light;
+            ret.Power_Air = data.Air;
+            ret.Power_Total = data.Total;
+            ret.Date = data.SummaryTime.ToShortDateString();
             return ret;
         }
 
         public IEnumerable<PowerConsumeData> GetHistoryPowerConsumeData(string deviceId, DateTime startTime, DateTime endTime, bool bDetail)
         {
             List<PowerConsumeData> powerConsumeData = new List<PowerConsumeData>();
-            PowerDataManager powerDataMgr = new PowerDataManager();
-            List<PowerData> datas = null;
+            PowerDataSummaryManager powerDataSummaryMgr = new PowerDataSummaryManager();
+            List<PowerDataSummary> historyDatas = null;
 
-            if(bDetail == true)
+            if (bDetail == true)
             {
-                datas = powerDataMgr.GetHistoryPowerConsume(deviceId, startTime, endTime).ToList();
-                foreach (PowerData data in datas)
-                {
-                    PowerConsumeData tmp = FillPowerConsumeData(data);
-                    powerConsumeData.Add(tmp);
-                }
+                historyDatas = powerDataSummaryMgr.GetDayPowerConsumeSummary(deviceId, startTime, endTime).ToList();
             }
             else
             {
                 DateTime monthStart = new DateTime(startTime.Year, startTime.Month, 1);
                 DateTime monthEnd = new DateTime(endTime.Year, endTime.Month + 1, 1).AddDays(-1);
-                datas = powerDataMgr.GetHistoryPowerConsume(deviceId, monthStart, monthEnd).ToList();
+                historyDatas = powerDataSummaryMgr.GetMonthPowerConsumeSummary(deviceId, monthStart, monthEnd).ToList();
 
-                // 统计不同类别分月总用电量
-                Hashtable powerStatic = new Hashtable();
-                foreach(PowerData data in datas)
-                {
-                    POWERCONSUMERTYPE type = (POWERCONSUMERTYPE)Enum.Parse(typeof(POWERCONSUMERTYPE), data.PowerType, true);
+                //// 统计不同类别分月总用电量
+                //Hashtable powerStatic = new Hashtable();
+                //foreach (PowerData data in datas)
+                //{
+                //    POWERCONSUMERTYPE type = (POWERCONSUMERTYPE)Enum.Parse(typeof(POWERCONSUMERTYPE), data.PowerType, true);
 
-                    string key = data.TimeStamp.Year + "-" + data.TimeStamp.Month + " " + type;
-                    if(powerStatic.ContainsKey(key))
-                    {
-                        float value = (float)powerStatic[key];
-                        value += float.Parse(data.PowerConsume);
-                        powerStatic.Remove(key);
-                        powerStatic.Add(key, value);
-                    }
-                    else
-                    {
-                        powerStatic.Add(key, float.Parse(data.PowerConsume));
-                    }                             
-                }
+                //    string key = data.TimeStamp.Year + "-" + data.TimeStamp.Month + " " + type;
+                //    if (powerStatic.ContainsKey(key))
+                //    {
+                //        float value = (float)powerStatic[key];
+                //        value += float.Parse(data.PowerConsume);
+                //        powerStatic.Remove(key);
+                //        powerStatic.Add(key, value);
+                //    }
+                //    else
+                //    {
+                //        powerStatic.Add(key, float.Parse(data.PowerConsume));
+                //    }
+                //}
 
-                // 
-                foreach(string key in powerStatic.Keys)
-                {
-                    string[] tmp = key.Split(new char[] { ' ' });
-                    PowerConsumeData data = new PowerConsumeData();
-                    data.TimeStamp = tmp[0];
-                    data.PowerType = tmp[1];
-                    data.PowerConsume = powerStatic[key].ToString();
-                    powerConsumeData.Add(data);
-                }
+                //foreach (string key in powerStatic.Keys)
+                //{
+                //    string[] tmp = key.Split(new char[] { ' ' });
+                //    PowerConsumeData data = new PowerConsumeData();
+                //    data.TimeStamp = tmp[0];
+                //    data.PowerType = tmp[1];
+                //    data.PowerConsume = powerStatic[key].ToString();
+                //    powerConsumeData.Add(data);
+                //}
+            }
+
+            foreach (PowerDataSummary data in historyDatas)
+            {
+                PowerConsumeData tmp = FillPowerConsumeData(data);
+                powerConsumeData.Add(tmp);
             }
 
             return powerConsumeData;

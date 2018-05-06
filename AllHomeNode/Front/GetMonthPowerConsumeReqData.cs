@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class GetPowerConsumeReqData
+    public class GetMonthPowerConsumeReqData
     {
         public string Mobile { get; set; }
         public string DeviceId { get; set; }

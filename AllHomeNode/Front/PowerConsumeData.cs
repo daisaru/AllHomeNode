@@ -8,8 +8,9 @@ namespace AllHomeNode.Front
 {
     public class PowerConsumeData
     {
-        public string PowerConsume { get; set; }
-        public string PowerType { get; set; }
-        public string TimeStamp { get; set; }
+        public string Power_Light { get; set; }
+        public string Power_Air { get; set; }
+        public string Power_Total { get; set; }
+        public string Date { get; set; }
     }
 }

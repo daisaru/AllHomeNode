@@ -129,7 +129,10 @@ namespace AllHomeNode.Repository
                 DeviceShareData data = new DeviceShareData();
                 data.Time = userdevicebind.Time;
                 data.Privilege = userdevicebind.Privilege;
-                data.UserId = user.Mobile;
+
+                User friend = userManager.GetUser(userdevicebind.Id_User).ToList()[0];
+                data.UserId = friend.Mobile;
+
                 if(data.Time.Equals("0") == false)
                 {
                     DateTime overTime = DateTime.Parse(data.Time);
@@ -137,6 +140,10 @@ namespace AllHomeNode.Repository
                     {
                         datas.Add(data);
                     }
+                }
+                else
+                {
+                    datas.Add(data);
                 }
             }
             return datas;

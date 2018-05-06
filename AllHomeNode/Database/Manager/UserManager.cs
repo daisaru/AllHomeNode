@@ -75,6 +75,15 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
+        public IList<User> GetUser(string id)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<User> user = session.QueryOver<User>().Where(c => c.Id == id).List();
+                return user;
+            }
+        }
+
         public IList<User> GetUserByMobile(string mobile)
         {
             using (var session = NHibernateHelper.OpenSession())

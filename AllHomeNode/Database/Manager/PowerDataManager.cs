@@ -20,7 +20,7 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<PowerData> GetHistoryPowerConsume(string deviceId, DateTime startTime, DateTime endTime)
+        public IList<PowerData> GetPowerConsume(string deviceId, DateTime startTime, DateTime endTime)
         {
             using (var session = NHibernateHelper.OpenSession())
             {

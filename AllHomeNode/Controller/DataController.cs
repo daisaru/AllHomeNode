@@ -59,12 +59,12 @@ namespace AllHomeNode.Controller
 
         // 获取一段时间电量消耗数据
         // POST /api/data/fetchpowerconsumedata
-        public GetPowerConsumeRspData FetchPowerConsumeData([FromBody]GetPowerConsumeReqData item)
+        public GetMonthPowerConsumeRspData FetchPowerConsumeData([FromBody]GetMonthPowerConsumeReqData item)
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
 
-            GetPowerConsumeRspData ret = new GetPowerConsumeRspData();
+            GetMonthPowerConsumeRspData ret = new GetMonthPowerConsumeRspData();
 
             bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
             if (checkToken == false)
@@ -78,9 +78,21 @@ namespace AllHomeNode.Controller
 
             try
             {
-                List<PowerConsumeData> data = repository.GetHistoryPowerConsumeData(item.DeviceId, item.StartTime, item.EndTime, item.IsDetail).ToList();
+                List<PowerConsumeData> datas = repository.GetHistoryPowerConsumeData(item.DeviceId, item.StartTime, item.EndTime, item.IsDetail).ToList();
+
+                double dLight = 0.00;
+                double dAir = 0.00;
+                foreach(PowerConsumeData data in datas)
+                {
+                    dLight = dLight + double.Parse(data.Power_Light);
+                    dAir = dAir + double.Parse(data.Power_Air);
+                }
+
                 ret.Result = CommandUtil.RETURN.SUCCESS;
-                ret.PowerConsume = data;
+                ret.Power_Light = dLight.ToString();
+                ret.Power_Air = dAir.ToString();
+                ret.Power_Total = (dLight + dAir).ToString();
+                ret.PowerConsume = datas;
             }
             catch(Exception exp)
             {
