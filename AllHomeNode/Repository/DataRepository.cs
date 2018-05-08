@@ -65,12 +65,114 @@ namespace AllHomeNode.Repository
             if (bDetail == true)
             {
                 historyDatas = powerDataSummaryMgr.GetDayPowerConsumeSummary(deviceId, startTime, endTime).ToList();
+
+                if(endTime.Date == DateTime.Now.Date)
+                {
+                    // 加上今天当前的数据
+                    PowerDataSummary latestDataSummary = powerDataSummaryMgr.GetLatestPowerSummary(deviceId, startTime, endTime);
+
+                    PowerDataManager powerDataMgr = new PowerDataManager();
+                    List<PowerData> todayData = powerDataMgr.GetPowerConsume(deviceId, DateTime.Now.Date, DateTime.Now).ToList();
+                    PowerDataSummary todayDataSummary = new PowerDataSummary();
+                    todayDataSummary.DeviceId = deviceId;
+                    todayDataSummary.Air = "0";
+                    todayDataSummary.Light = "0";
+                    todayDataSummary.Total = "0";
+                    todayDataSummary.SummaryTime = DateTime.Now;
+                    todayDataSummary.IsMonth = 0;
+              
+                    foreach(PowerData data in todayData)
+                    {
+                        POWERCONSUMERTYPE type = (POWERCONSUMERTYPE)Enum.Parse(typeof(POWERCONSUMERTYPE), data.PowerType, true);
+                        {
+                            switch(type)
+                            {
+                                case POWERCONSUMERTYPE.AIRCONTROL:
+                                    {
+                                        if(todayDataSummary.Air.Equals("0"))
+                                        {
+                                            double p = double.Parse(data.PowerConsume) - double.Parse(latestDataSummary.Air);
+                                            todayDataSummary.Air = p.ToString();
+                                        }
+                                        break;
+                                    }
+                                case POWERCONSUMERTYPE.LIGHT:
+                                    {
+                                        if (todayDataSummary.Light.Equals("0"))
+                                        {
+                                            double p = double.Parse(data.PowerConsume) - double.Parse(latestDataSummary.Light);
+                                            todayDataSummary.Light = p.ToString();
+                                        }
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        break;
+                                    }
+                            }
+                        }
+                    }
+                    todayDataSummary.Total = (double.Parse(todayDataSummary.Air) + double.Parse(todayDataSummary.Light)).ToString();
+                    historyDatas.Add(todayDataSummary);
+                }
             }
             else
             {
                 DateTime monthStart = new DateTime(startTime.Year, startTime.Month, 1);
                 DateTime monthEnd = new DateTime(endTime.Year, endTime.Month + 1, 1).AddDays(-1);
                 historyDatas = powerDataSummaryMgr.GetMonthPowerConsumeSummary(deviceId, monthStart, monthEnd).ToList();
+
+                DateTime now = DateTime.Now;
+                if(monthEnd.Year == now.Year && monthEnd.Month == now.Month)
+                {
+                    // 加上本月的已有数据
+                    PowerDataSummary latestMonthDataSummary = powerDataSummaryMgr.GetLatestMonthPowerSummary(deviceId, startTime, endTime);
+
+                    PowerDataManager powerDataMgr = new PowerDataManager();
+                    List<PowerData> monthData = powerDataMgr.GetPowerConsume(deviceId, monthStart, DateTime.Now).ToList();
+
+                    PowerDataSummary monthDataSummary = new PowerDataSummary();
+                    monthDataSummary.DeviceId = deviceId;
+                    monthDataSummary.Air = "0";
+                    monthDataSummary.Light = "0";
+                    monthDataSummary.Total = "0";
+                    monthDataSummary.SummaryTime = DateTime.Now;
+                    monthDataSummary.IsMonth = 1;
+
+                    foreach (PowerData data in monthData)
+                    {
+                        POWERCONSUMERTYPE type = (POWERCONSUMERTYPE)Enum.Parse(typeof(POWERCONSUMERTYPE), data.PowerType, true);
+                        {
+                            switch (type)
+                            {
+                                case POWERCONSUMERTYPE.AIRCONTROL:
+                                    {
+                                        if (monthDataSummary.Air.Equals("0"))
+                                        {
+                                            double p = double.Parse(data.PowerConsume) - double.Parse(latestMonthDataSummary.Air);
+                                            monthDataSummary.Air = p.ToString();
+                                        }
+                                        break;
+                                    }
+                                case POWERCONSUMERTYPE.LIGHT:
+                                    {
+                                        if (monthDataSummary.Light.Equals("0"))
+                                        {
+                                            double p = double.Parse(data.PowerConsume) - double.Parse(latestMonthDataSummary.Light);
+                                            monthDataSummary.Light = p.ToString();
+                                        }
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        break;
+                                    }
+                            }
+                        }
+                    }
+                    monthDataSummary.Total = (double.Parse(monthDataSummary.Air) + double.Parse(monthDataSummary.Light)).ToString();
+                    historyDatas.Add(monthDataSummary);
+                }
 
                 //// 统计不同类别分月总用电量
                 //Hashtable powerStatic = new Hashtable();

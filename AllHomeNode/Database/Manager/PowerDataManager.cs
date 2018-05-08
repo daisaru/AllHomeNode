@@ -25,7 +25,10 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<PowerData> data = session.QueryOver<PowerData>().Where
-                    (c => (c.DeviceId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime)).List();
+                    (c => (c.DeviceId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime))
+                    .OrderBy(c => c.TimeStamp)
+                    .Desc
+                    .List();
                 return data;
             }
         }

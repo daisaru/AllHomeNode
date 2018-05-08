@@ -36,8 +36,8 @@ namespace AllHomeNode
                 //                                        null);
                 //Console.ReadLine();
 
-                //string baseAddress = "http://localhost:9000/";              // Local Machine
-                string baseAddress = "http://10.105.214.156:9000/";               // Tencent
+                string baseAddress = "http://localhost:9000/";              // Local Machine
+                //string baseAddress = "http://10.105.214.156:9000/";               // Tencent
                 //string baseAddress = "http://192.168.3.10:9000/";             // Local Network
 
                 // NHibernate Test
