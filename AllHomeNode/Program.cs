@@ -16,6 +16,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using AllHomeNode.Service.SMS;
 using AllHomeNode.Service.MQTT;
+using AllHomeNode.Service.Quartz;
 
 namespace AllHomeNode
 {
@@ -36,14 +37,20 @@ namespace AllHomeNode
                 //                                        null);
                 //Console.ReadLine();
 
-                string baseAddress = "http://localhost:9000/";              // Local Machine
-                //string baseAddress = "http://10.105.214.156:9000/";               // Tencent
+                //string baseAddress = "http://localhost:9000/";              // Local Machine
+                string baseAddress = "http://10.105.214.156:9000/";               // Tencent
                 //string baseAddress = "http://192.168.3.10:9000/";             // Local Network
 
                 // NHibernate Test
                 //UserManager userManager = new UserManager();
                 //IList<User> users = userManager.GetUserList();
                 //Console.ReadLine();
+
+                // Start Quarz Service
+                #region
+                Service_Quartz quartzService = Service_Quartz.Instance();
+                quartzService.StartTimer();
+                #endregion
 
                 // Start OWIN host   
                 WebApp.Start<StartUp>(url: baseAddress);

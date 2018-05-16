@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using AllHomeNode.Database.Model;
 using NHibernate;
+using static AllHomeNode.Service.MQTT.Enums;
 
 namespace AllHomeNode.Database.Manager
 {
@@ -17,6 +18,19 @@ namespace AllHomeNode.Database.Manager
             {
                 session.Save(item);
                 session.Flush();
+            }
+        }
+
+        public IList<PowerData> GetOldestPowerConsume(string deviceId, DateTime startTime, DateTime endTime, POWERCONSUMERTYPE type)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<PowerData> data = session.QueryOver<PowerData>().Where
+                    (c => (c.DeviceId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime && c.PowerType == type.ToString()))
+                    .OrderBy(c => c.TimeStamp)
+                    .Asc
+                    .List();
+                return data;
             }
         }
 

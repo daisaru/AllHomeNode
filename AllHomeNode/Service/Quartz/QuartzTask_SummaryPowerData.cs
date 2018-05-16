@@ -16,9 +16,16 @@ namespace AllHomeNode.Service.Quartz
             throw new NotImplementedException();
         }
 
-        public void SummaryDailyPower(DateTime date)
+        public static void SummaryDailyPower()
         {
             DataRepository dataRepo = new DataRepository();
+            dataRepo.SummaryDailyPowerData();
+        }
+
+        public static void SummaryMonthlyPower()
+        {
+            DataRepository dataRepo = new DataRepository();
+            dataRepo.SummaryMonthlyPowerData();
         }
     }
 }

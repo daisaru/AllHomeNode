@@ -25,8 +25,28 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<PowerDataSummary> data = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1)).List();
+                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1))
+                    .OrderBy(c => c.SummaryTime)
+                    .Desc
+                    .List();
                 return data;
+            }
+        }
+
+        public PowerDataSummary GetOldestMonthPowerSummary(string deviceId, DateTime startTime, DateTime endTime)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
+                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1))
+                    .OrderBy(c => c.SummaryTime)
+                    .Asc
+                    .List()
+                    .ToList();
+                if (datas != null)
+                    return datas[0];
+                else
+                    return null;
             }
         }
 
@@ -34,12 +54,16 @@ namespace AllHomeNode.Database.Manager
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                PowerDataSummary data = session.QueryOver<PowerDataSummary>().Where
+                List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
                     (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1))
                     .OrderBy(c => c.SummaryTime)
                     .Desc
-                    .List()[0];
-                return data;
+                    .List()
+                    .ToList();
+                if (datas != null)
+                    return datas[0];
+                else
+                    return null;
             }
         }
 
@@ -47,12 +71,16 @@ namespace AllHomeNode.Database.Manager
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                PowerDataSummary data = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime))
+                List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
+                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 0))
                     .OrderBy(c => c.SummaryTime)
                     .Desc
-                    .List()[0];
-                return data;
+                    .List()
+                    .ToList();
+                if (datas != null)
+                    return datas[0];
+                else
+                    return null;
             }
         }
 

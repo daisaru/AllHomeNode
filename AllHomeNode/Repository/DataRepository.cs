@@ -56,6 +56,129 @@ namespace AllHomeNode.Repository
             return ret;
         }
 
+        public void SummaryDailyPowerData()
+        {
+            PowerDataManager powerDataMgr = new PowerDataManager();
+            PowerDataSummaryManager powerDataSummaryMgr = new PowerDataSummaryManager();
+
+            DeviceManager deviceMgr = new DeviceManager();
+            List<Device> devices = deviceMgr.GetDeviceList().ToList();
+
+            foreach (Device d in devices)
+            {
+                string deviceId = d.DeviceId;
+                DateTime startTime = DateTime.Today.AddDays(-1);
+                DateTime endTime = DateTime.Today.AddSeconds(-1);
+
+                List<PowerData> oldAirData = powerDataMgr.GetOldestPowerConsume(deviceId, startTime, endTime, POWERCONSUMERTYPE.AIRCONTROL).ToList();
+                List<PowerData> oldLightData = powerDataMgr.GetOldestPowerConsume(deviceId, startTime, endTime, POWERCONSUMERTYPE.LIGHT).ToList();
+
+                List<PowerData> todayData = powerDataMgr.GetPowerConsume(deviceId, startTime, endTime).ToList();
+
+                PowerDataSummary dailySummary = new PowerDataSummary();
+                dailySummary.DeviceId = deviceId;
+                dailySummary.Air = "0";
+                dailySummary.Light = "0";
+                dailySummary.Total = "0";
+                dailySummary.SummaryTime = DateTime.Now;
+                dailySummary.IsMonth = 0;
+                dailySummary.TimeStamp = DateTime.Now;
+
+                if (todayData != null && todayData.Count != 0)
+                {
+                    foreach (PowerData data in todayData)
+                    {
+                        POWERCONSUMERTYPE type = (POWERCONSUMERTYPE)Enum.Parse(typeof(POWERCONSUMERTYPE), data.PowerType, true);
+                        {
+                            switch (type)
+                            {
+                                case POWERCONSUMERTYPE.AIRCONTROL:
+                                    {
+                                        if (dailySummary.Air.Equals("0"))
+                                        {
+                                            if (oldAirData != null && oldAirData.Count != 0)
+                                            {
+                                                double p = double.Parse(data.PowerConsume) - double.Parse(oldAirData[0].PowerConsume);
+                                                dailySummary.Air = p.ToString();
+                                            }
+                                            else
+                                            {
+                                                double p = double.Parse(data.PowerConsume);
+                                                dailySummary.Air = p.ToString();
+                                            }
+                                        }
+                                        break;
+                                    }
+                                case POWERCONSUMERTYPE.LIGHT:
+                                    {
+                                        if (dailySummary.Light.Equals("0"))
+                                        {
+                                            if (oldAirData != null && oldAirData.Count != 0)
+                                            {
+                                                double p = double.Parse(data.PowerConsume) - double.Parse(oldAirData[0].PowerConsume);
+                                                dailySummary.Light = p.ToString();
+                                            }
+                                            else
+                                            {
+                                                double p = double.Parse(data.PowerConsume);
+                                                dailySummary.Light = p.ToString();
+                                            }
+                                        }
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        break;
+                                    }
+                            }
+                        }
+                    }
+
+                    dailySummary.Total = (double.Parse(dailySummary.Air) + double.Parse(dailySummary.Light)).ToString();
+                    powerDataSummaryMgr.Add(dailySummary);
+                }
+            }
+        }
+
+        public void SummaryMonthlyPowerData()
+        {
+            PowerDataSummaryManager powerDataSummaryMgr = new PowerDataSummaryManager();
+
+            DeviceManager deviceMgr = new DeviceManager();
+            List<Device> devices = deviceMgr.GetDeviceList().ToList();
+
+            foreach(Device d in devices)
+            {
+                string deviceId = d.DeviceId;
+                DateTime startTimeThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, 1);
+                DateTime endTimeThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMinutes(-1);
+
+                PowerDataSummary latestPowerSummary = powerDataSummaryMgr.GetLatestMonthPowerSummary(deviceId, startTimeThisMonth, endTimeThisMonth);
+                PowerDataSummary oldestPowerSummary = powerDataSummaryMgr.GetOldestMonthPowerSummary(deviceId, startTimeThisMonth, endTimeThisMonth);
+
+                PowerDataSummary dailySummary = new PowerDataSummary();
+                dailySummary.DeviceId = deviceId;
+                dailySummary.Air = "0";
+                dailySummary.Light = "0";
+                dailySummary.Total = "0";
+                dailySummary.SummaryTime = DateTime.Now;
+                dailySummary.IsMonth = 1;
+                dailySummary.TimeStamp = DateTime.Now;
+
+                if (latestPowerSummary != null && oldestPowerSummary != null)
+                {
+                    dailySummary.DeviceId = deviceId;
+                    dailySummary.Air = (double.Parse(latestPowerSummary.Air) - double.Parse(oldestPowerSummary.Air)).ToString();
+                    dailySummary.Light = (double.Parse(latestPowerSummary.Light) - double.Parse(oldestPowerSummary.Light)).ToString();
+                    dailySummary.Total = (double.Parse(dailySummary.Air) + double.Parse(dailySummary.Light)).ToString();
+                    dailySummary.SummaryTime = DateTime.Now;
+                    dailySummary.IsMonth = 1;
+                }
+
+                powerDataSummaryMgr.Add(dailySummary);
+            }
+        }
+
         public IEnumerable<PowerConsumeData> GetHistoryPowerConsumeData(string deviceId, DateTime startTime, DateTime endTime, bool bDetail)
         {
             List<PowerConsumeData> powerConsumeData = new List<PowerConsumeData>();
@@ -173,36 +296,6 @@ namespace AllHomeNode.Repository
                     monthDataSummary.Total = (double.Parse(monthDataSummary.Air) + double.Parse(monthDataSummary.Light)).ToString();
                     historyDatas.Add(monthDataSummary);
                 }
-
-                //// 统计不同类别分月总用电量
-                //Hashtable powerStatic = new Hashtable();
-                //foreach (PowerData data in datas)
-                //{
-                //    POWERCONSUMERTYPE type = (POWERCONSUMERTYPE)Enum.Parse(typeof(POWERCONSUMERTYPE), data.PowerType, true);
-
-                //    string key = data.TimeStamp.Year + "-" + data.TimeStamp.Month + " " + type;
-                //    if (powerStatic.ContainsKey(key))
-                //    {
-                //        float value = (float)powerStatic[key];
-                //        value += float.Parse(data.PowerConsume);
-                //        powerStatic.Remove(key);
-                //        powerStatic.Add(key, value);
-                //    }
-                //    else
-                //    {
-                //        powerStatic.Add(key, float.Parse(data.PowerConsume));
-                //    }
-                //}
-
-                //foreach (string key in powerStatic.Keys)
-                //{
-                //    string[] tmp = key.Split(new char[] { ' ' });
-                //    PowerConsumeData data = new PowerConsumeData();
-                //    data.TimeStamp = tmp[0];
-                //    data.PowerType = tmp[1];
-                //    data.PowerConsume = powerStatic[key].ToString();
-                //    powerConsumeData.Add(data);
-                //}
             }
 
             foreach (PowerDataSummary data in historyDatas)
