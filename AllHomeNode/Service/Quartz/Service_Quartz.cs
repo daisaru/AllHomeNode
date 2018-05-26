@@ -26,7 +26,7 @@ namespace AllHomeNode.Service.Quartz
         public void StartTimer()
         {
             //设置定时间隔(毫秒为单位)
-            int interval = 60 * 60;
+            int interval = 1000 * 60 * 60;
             _dailyTimer = new System.Timers.Timer(interval);
             _dailyTimer.Elapsed += new System.Timers.ElapsedEventHandler(TimerUp);
             //设置执行一次（false）还是一直执行(true)
@@ -51,6 +51,7 @@ namespace AllHomeNode.Service.Quartz
         /// <param name="e"></param>
         private void TimerUp(object sender, System.Timers.ElapsedEventArgs e)
         {
+
             try
             {
                 DateTime dtNow = DateTime.Now;
@@ -59,9 +60,9 @@ namespace AllHomeNode.Service.Quartz
                 //QuartzTask_SummaryPowerData.SummaryMonthlyPower();
                 //QuartzTask_SummaryPowerData.SummaryDailyPower();
 
-                if (dtNow.Hour == 0)
+                if (dtNow.Hour == 10)
                 {
-                    if(dtNow.Day == 1)
+                    if(dtNow.Day == 18)
                     {
                         // 每个月的第一天凌晨统计前一个月的电量
                         QuartzTask_SummaryPowerData.SummaryMonthlyPower();                        

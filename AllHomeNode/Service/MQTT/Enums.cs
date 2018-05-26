@@ -13,11 +13,31 @@ namespace AllHomeNode.Service.MQTT
     }
     public class Enums
     {
+        public enum REGISTERGROUP
+        {
+            RESERVE = 0,                // 自定义功能点
+            COMMONREGISTER = 1,         // 非标准的RS485寄存器功能点
+            COIL = 2,                   // 标准Modbus线圈
+            INPUTREGISTER = 3,          // 标准Modbus输入寄存器
+            HOLDINGREGISTER = 4         // 标准Modbus保持寄存器
+        }
+
         public enum POWERCONSUMERTYPE
         {
             RESERVE = 0,
             LIGHT = 1,          // 照明
             AIRCONTROL = 2,     // 空调
+            VENT = 3            // 新风
+        }
+
+        public enum DEVICEBRAND
+        {
+            RESERVE = 0,
+            JADECORE = 1,        // JadeCore
+            EAWADA = 2,          // EAWADA
+            JSY = 3,             // 健思研
+            LINESHOW = 4,        // 蓝释
+            YILIN = 5            // 福建亿林
         }
 
         public enum DEVICETYPE
@@ -70,7 +90,8 @@ namespace AllHomeNode.Service.MQTT
             TIME = 1,
             EVENT = 2,
             EVENTONTIME = 3,
-            ADMIN = 4
+            ADMIN = 4,
+            CIRCLE = 5
         }
 
         public enum EVENTCONDITION

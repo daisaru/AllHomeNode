@@ -160,14 +160,19 @@ namespace AllHomeNode.Service.MQTT
                         if(deviceType == DEVICETYPE.VENT)
                         {
                             VENT_EAWADA eawadaObj = JsonHelper.FromJSON<VENT_EAWADA>(data);
-                            bool ret = dataRepo.AddAirData(eawadaObj);
+                            if(eawadaObj != null)
+                            {
+                                bool ret = dataRepo.AddAirData(eawadaObj);
+                            }
                         }
                         else if(deviceType == DEVICETYPE.POWER)
                         {
                             SWITCH_JSY jsyObj = JsonHelper.FromJSON<SWITCH_JSY>(data);
-                            bool ret = dataRepo.AddPowerData(jsyObj, code);
+                            if(jsyObj != null)
+                            {
+                                bool ret = dataRepo.AddPowerData(jsyObj, code);
+                            }
                         }
-
                         break;
                     }
             }
