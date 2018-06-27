@@ -43,7 +43,7 @@ namespace AllHomeNode.Database.Manager
                     .Asc
                     .List()
                     .ToList();
-                if (datas != null)
+                if (datas != null && datas.Count > 0)
                     return datas[0];
                 else
                     return null;
@@ -55,12 +55,12 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1))
+                    (c => (c.DeviceId == deviceId && c.SummaryTime <= endTime && c.IsMonth == 1)) //&& c.SummaryTime >= startTime
                     .OrderBy(c => c.SummaryTime)
                     .Desc
                     .List()
                     .ToList();
-                if (datas != null)
+                if (datas != null && datas.Count > 0)
                     return datas[0];
                 else
                     return null;
@@ -77,7 +77,7 @@ namespace AllHomeNode.Database.Manager
                     .Desc
                     .List()
                     .ToList();
-                if (datas != null)
+                if (datas != null && datas.Count > 0)
                     return datas[0];
                 else
                     return null;
