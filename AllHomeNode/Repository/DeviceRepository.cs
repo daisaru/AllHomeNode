@@ -236,6 +236,17 @@ namespace AllHomeNode.Repository
             }
         }
 
+        public void UpdateRoomInfoById(string roomId, string roomName)
+        {
+            RoomManager roomMgr = new RoomManager();
+
+            Room room = roomMgr.GetRoomByRoomId(roomId)[0];
+            room.Name = roomName;
+            room.TimeStamp = DateTime.Now;
+
+            roomMgr.Update(room);
+        }
+
         public void BindDeviceWithUser(string mobile, string deviceId, string deviceName)
         {
             UserManager userMgr = new UserManager();
@@ -353,7 +364,9 @@ namespace AllHomeNode.Repository
                 Room room = roomMgr.GetRoomByRoomId(idRoom).ToList()[0];
 
                 RoomData roomData = new RoomData();
+                roomData.RoomId = room.Id;
                 roomData.Name = room.Name;
+                roomData.Type = room.Type;
                 roomData.Size = room.Size;
 
                 List<ControlPoint> contolpoints = cpMgr.GetControlPointByRoom(idRoom).ToList();

@@ -12,7 +12,9 @@ namespace AllHomeNode.Front
         {
             ControlPoints = new List<ControlPointData>();
         }
+        public string RoomId { get; set; }
         public string Name { get; set; }
+        public string Type { get; set; }
         public string Size { get; set; }
         public List<ControlPointData> ControlPoints {get;set;}
     }

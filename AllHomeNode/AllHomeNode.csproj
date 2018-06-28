@@ -161,6 +161,8 @@
     <Compile Include="Front\GatewayUploadCtrlPointsReqData.cs" />
     <Compile Include="Front\GatewayUploadCtrlPointsRspData.cs" />
     <Compile Include="Front\GatewayRegisterRspData.cs" />
+    <Compile Include="Front\UpdateRoomInfoReqData.cs" />
+    <Compile Include="Front\UpdateRoomInfoRspData.cs" />
     <Compile Include="Front\GetDeviceShareInfoReqData.cs" />
     <Compile Include="Front\GetDeviceShareRspData.cs" />
     <Compile Include="Front\GetMonthPowerConsumeRspData.cs" />

@@ -56,6 +56,42 @@ namespace AllHomeNode.controller
             return ret;
         }
 
+        // 根据房间ID，更新指定房间的名称
+        // POST api/device/updateroominfo
+        public UpdateRoomInfoRspData UpdateRoomInfo([FromBody]UpdateRoomInfoReqData item)
+        {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            UpdateRoomInfoRspData ret = new UpdateRoomInfoRspData();
+
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                return ret;
+            }
+
+            try
+            {
+                // update
+                repository.UpdateRoomInfoById(item.RoomId, item.RoomName);
+                ret.Result = CommandUtil.RETURN.SUCCESS;
+            }
+            catch (Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
+            }
+
+            return ret;
+        }
+
+
         // 获取用户名下所有绑定网关设备
         // POST api/device/fetchalldevices
         public GetAllDevicesRspData FetchAllDevices([FromBody]GetAllDevicesReqData item)
