@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InstallationTool.DB;
+using InstallationTool.Front;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -12,7 +14,18 @@ namespace InstallationTool
     {
         static void Main(string[] args)
         {
-            HttpHelper.Instance().RegisterGateway("111111", "hello", "briantest");
+            //List<RoomData> roomInfos = DBUtil.Instance().GetControlPoints();
+            string deviceId = "2";
+            string deviceName = "全屋智能样板间";
+            string deviceSignature = DateTime.Now.ToString();
+
+            GatewayRegisterRspData registerRet =
+                HttpHelper.Instance().RegisterGateway(deviceId, deviceName, deviceSignature);
+
+            List<RoomData> datas = DBUtil.Instance().GetControlPoints();
+            GatewayUploadCtrlPointsRspData uploadRet =
+                HttpHelper.Instance().UploadControllPoints(deviceId, datas, deviceSignature);
+
         }
     }
 }

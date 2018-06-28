@@ -52,14 +52,14 @@ namespace InstallationTool
             string jsonData = JsonConvert.SerializeObject(data);
             string retStr = SendRequest(jsonData, _strRegisterGatewayUrl);
 
-            GatewayRegisterRspData retData = JsonConvert.DeserializeObject<GatewayRegisterRspData>(retStr);
+            ret = JsonConvert.DeserializeObject<GatewayRegisterRspData>(retStr);
 
             return ret;
         }
 
-        public string UploadControllPoints(string id, List<RoomData> roomdatas, string signature)
+        public GatewayUploadCtrlPointsRspData UploadControllPoints(string id, List<RoomData> roomdatas, string signature)
         {
-            string ret = "";
+            GatewayUploadCtrlPointsRspData ret = null;
 
             GatewayUploadCtrlPointsReqData data = new GatewayUploadCtrlPointsReqData();
             data.DeviceId = id;
@@ -67,7 +67,9 @@ namespace InstallationTool
             data.Rooms = roomdatas;
 
             string jsonData = JsonConvert.SerializeObject(data);
-            ret = SendRequest(jsonData, _strUoloadControlPointsUrl);
+            string retStr = SendRequest(jsonData, _strUoloadControlPointsUrl);
+
+            ret = JsonConvert.DeserializeObject<GatewayUploadCtrlPointsRspData>(retStr);
 
             return ret;
         }
