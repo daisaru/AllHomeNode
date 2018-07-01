@@ -10,6 +10,7 @@ namespace AllHomeNode.Front
     {
         public string Token { get; set; }
         public string TokenLife { get; set; }
+        public UserData UserData { get; set; }
         public string TimeStamp { get; set; }
     }
 }

@@ -417,6 +417,7 @@ namespace AllHomeNode.Repository
                 Room roomTmp = new Room();
                 roomTmp.Id = Guid.NewGuid().ToString("N");
                 roomTmp.Name = r.Name;
+                roomTmp.Type = r.Type;
                 roomTmp.Size = r.Size;
                 roomTmp.TimeStamp = DateTime.Now;
 

@@ -15,6 +15,9 @@ namespace AllHomeNode.Front
         public string FANOUT_PM25 { get; set; }
         public string FANOUT_TEMP { get; set; }
         public string FANOUT_HUMI { get; set; }
+        public string OUTSIDE_PM25 { get; set; }
+        public string OUTSIDE_TEMP { get; set; }
+        public string OUTSIDE_HUMI { get; set; }
         public string TimeStamp { get; set; }
     }
 }

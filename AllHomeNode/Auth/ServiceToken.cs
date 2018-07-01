@@ -33,7 +33,7 @@ namespace AllHomeNode.Auth
         private void _tokenTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             List<string> delKeys = new List<string>();
-            foreach(string key in _serviceTokens)
+            foreach(string key in _serviceTokens.Keys)
             {
                 Token t = _serviceTokens[key] as Token;
                 DateTime endTime = t.StartTime.AddMinutes(t.TokenLife);

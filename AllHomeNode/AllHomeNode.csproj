@@ -150,6 +150,8 @@
     <Compile Include="Database\Model\User.cs" />
     <Compile Include="Database\Model\UserDeviceBind.cs" />
     <Compile Include="Database\NHibernateHelper.cs" />
+    <Compile Include="Data\Air.cs" />
+    <Compile Include="Data\Weather.cs" />
     <Compile Include="Front\AirQualityData.cs" />
     <Compile Include="Front\BindDeviceReqData.cs" />
     <Compile Include="Front\CommandUtil.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="Front\ShareDeviceReqData.cs" />
     <Compile Include="Front\UserData.cs" />
     <Compile Include="Front\UserDeviceData.cs" />
+    <Compile Include="Help\HttpRequestHelper.cs" />
     <Compile Include="Help\JsonHelper.cs" />
     <Compile Include="Help\LogHelper.cs" />
     <Compile Include="Help\SecurityHelper.cs" />

@@ -157,7 +157,7 @@ namespace AllHomeNode.controller
 
         // 用户登陆
         // POST api/user/login
-        public ReturnResult Login([FromBody]LoginReqData item)
+        public LoginRspData Login([FromBody]LoginReqData item)
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
@@ -175,10 +175,20 @@ namespace AllHomeNode.controller
                     rsp.Token = token.TokenString;
                     rsp.TimeStamp = token.StartTime.ToString();
                     rsp.TokenLife = token.TokenLife.ToString();
+
+                    UserData data = repository
+                    .GetAll()
+                    .Where(r => string.Equals(r.Mobile, item.Mobile))
+                    .Select(r => r).ToList()[0];
+                    data.Password = "";
+                    data.RandomCode = "";
+
+                    rsp.UserData = data;
                 }
                 else
                 {
                     rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    rsp.UserData = null;
                     rsp.Token = "";
                     rsp.TimeStamp = "";
                     rsp.TokenLife = "";

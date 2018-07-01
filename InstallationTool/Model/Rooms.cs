@@ -10,6 +10,7 @@ namespace InstallationTool.Model
     {
         public string id;
         public string name;
+        public string type;
         public string size;
         public string timestamp;
     }

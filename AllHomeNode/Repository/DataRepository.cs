@@ -10,6 +10,9 @@ using AllHomeNode.Database.Model;
 using AllHomeNode.Database.Manager;
 using static AllHomeNode.Service.MQTT.Enums;
 using AllHomeNode.Service.MQTT.Device;
+using AllHomeNode.Help;
+using AllHomeNode.Data.Weather;
+using AllHomeNode.Data.Air;
 
 namespace AllHomeNode.Repository
 {
@@ -29,6 +32,9 @@ namespace AllHomeNode.Repository
             ret.INNER_HUMI = data.INNER_HUMI;
             ret.INNER_PM25 = data.INNER_PM25;
             ret.INNER_TEMP = data.INNER_TEMP;
+            ret.OUTSIDE_HUMI = data.OUTSIDE_HUMI;
+            ret.OUTSIDE_PM25 = data.OUTSIDE_PM25;
+            ret.OUTSIDE_TEMP = data.OUTSIDE_TEMP;
             ret.TimeStamp = data.TimeStamp.ToString();
             return ret;
         }
@@ -341,6 +347,37 @@ namespace AllHomeNode.Repository
                 throw new ArgumentNullException("AddAirData");
             }
 
+            string strOutsideTemp = "0";
+            string strOutsideHumi = "0";
+            string strOutsidePM25 = "0";
+
+            try
+            {
+                // 获取当前网关所在城市温度及空气质量信息
+                string deviceId = data.DeviceId;
+                UserManager userMgr = new UserManager();
+                UserDeviceBindManager userDeviceBindMgr = new UserDeviceBindManager();
+                DeviceManager deviceMgr = new DeviceManager();
+
+                Device device = deviceMgr.GetDeviceByDeviceId(deviceId)[0];
+                // 随便使用一个绑定该网关的用户地址
+                UserDeviceBind userDeviceBind = userDeviceBindMgr.GetUserDeviceBindByDeviceId(deviceId)[0];
+                // 从用户的个人信息得到地址
+                User user = userMgr.GetUser(userDeviceBind.Id_User)[0];
+                string cityName = user.Address_City;
+
+                HeWeather6Item weather = HttpHelper.Instance().GetNowWeather(cityName);
+                HeAir6Item air = HttpHelper.Instance().GetNowAir(cityName);
+
+                strOutsideHumi = weather.now.hum;
+                strOutsideTemp = weather.now.tmp;
+                strOutsidePM25 = air.air_now_city.pm25;
+            }
+            catch(Exception httpExp)
+            {
+                Console.WriteLine("[GET WEATHER & AIR]ERROR:" + httpExp.Message);
+            }
+
             try
             {
                 #region 填充AirData
@@ -386,6 +423,10 @@ namespace AllHomeNode.Repository
                 airData.TOTALWEIGHT_L_1 = data._TOTALWT_L_1.ToString();
                 airData.TOTALWEIGHT_H_0 = data._TOTALWT_H_0.ToString();
                 airData.TOTALWEIGHT_H_1 = data._TOTALWT_H_1.ToString();
+
+                airData.OUTSIDE_HUMI = strOutsideHumi;
+                airData.OUTSIDE_TEMP = strOutsideTemp;
+                airData.OUTSIDE_PM25 = strOutsidePM25;
                 #endregion
                 airData.TimeStamp = DateTime.Now;
 

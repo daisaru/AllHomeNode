@@ -53,6 +53,7 @@ namespace InstallationTool.DB
                         Rooms room = new Rooms();
                         room.id = reader["id"].ToString();
                         room.name = reader["name"].ToString();
+                        room.type = reader["type"].ToString();
                         room.size = reader["size"].ToString();
                         room.timestamp = reader["timestamp"].ToString();
 
@@ -92,6 +93,7 @@ namespace InstallationTool.DB
                 {
                     RoomData roomData = new RoomData();
                     roomData.Name = room.name;
+                    roomData.Type = room.type;
                     roomData.Size = room.size;
 
                     // 获取该房间所有控制点

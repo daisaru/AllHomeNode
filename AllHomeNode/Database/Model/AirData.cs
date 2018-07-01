@@ -50,6 +50,9 @@ namespace AllHomeNode.Database.Model
         public virtual string TOTALWEIGHT_L_1 { get; set; }
         public virtual string TOTALWEIGHT_H_0 { get; set; }
         public virtual string TOTALWEIGHT_H_1 { get; set; }
+        public virtual string OUTSIDE_TEMP { get; set; }
+        public virtual string OUTSIDE_HUMI { get; set; }
+        public virtual string OUTSIDE_PM25 { get; set; }
         public virtual DateTime TimeStamp { get; set; }
     }
 }

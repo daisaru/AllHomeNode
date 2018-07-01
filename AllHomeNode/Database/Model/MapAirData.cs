@@ -54,6 +54,9 @@ namespace AllHomeNode.Database.Model
             Map(x => x.TOTALWEIGHT_L_1).Column("TOTALWEIGHT_L_1");
             Map(x => x.TOTALWEIGHT_H_0).Column("TOTALWEIGHT_H_0");
             Map(x => x.TOTALWEIGHT_H_1).Column("TOTALWEIGHT_H_1");
+            Map(x => x.OUTSIDE_HUMI).Column("OUTSIDE_HUMI");
+            Map(x => x.OUTSIDE_TEMP).Column("OUTSIDE_TEMP");
+            Map(x => x.OUTSIDE_PM25).Column("OUTSIDE_PM25");
 
             Map(x => x.TimeStamp).Column("TimeStamp");
 
