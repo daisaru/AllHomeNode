@@ -110,7 +110,7 @@ namespace AllHomeNode.Data.Weather
         public string wind_spd { get; set; }
     }
 
-    public class HeWeather6Item
+    public class HeWeather6
     {
         /// <summary>
         /// 
@@ -128,5 +128,10 @@ namespace AllHomeNode.Data.Weather
         /// 
         /// </summary>
         public Now now { get; set; }
+    }
+
+    public class Weather
+    {
+        public List<HeWeather6> HeWeather6 { get; set; }
     }
 }

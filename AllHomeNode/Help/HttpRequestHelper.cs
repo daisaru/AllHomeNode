@@ -36,26 +36,26 @@ namespace AllHomeNode.Help
             return _instance;
         }
 
-        public HeWeather6Item GetNowWeather(string cityName)
+        public Weather GetNowWeather(string cityName)
         {
-            HeWeather6Item ret = null;
+            Weather ret = null;
 
-            string strRequest = _strGetNowWeatherUrl + "city=" + cityName + "&key=" + _strServiceKey;
+            string strRequest = _strGetNowWeatherUrl + "location=" + cityName + "&key=" + _strServiceKey;
 
             string retStr = SendRequest("", strRequest);
-            ret = JsonHelper.FromJSON<HeWeather6Item>(retStr);
+            ret = JsonHelper.FromJSON<Weather>(retStr);
 
             return ret;
         }
 
-        public HeAir6Item GetNowAir(string cityName)
+        public Air GetNowAir(string cityName)
         {
-            HeAir6Item ret = null;
+            Air ret = null;
 
-            string strRequest = _strGetNowAirUrl + "city=" + cityName + "&key=" + _strServiceKey;
+            string strRequest = _strGetNowAirUrl + "location=" + cityName + "&key=" + _strServiceKey;
 
             string retStr = SendRequest("", strRequest);
-            ret = JsonHelper.FromJSON<HeAir6Item>(retStr);
+            ret = JsonHelper.FromJSON<Air>(retStr);
 
             return ret;
         }

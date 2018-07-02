@@ -361,17 +361,23 @@ namespace AllHomeNode.Repository
 
                 Device device = deviceMgr.GetDeviceByDeviceId(deviceId)[0];
                 // 随便使用一个绑定该网关的用户地址
-                UserDeviceBind userDeviceBind = userDeviceBindMgr.GetUserDeviceBindByDeviceId(deviceId)[0];
+                UserDeviceBind userDeviceBind = userDeviceBindMgr.GetUserDeviceBindByDeviceId(device.Id)[0];
                 // 从用户的个人信息得到地址
                 User user = userMgr.GetUser(userDeviceBind.Id_User)[0];
                 string cityName = user.Address_City;
 
-                HeWeather6Item weather = HttpHelper.Instance().GetNowWeather(cityName);
-                HeAir6Item air = HttpHelper.Instance().GetNowAir(cityName);
+                Weather weather = HttpHelper.Instance().GetNowWeather(cityName);
+                if(weather.HeWeather6[0] != null && weather.HeWeather6[0].status.Equals("ok"))
+                {
+                    strOutsideHumi = weather.HeWeather6[0].now.hum;
+                    strOutsideTemp = weather.HeWeather6[0].now.tmp;
+                }
 
-                strOutsideHumi = weather.now.hum;
-                strOutsideTemp = weather.now.tmp;
-                strOutsidePM25 = air.air_now_city.pm25;
+                Air air = HttpHelper.Instance().GetNowAir(cityName);
+                if(air.HeWeather6[0] != null && air.HeWeather6[0].status.Equals("ok"))
+                {
+                    strOutsidePM25 = air.HeWeather6[0].air_now_city.pm25;
+                }
             }
             catch(Exception httpExp)
             {

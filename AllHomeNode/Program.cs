@@ -9,14 +9,16 @@ using System.Reflection;
 using System.Threading;
 
 using Microsoft.Owin.Hosting;
-using AllHomeNode.Database;
-using AllHomeNode.Database.Manager;
-using AllHomeNode.Help;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using AllHomeNode.Help;
+using AllHomeNode.Database;
+using AllHomeNode.Database.Manager;
 using AllHomeNode.Service.SMS;
 using AllHomeNode.Service.MQTT;
 using AllHomeNode.Service.Quartz;
+using AllHomeNode.Service.MQTT.Device;
+using AllHomeNode.Repository;
 
 namespace AllHomeNode
 {
@@ -29,6 +31,13 @@ namespace AllHomeNode
             try
             {
                 LogHelper.WriteLog(LogLevel.Warn, t, "AllHome Node is Starting...");
+
+                // Weather & Air Test
+                //VENT_EAWADA eawada = new VENT_EAWADA();
+                //eawada.DeviceId = "12345678";
+                //DataRepository dataRepository = new DataRepository();
+                //dataRepository.AddAirData(eawada);
+
                 // DB Test
                 //MySqlConnection conn = MySQLHelper.DBConnect();
                 //DataSet data = MySQLHelper.GetDataSet(MySQLHelper.Conn,

@@ -158,7 +158,7 @@ namespace AllHomeNode.Data.Air
         public string so2 { get; set; }
     }
 
-    public class HeAir6Item
+    public class HeWeather6
     {
         /// <summary>
         /// 
@@ -180,5 +180,10 @@ namespace AllHomeNode.Data.Air
         /// 
         /// </summary>
         public List<Air_now_stationItem> air_now_station { get; set; }
+    }
+
+    public class Air
+    {
+        public List<HeWeather6> HeWeather6 { get; set; }
     }
 }
