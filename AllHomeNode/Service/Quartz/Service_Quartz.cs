@@ -60,9 +60,9 @@ namespace AllHomeNode.Service.Quartz
                 //QuartzTask_SummaryPowerData.SummaryMonthlyPower();
                 //QuartzTask_SummaryPowerData.SummaryDailyPower();
 
-                if (dtNow.Hour == 10)
+                if (dtNow.Hour == 0)
                 {
-                    if(dtNow.Day == 18)
+                    if(dtNow.Day == 1)
                     {
                         // 每个月的第一天凌晨统计前一个月的电量
                         QuartzTask_SummaryPowerData.SummaryMonthlyPower();                        

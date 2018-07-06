@@ -55,7 +55,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime <= endTime && c.SummaryTime >= startTime && c.IsMonth == 1)) //&& c.SummaryTime >= startTime
+                    (c => (c.DeviceId == deviceId && c.SummaryTime <= endTime && c.IsMonth == 1)) //&& c.SummaryTime >= startTime
                     .OrderBy(c => c.SummaryTime)
                     .Desc
                     .List()
