@@ -252,13 +252,24 @@ namespace AllHomeNode.Repository
                 historyDatas = powerDataSummaryMgr.GetMonthPowerConsumeSummary(deviceId, monthStart, monthEnd).ToList();
 
                 DateTime now = DateTime.Now;
+                DateTime currentMonthStart = new DateTime(now.Year, now.Month, 1);
                 if(monthEnd.Year == now.Year && monthEnd.Month == now.Month)
                 {
                     // 加上本月的已有数据
-                    PowerDataSummary latestMonthDataSummary = powerDataSummaryMgr.GetLatestMonthPowerSummary(deviceId, startTime, endTime);
+                    PowerDataSummary latestMonthDataSummary = powerDataSummaryMgr.GetLatestMonthPowerSummary(deviceId, currentMonthStart, endTime);
+                    if (latestMonthDataSummary == null)
+                    {
+                        latestMonthDataSummary = new PowerDataSummary();
+                        latestMonthDataSummary.DeviceId = deviceId;
+                        latestMonthDataSummary.Air = "0";
+                        latestMonthDataSummary.Light = "0";
+                        latestMonthDataSummary.Total = "0";
+                        latestMonthDataSummary.SummaryTime = DateTime.Now;
+                        latestMonthDataSummary.IsMonth = 1;
+                    }
 
                     PowerDataManager powerDataMgr = new PowerDataManager();
-                    List<PowerData> monthData = powerDataMgr.GetPowerConsume(deviceId, monthStart, DateTime.Now).ToList();
+                    List<PowerData> monthData = powerDataMgr.GetPowerConsume(deviceId, currentMonthStart, DateTime.Now).ToList();
 
                     PowerDataSummary monthDataSummary = new PowerDataSummary();
                     monthDataSummary.DeviceId = deviceId;
