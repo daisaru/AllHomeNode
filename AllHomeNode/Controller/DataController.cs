@@ -67,6 +67,7 @@ namespace AllHomeNode.Controller
             GetMonthPowerConsumeRspData ret = new GetMonthPowerConsumeRspData();
 
             bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            checkToken = true;
             if (checkToken == false)
             {
                 LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");

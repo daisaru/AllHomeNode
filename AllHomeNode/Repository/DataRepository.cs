@@ -191,62 +191,24 @@ namespace AllHomeNode.Repository
             PowerDataSummaryManager powerDataSummaryMgr = new PowerDataSummaryManager();
             List<PowerDataSummary> historyDatas = null;
 
+            // 判断是否是使用的第一个月
+            bool bIsFirstMonth = false;
+            double lMinLightValue = double.MaxValue;
+            double lMinAirValue = double.MaxValue;
+            
+
             if (bDetail == true)
             {
+                #region 按天查询
+
                 historyDatas = powerDataSummaryMgr.GetDayPowerConsumeSummary(deviceId, startTime, endTime).ToList();
 
-                if(endTime.Date == DateTime.Now.Date)
-                {
-                    // 加上今天当前的数据
-                    PowerDataSummary latestDataSummary = powerDataSummaryMgr.GetLatestPowerSummary(deviceId, startTime, endTime);
-
-                    PowerDataManager powerDataMgr = new PowerDataManager();
-                    List<PowerData> todayData = powerDataMgr.GetPowerConsume(deviceId, DateTime.Now.Date, DateTime.Now).ToList();
-                    PowerDataSummary todayDataSummary = new PowerDataSummary();
-                    todayDataSummary.DeviceId = deviceId;
-                    todayDataSummary.Air = "0";
-                    todayDataSummary.Light = "0";
-                    todayDataSummary.Total = "0";
-                    todayDataSummary.SummaryTime = DateTime.Now;
-                    todayDataSummary.IsMonth = 0;
-              
-                    foreach(PowerData data in todayData)
-                    {
-                        POWERCONSUMERTYPE type = (POWERCONSUMERTYPE)Enum.Parse(typeof(POWERCONSUMERTYPE), data.PowerType, true);
-                        {
-                            switch(type)
-                            {
-                                case POWERCONSUMERTYPE.AIRCONTROL:
-                                    {
-                                        if(todayDataSummary.Air.Equals("0"))
-                                        {
-                                            double p = double.Parse(data.PowerConsume) - double.Parse(latestDataSummary.Air);
-                                            todayDataSummary.Air = p.ToString();
-                                        }
-                                        break;
-                                    }
-                                case POWERCONSUMERTYPE.LIGHT:
-                                    {
-                                        if (todayDataSummary.Light.Equals("0"))
-                                        {
-                                            double p = double.Parse(data.PowerConsume) - double.Parse(latestDataSummary.Light);
-                                            todayDataSummary.Light = p.ToString();
-                                        }
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        break;
-                                    }
-                            }
-                        }
-                    }
-                    todayDataSummary.Total = (double.Parse(todayDataSummary.Air) + double.Parse(todayDataSummary.Light)).ToString();
-                    historyDatas.Add(todayDataSummary);
-                }
+                #endregion
             }
             else
             {
+                #region 按月查询
+
                 DateTime monthStart = new DateTime(startTime.Year, startTime.Month, 1);
                 DateTime monthEnd = new DateTime(endTime.Year, endTime.Month + 1, 1).AddDays(-1);
                 historyDatas = powerDataSummaryMgr.GetMonthPowerConsumeSummary(deviceId, monthStart, monthEnd).ToList();
@@ -259,6 +221,9 @@ namespace AllHomeNode.Repository
                     PowerDataSummary latestMonthDataSummary = powerDataSummaryMgr.GetLatestMonthPowerSummary(deviceId, currentMonthStart, endTime);
                     if (latestMonthDataSummary == null)
                     {
+                        // 如果没有上个月统计记录，可能是因为第一个月开始使用；取最新的数据减去最旧的数据；
+                        bIsFirstMonth = true;
+
                         latestMonthDataSummary = new PowerDataSummary();
                         latestMonthDataSummary.DeviceId = deviceId;
                         latestMonthDataSummary.Air = "0";
@@ -287,6 +252,12 @@ namespace AllHomeNode.Repository
                             {
                                 case POWERCONSUMERTYPE.AIRCONTROL:
                                     {
+                                        double value = double.Parse(data.PowerConsume);
+                                        if (value <= lMinAirValue)
+                                        {
+                                            lMinAirValue = value;
+                                        }
+
                                         if (monthDataSummary.Air.Equals("0"))
                                         {
                                             double p = double.Parse(data.PowerConsume) - double.Parse(latestMonthDataSummary.Air);
@@ -296,9 +267,15 @@ namespace AllHomeNode.Repository
                                     }
                                 case POWERCONSUMERTYPE.LIGHT:
                                     {
+                                        double value = double.Parse(data.PowerConsume);
+                                        if (value <= lMinLightValue)
+                                        {
+                                            lMinLightValue = value;
+                                        }
+
                                         if (monthDataSummary.Light.Equals("0"))
                                         {
-                                            double p = double.Parse(data.PowerConsume) - double.Parse(latestMonthDataSummary.Light);
+                                            double p = value - double.Parse(latestMonthDataSummary.Light);
                                             monthDataSummary.Light = p.ToString();
                                         }
                                         break;
@@ -310,9 +287,28 @@ namespace AllHomeNode.Repository
                             }
                         }
                     }
+
+                    if (bIsFirstMonth)
+                    {
+                        if(lMinAirValue == double.MaxValue)
+                        {
+                            lMinAirValue = 0;
+                        }
+
+                        if(lMinLightValue == double.MaxValue)
+                        {
+                            lMinLightValue = 0;
+                        }
+
+                        monthDataSummary.Air = (double.Parse(monthDataSummary.Air) - lMinAirValue).ToString();
+                        monthDataSummary.Light = (double.Parse(monthDataSummary.Light) - lMinLightValue).ToString();
+                    }
+
                     monthDataSummary.Total = (double.Parse(monthDataSummary.Air) + double.Parse(monthDataSummary.Light)).ToString();
                     historyDatas.Add(monthDataSummary);
                 }
+
+                #endregion
             }
 
             foreach (PowerDataSummary data in historyDatas)
