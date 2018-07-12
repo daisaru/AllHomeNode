@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace InstallationTool.Model
 {
-    public class Devices
+    public class ControlPoint
     {
         public string id;
-        public string id_room;
+        public string id_device;
         public string code;
         public string type;
         public string subtype;

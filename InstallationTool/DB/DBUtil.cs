@@ -28,11 +28,11 @@ namespace InstallationTool.DB
             return _instance;
         }
 
-        public List<RoomData> GetControlPoints()
+        public List<DeviceData> GetControlPoints()
         {
-            List<RoomData> ret = new List<RoomData>();
-            List<Rooms> rooms = new List<Rooms>();
-            List<Devices> devices = new List<Devices>();
+            List<DeviceData> ret = new List<DeviceData>();
+            List<Device> rooms = new List<Device>();
+            List<ControlPoint> devices = new List<ControlPoint>();
 
             string connStr = @"Data Source=" + @"D:\Share\allhome.db;Initial Catalog=sqlite;Integrated Security=True;Max Pool Size=10";
 
@@ -42,19 +42,18 @@ namespace InstallationTool.DB
                 conn.ConnectionString = connStr;
                 conn.Open();
 
-                // 查询房间信息
+                // 查询设备信息
                 DbCommand comm = conn.CreateCommand();
-                comm.CommandText = "select * from rooms";
+                comm.CommandText = "select * from device";
                 comm.CommandType = CommandType.Text;
                 using (IDataReader reader = comm.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        Rooms room = new Rooms();
+                        Device room = new Device();
                         room.id = reader["id"].ToString();
                         room.name = reader["name"].ToString();
                         room.type = reader["type"].ToString();
-                        room.size = reader["size"].ToString();
                         room.timestamp = reader["timestamp"].ToString();
 
                         rooms.Add(room);
@@ -62,15 +61,15 @@ namespace InstallationTool.DB
                 }
 
                 // 查询控制点信息
-                comm.CommandText = "select * from devices";
+                comm.CommandText = "select * from controlpoint";
                 comm.CommandType = CommandType.Text;
                 using (IDataReader reader = comm.ExecuteReader())
                 {
                     while(reader.Read())
                     {
-                        Devices device = new Devices();
+                        ControlPoint device = new ControlPoint();
                         device.id = reader["id"].ToString();
-                        device.id_room = reader["id_room"].ToString();
+                        device.id_device = reader["id_device"].ToString();
                         device.code = reader["code"].ToString();
                         device.type = reader["type"].ToString();
                         device.subtype = reader["subtype"].ToString();
@@ -89,16 +88,15 @@ namespace InstallationTool.DB
                     }
                 }
 
-                foreach(Rooms room in rooms)
+                foreach(Device room in rooms)
                 {
-                    RoomData roomData = new RoomData();
+                    DeviceData roomData = new DeviceData();
                     roomData.Name = room.name;
                     roomData.Type = room.type;
-                    roomData.Size = room.size;
 
                     // 获取该房间所有控制点
-                    List<Devices> roomDevices = devices.FindAll(x => x.id_room == room.id);
-                    foreach(Devices device in roomDevices)
+                    List<ControlPoint> roomDevices = devices.FindAll(x => x.id_device == room.id);
+                    foreach(ControlPoint device in roomDevices)
                     {
                         ControlPointData cp = new ControlPointData();
                         cp.Brand = device.brand;

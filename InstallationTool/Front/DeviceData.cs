@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace InstallationTool.Front
 {
-    public class RoomData
+    public class DeviceData
     {
-        public RoomData()
+        public DeviceData()
         {
             ControlPoints = new List<ControlPointData>();
         }
         public string Name { get; set; }
         public string Type { get; set; }
-        public string Size { get; set; }
         public List<ControlPointData> ControlPoints {get;set;}
     }
 }

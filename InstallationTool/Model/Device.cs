@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace InstallationTool.Model
 {
-    public class Rooms
+    public class Device
     {
         public string id;
         public string name;
         public string type;
-        public string size;
         public string timestamp;
     }
 }

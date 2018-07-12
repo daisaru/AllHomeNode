@@ -8,8 +8,8 @@ namespace InstallationTool.Front
 {
     public class GatewayRegisterReqData
     {
-        public string DeviceId { get; set; }
-        public string DeviceName { get; set; }
+        public string GatewayId { get; set; }
+        public string GatewayName { get; set; }
         public string Signature { get; set; }
     }
 }

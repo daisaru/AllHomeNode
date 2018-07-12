@@ -8,7 +8,7 @@ namespace InstallationTool.Model
 {
     public class Gateway
     {
-        public string deviceid;
-        public string devicename;
+        public string GatewayId;
+        public string GatewayName;
     }
 }

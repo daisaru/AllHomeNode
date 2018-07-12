@@ -69,11 +69,11 @@
     <Compile Include="Front\GatewayRegisterRspData.cs" />
     <Compile Include="Front\GatewayUploadCtrlPointsReqData.cs" />
     <Compile Include="Front\GatewayUploadCtrlPointsRspData.cs" />
-    <Compile Include="Front\RoomData.cs" />
+    <Compile Include="Front\DeviceData.cs" />
     <Compile Include="HttpRequestHelper.cs" />
-    <Compile Include="Model\Devices.cs" />
+    <Compile Include="Model\ControlPoint.cs" />
     <Compile Include="Model\Gateway.cs" />
-    <Compile Include="Model\Rooms.cs" />
+    <Compile Include="Model\Device.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

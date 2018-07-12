@@ -9,7 +9,7 @@ namespace AllHomeNode.Front
     public class GatewayUploadCtrlPointsReqData
     {
         public string GatewayId { get; set; }
-        public List<DeviceData> Rooms { get; set; }
+        public List<DeviceData> Device { get; set; }
         public string Signature { get; set; }
     }
 }

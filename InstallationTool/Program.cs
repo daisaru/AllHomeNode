@@ -22,7 +22,7 @@ namespace InstallationTool
             GatewayRegisterRspData registerRet =
                 HttpHelper.Instance().RegisterGateway(deviceId, deviceName, deviceSignature);
 
-            List<RoomData> datas = DBUtil.Instance().GetControlPoints();
+            List<DeviceData> datas = DBUtil.Instance().GetControlPoints();
             GatewayUploadCtrlPointsRspData uploadRet =
                 HttpHelper.Instance().UploadControllPoints(deviceId, datas, deviceSignature);
 
