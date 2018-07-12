@@ -8,9 +8,9 @@ using AllHomeNode.Database.Model;
 
 namespace AllHomeNode.Database.Manager
 {
-    class UserDeviceBindManager
+    class GatewayManager
     {
-        public void Add(UserDeviceBind item)
+        public void Add(Gateway item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -18,8 +18,7 @@ namespace AllHomeNode.Database.Manager
                 session.Flush();
             }
         }
-
-        public bool Update(UserDeviceBind item)
+        public bool Update(Gateway item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -37,7 +36,26 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public bool Delete(UserDeviceBind item)
+        public bool Delete(string deviceId)
+        {
+            Gateway item = GetDeviceById(deviceId).ToList()[0];
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                try
+                {
+                    session.Delete(item);
+                    session.Flush();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        public bool Delete(Gateway item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -55,42 +73,39 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<UserDeviceBind> GetUserDeviceBindByUserId(string userId)
+        public IList<Gateway> GetDeviceByDeviceId(string deviceId)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<UserDeviceBind> list = session.QueryOver<UserDeviceBind>().Where(
-                    c => c.Id_User == userId).List();
+                IList<Gateway> device = session.QueryOver<Gateway>().Where(c => c.GatewayId == deviceId).List();
+                return device;
+            }
+        }
+
+        public IList<Gateway> GetDeviceById(string id)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<Gateway> device = session.QueryOver<Gateway>().Where(c => c.Id == id).List();
+                return device;
+            }
+        }
+
+        public IList<Gateway> GetDeviceList()
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<Gateway> list = session.QueryOver<Gateway>().List();
                 return list;
             }
         }
 
-        public IList<UserDeviceBind> GetUserDeviceBindByDeviceId(string deviceId)
+        public void AddHeartbeat(Heartbeat item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<UserDeviceBind> list = session.QueryOver<UserDeviceBind>().Where(
-                    c => c.Id_Device == deviceId).List();
-                return list;
-            }
-        }
-
-        public IList<UserDeviceBind> GetUserDeviceBindByUserIdAndDeviceId(string userId, string deviceId)
-        {
-            using (var session = NHibernateHelper.OpenSession())
-            {
-                IList<UserDeviceBind> list = session.QueryOver<UserDeviceBind>().Where(
-                    c => c.Id_User != userId && c.Id_Device == deviceId).List();
-                return list;
-            }
-        }
-
-        public IList<UserDeviceBind> GetUserList()
-        {
-            using (var session = NHibernateHelper.OpenSession())
-            {
-                IList<UserDeviceBind> list = session.QueryOver<UserDeviceBind>().List();
-                return list;
+                session.Save(item);
+                session.Flush();
             }
         }
     }

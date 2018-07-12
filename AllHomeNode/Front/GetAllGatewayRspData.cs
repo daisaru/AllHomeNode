@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class GetAllDevicesRspData
+    public class GetAllGatewayRspData
     {
         public string Result { get; set; }
-        public List<UserDeviceData> Devices { get; set; }
+        public List<UserGatewayData> Gateway { get; set; }
     }
 }

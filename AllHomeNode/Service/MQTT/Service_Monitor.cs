@@ -53,7 +53,7 @@ namespace AllHomeNode.Service.MQTT
             _workerThread = new Thread(new ThreadStart(Run));
             _workerThread.Start();
 
-            _timeSyncTimer = new Timer(new TimerCallback(TimerUp), null, 0, 600000);
+            _timeSyncTimer = new Timer(new TimerCallback(TimerUp), null, 0, 60*10*1000);
         }
 
         // 发送心跳包
@@ -134,13 +134,13 @@ namespace AllHomeNode.Service.MQTT
                     {
                         string[] data = msg.cmdUpload.Value.Split(new char[] { ' ' });
                         HeartbeatData hbData = new HeartbeatData();
-                        hbData.DeviceId = data[0];
+                        hbData.GatewayId = data[0];
                         hbData.SoftwareVersion = data[1];
                         hbData.HardwareVersion = "";
-                        hbData.DeviceTime = DateTime.Parse(msg.cmdUpload.TimeStamp);
+                        hbData.GatewayTime = DateTime.Parse(msg.cmdUpload.TimeStamp);
                         hbData.TimeStamp = DateTime.Now;
 
-                        DeviceRepository repository = new DeviceRepository();
+                        GatewayRepository repository = new GatewayRepository();
                         repository.AddHeartBeat(hbData);
 
                         break;
@@ -151,7 +151,7 @@ namespace AllHomeNode.Service.MQTT
                         string code = cmdUpload.Code;
                         string data = cmdUpload.Data;
 
-                        DeviceRepository repository = new DeviceRepository();
+                        GatewayRepository repository = new GatewayRepository();
                         ControlPointData cpData = repository.GetControlPointByCode(code);
                         DEVICETYPE deviceType = (DEVICETYPE)Enum.Parse(typeof(DEVICETYPE), cpData.Type, true);
 

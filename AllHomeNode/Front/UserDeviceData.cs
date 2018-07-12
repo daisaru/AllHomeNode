@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class UserDeviceData
+    public class UserGatewayData
     {
-        public string DeviceId { get; set; }
-        public string DeviceName { get; set; }
+        public string GatewayId { get; set; }
+        public string GatewayName { get; set; }
         public string Privilege { get; set; }
     }
 }

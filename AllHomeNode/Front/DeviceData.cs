@@ -8,8 +8,13 @@ namespace AllHomeNode.Front
 {
     public class DeviceData
     {
+        public DeviceData()
+        {
+            ControlPoints = new List<ControlPointData>();
+        }
         public string DeviceId { get; set; }
-        public string DeviceName { get; set; }
-
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public List<ControlPointData> ControlPoints {get;set;}
     }
 }

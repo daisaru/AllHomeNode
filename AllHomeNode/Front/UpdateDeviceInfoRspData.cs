@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class UpdateRoomInfoRspData
+    public class UpdateDeviceInfoRspData
     {
         public string Result { get; set; }
     }

@@ -41,7 +41,7 @@ namespace AllHomeNode.Controller
 
             try
             {
-                List<AirQualityData> data = repository.GetHistoryAirData(item.DeviceId, item.StartTime, item.EndTime).ToList();
+                List<AirQualityData> data = repository.GetHistoryAirData(item.GatewayId, item.StartTime, item.EndTime).ToList();
                 ret.Result = CommandUtil.RETURN.SUCCESS;
                 ret.AirQuality = data;
             }
@@ -67,7 +67,6 @@ namespace AllHomeNode.Controller
             GetMonthPowerConsumeRspData ret = new GetMonthPowerConsumeRspData();
 
             bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
-            checkToken = true;
             if (checkToken == false)
             {
                 LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
@@ -79,7 +78,7 @@ namespace AllHomeNode.Controller
 
             try
             {
-                List<PowerConsumeData> datas = repository.GetHistoryPowerConsumeData(item.DeviceId, item.StartTime, item.EndTime, item.IsDetail).ToList();
+                List<PowerConsumeData> datas = repository.GetHistoryPowerConsumeData(item.GatewayId, item.StartTime, item.EndTime, item.IsDetail).ToList();
 
                 double dLight = 0.00;
                 double dAir = 0.00;

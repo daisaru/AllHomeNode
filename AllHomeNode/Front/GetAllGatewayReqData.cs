@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class UpdateRoomInfoReqData
+    public class GetAllGatewayReqData
     {
         public string Mobile { get; set; }
-        public string RoomId { get; set; }
-        public string RoomName { get; set; }
         public string Token { get; set; }
     }
 }

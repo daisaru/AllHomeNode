@@ -25,7 +25,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<PowerDataSummary> data = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1))
+                    (c => (c.GatewayId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1))
                     .OrderBy(c => c.SummaryTime)
                     .Desc
                     .List();
@@ -38,7 +38,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1))
+                    (c => (c.GatewayId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 1))
                     .OrderBy(c => c.SummaryTime)
                     .Asc
                     .List()
@@ -55,7 +55,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime <= endTime && c.IsMonth == 1)) //&& c.SummaryTime >= startTime
+                    (c => (c.GatewayId == deviceId && c.SummaryTime <= endTime && c.IsMonth == 1)) //&& c.SummaryTime >= startTime
                     .OrderBy(c => c.SummaryTime)
                     .Desc
                     .List()
@@ -72,7 +72,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 0))
+                    (c => (c.GatewayId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 0))
                     .OrderBy(c => c.SummaryTime)
                     .Desc
                     .List()
@@ -89,7 +89,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<PowerDataSummary> data = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.DeviceId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime)).List();
+                    (c => (c.GatewayId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime)).List();
                 return data;
             }
         }

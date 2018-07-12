@@ -67,12 +67,12 @@ namespace AllHomeNode.Repository
             PowerDataManager powerDataMgr = new PowerDataManager();
             PowerDataSummaryManager powerDataSummaryMgr = new PowerDataSummaryManager();
 
-            DeviceManager deviceMgr = new DeviceManager();
-            List<Device> devices = deviceMgr.GetDeviceList().ToList();
+            GatewayManager deviceMgr = new GatewayManager();
+            List<Gateway> devices = deviceMgr.GetDeviceList().ToList();
 
-            foreach (Device d in devices)
+            foreach (Gateway d in devices)
             {
-                string deviceId = d.DeviceId;
+                string deviceId = d.GatewayId;
                 DateTime startTime = DateTime.Today.AddDays(-1);
                 DateTime endTime = DateTime.Today.AddSeconds(-1);
 
@@ -82,7 +82,7 @@ namespace AllHomeNode.Repository
                 List<PowerData> todayData = powerDataMgr.GetPowerConsume(deviceId, startTime, endTime).ToList();
 
                 PowerDataSummary dailySummary = new PowerDataSummary();
-                dailySummary.DeviceId = deviceId;
+                dailySummary.GatewayId = deviceId;
                 dailySummary.Air = "0";
                 dailySummary.Light = "0";
                 dailySummary.Total = "0";
@@ -150,12 +150,12 @@ namespace AllHomeNode.Repository
         {
             PowerDataSummaryManager powerDataSummaryMgr = new PowerDataSummaryManager();
 
-            DeviceManager deviceMgr = new DeviceManager();
-            List<Device> devices = deviceMgr.GetDeviceList().ToList();
+            GatewayManager deviceMgr = new GatewayManager();
+            List<Gateway> devices = deviceMgr.GetDeviceList().ToList();
 
-            foreach(Device d in devices)
+            foreach(Gateway d in devices)
             {
-                string deviceId = d.DeviceId;
+                string deviceId = d.GatewayId;
                 DateTime startTimeThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, 1);
                 DateTime endTimeThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMinutes(-1);
 
@@ -163,7 +163,7 @@ namespace AllHomeNode.Repository
                 PowerDataSummary oldestPowerSummary = powerDataSummaryMgr.GetOldestMonthPowerSummary(deviceId, startTimeThisMonth, endTimeThisMonth);
 
                 PowerDataSummary dailySummary = new PowerDataSummary();
-                dailySummary.DeviceId = deviceId;
+                dailySummary.GatewayId = deviceId;
                 dailySummary.Air = "0";
                 dailySummary.Light = "0";
                 dailySummary.Total = "0";
@@ -173,7 +173,7 @@ namespace AllHomeNode.Repository
 
                 if (latestPowerSummary != null && oldestPowerSummary != null)
                 {
-                    dailySummary.DeviceId = deviceId;
+                    dailySummary.GatewayId = deviceId;
                     dailySummary.Air = (double.Parse(latestPowerSummary.Air) - double.Parse(oldestPowerSummary.Air)).ToString();
                     dailySummary.Light = (double.Parse(latestPowerSummary.Light) - double.Parse(oldestPowerSummary.Light)).ToString();
                     dailySummary.Total = (double.Parse(dailySummary.Air) + double.Parse(dailySummary.Light)).ToString();
@@ -225,7 +225,7 @@ namespace AllHomeNode.Repository
                         bIsFirstMonth = true;
 
                         latestMonthDataSummary = new PowerDataSummary();
-                        latestMonthDataSummary.DeviceId = deviceId;
+                        latestMonthDataSummary.GatewayId = deviceId;
                         latestMonthDataSummary.Air = "0";
                         latestMonthDataSummary.Light = "0";
                         latestMonthDataSummary.Total = "0";
@@ -237,7 +237,7 @@ namespace AllHomeNode.Repository
                     List<PowerData> monthData = powerDataMgr.GetPowerConsume(deviceId, currentMonthStart, DateTime.Now).ToList();
 
                     PowerDataSummary monthDataSummary = new PowerDataSummary();
-                    monthDataSummary.DeviceId = deviceId;
+                    monthDataSummary.GatewayId = deviceId;
                     monthDataSummary.Air = "0";
                     monthDataSummary.Light = "0";
                     monthDataSummary.Total = "0";
@@ -330,7 +330,7 @@ namespace AllHomeNode.Repository
             try
             {
                 PowerData item = new PowerData();
-                item.DeviceId = data.DeviceId;
+                item.GatewayId = data.DeviceId;
                 item.CPCode = code;
                 item.PowerConsume = data.CurrentPower.ToString();
                 item.PowerType = data.ConsumerType.ToString();
@@ -363,12 +363,12 @@ namespace AllHomeNode.Repository
                 // 获取当前网关所在城市温度及空气质量信息
                 string deviceId = data.DeviceId;
                 UserManager userMgr = new UserManager();
-                UserDeviceBindManager userDeviceBindMgr = new UserDeviceBindManager();
-                DeviceManager deviceMgr = new DeviceManager();
+                UserGatewayBindManager userDeviceBindMgr = new UserGatewayBindManager();
+                GatewayManager deviceMgr = new GatewayManager();
 
-                Device device = deviceMgr.GetDeviceByDeviceId(deviceId)[0];
+                Gateway device = deviceMgr.GetDeviceByDeviceId(deviceId)[0];
                 // 随便使用一个绑定该网关的用户地址
-                UserDeviceBind userDeviceBind = userDeviceBindMgr.GetUserDeviceBindByDeviceId(device.Id)[0];
+                UserGatewayBind userDeviceBind = userDeviceBindMgr.GetUserDeviceBindByDeviceId(device.Id)[0];
                 // 从用户的个人信息得到地址
                 User user = userMgr.GetUser(userDeviceBind.Id_User)[0];
                 string cityName = user.Address_City;
@@ -395,7 +395,7 @@ namespace AllHomeNode.Repository
             {
                 #region 填充AirData
                 AirData airData = new AirData();
-                airData.DeviceId = data.DeviceId;
+                airData.GatewayId = data.DeviceId;
                 airData.ONOFF = data._ONOFF.ToString();
                 airData.FAN_SPEED = data._FAN_SPD.ToString();           // 0:停止 1:低速 2:中速 3:高速
                 airData.CIRCLE_MODE = data._CIRCLE_MODE.ToString();       // 0:内循环 1:外循环

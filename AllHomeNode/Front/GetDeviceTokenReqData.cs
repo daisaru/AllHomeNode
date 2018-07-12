@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class GetDeviceTokenReqData
+    public class GetGatewayTokenReqData
     {
         public string Mobile { get; set; }
-        public string DeviceId { get; set; }
+        public string GatewayId { get; set; }
         public string Token { get; set; }
-        public string DeviceOldToken { get; set; }
+        public string GatewayOldToken { get; set; }
     }
 }

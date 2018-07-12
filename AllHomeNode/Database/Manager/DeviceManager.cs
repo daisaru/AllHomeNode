@@ -18,6 +18,7 @@ namespace AllHomeNode.Database.Manager
                 session.Flush();
             }
         }
+
         public bool Update(Device item)
         {
             using (var session = NHibernateHelper.OpenSession())
@@ -25,25 +26,6 @@ namespace AllHomeNode.Database.Manager
                 try
                 {
                     session.Update(item);
-                    session.Flush();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return false;
-                }
-            }
-        }
-
-        public bool Delete(string deviceId)
-        {
-            Device item = GetDeviceById(deviceId).ToList()[0];
-            using (var session = NHibernateHelper.OpenSession())
-            {
-                try
-                {
-                    session.Delete(item);
                     session.Flush();
                     return true;
                 }
@@ -73,39 +55,21 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<Device> GetDeviceByDeviceId(string deviceId)
+        public IList<Device> GetRoomByRoomId(string id)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<Device> device = session.QueryOver<Device>().Where(c => c.DeviceId == deviceId).List();
-                return device;
+                IList<Device> list = session.QueryOver<Device>().Where(c => c.Id == id).List();
+                return list;
             }
         }
 
-        public IList<Device> GetDeviceById(string id)
-        {
-            using (var session = NHibernateHelper.OpenSession())
-            {
-                IList<Device> device = session.QueryOver<Device>().Where(c => c.Id == id).List();
-                return device;
-            }
-        }
-
-        public IList<Device> GetDeviceList()
+        public IList<Device> GetUserList()
         {
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<Device> list = session.QueryOver<Device>().List();
                 return list;
-            }
-        }
-
-        public void AddHeartbeat(Heartbeat item)
-        {
-            using (var session = NHibernateHelper.OpenSession())
-            {
-                session.Save(item);
-                session.Flush();
             }
         }
     }

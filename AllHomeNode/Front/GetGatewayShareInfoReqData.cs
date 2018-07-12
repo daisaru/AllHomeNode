@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class BindGatewayReqData
+    public class GetGatewayShareInfoReqData
     {
         public string Mobile { get; set; }
         public string GatewayId { get; set; }
-        public string GatewayName { get; set; }
         public string Token { get; set; }
     }
 }

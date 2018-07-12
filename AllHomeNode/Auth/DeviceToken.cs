@@ -9,20 +9,20 @@ using AllHomeNode.Help;
 
 namespace AllHomeNode.Auth
 {
-    public class DeviceToken
+    public class GatewayToken
     {
         private Hashtable _deviceTokens = null;
-        private static DeviceToken _instance = null;
+        private static GatewayToken _instance = null;
         
-        private DeviceToken()
+        private GatewayToken()
         {
             _deviceTokens = new Hashtable();
         }
 
-        public static DeviceToken Intance()
+        public static GatewayToken Intance()
         {
             if (_instance == null)
-                _instance = new DeviceToken();
+                _instance = new GatewayToken();
             return _instance;
         }
 

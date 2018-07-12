@@ -26,7 +26,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<PowerData> data = session.QueryOver<PowerData>().Where
-                    (c => (c.DeviceId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime && c.PowerType == type.ToString()))
+                    (c => (c.GatewayId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime && c.PowerType == type.ToString()))
                     .OrderBy(c => c.TimeStamp)
                     .Asc
                     .List();
@@ -39,7 +39,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<PowerData> data = session.QueryOver<PowerData>().Where
-                    (c => (c.DeviceId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime))
+                    (c => (c.GatewayId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime))
                     .OrderBy(c => c.TimeStamp)
                     .Desc
                     .List();

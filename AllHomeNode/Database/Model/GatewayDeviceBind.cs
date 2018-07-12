@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace AllHomeNode.Database.Model
 
 {
-    class DeviceRoomBind
+    class GatewayDeviceBind
     {
         public virtual string Id { get; set; }
+        public virtual string Id_Gateway { get; set; }
         public virtual string Id_Device { get; set; }
-        public virtual string Id_Room { get; set; }
         public virtual DateTime TimeStamp { get; set; }
     }
 }

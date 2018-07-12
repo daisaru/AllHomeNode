@@ -69,7 +69,7 @@ namespace AllHomeNode.Database.Manager
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<ControlPoint> controlPoint = session.QueryOver<ControlPoint>().Where(c => c.Id_Room == roomId).List();
+                IList<ControlPoint> controlPoint = session.QueryOver<ControlPoint>().Where(c => c.Id_Device == roomId).List();
                 return controlPoint;
             }
         }

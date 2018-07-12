@@ -9,7 +9,7 @@ namespace AllHomeNode.Database.Model
     class PowerDataSummary
     {
         public virtual int Id { get; set; }
-        public virtual string DeviceId { get; set; }
+        public virtual string GatewayId { get; set; }
         public virtual string Light { get; set; }
         public virtual string Air { get; set; }
         public virtual string Total { get; set; }

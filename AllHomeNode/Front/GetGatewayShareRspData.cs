@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class GetAllDevicesReqData
+    public class GetGatewayShareInfoRspData
     {
-        public string Mobile { get; set; }
-        public string Token { get; set; }
+        public string Result { get; set; }
+        public List<GatewayShareData> Shares { get; set; }
     }
 }

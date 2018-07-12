@@ -9,7 +9,7 @@ namespace AllHomeNode.Front
     public class GetAirQualityReqData
     {
         public string Mobile { get; set; }
-        public string DeviceId { get; set; }
+        public string GatewayId { get; set; }
         public string Token { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

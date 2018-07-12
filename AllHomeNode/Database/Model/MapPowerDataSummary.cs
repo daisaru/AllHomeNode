@@ -13,7 +13,7 @@ namespace AllHomeNode.Database.Model
         {
             Id(x => x.Id).Column("Id");
 
-            Map(x => x.DeviceId).Column("DeviceId");
+            Map(x => x.GatewayId).Column("GatewayId");
             Map(x => x.Light).Column("Light");
             Map(x => x.Air).Column("Air");
             Map(x => x.Total).Column("Total");

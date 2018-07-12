@@ -10,7 +10,7 @@ namespace AllHomeNode.Database.Model
     class ControlPoint
     {
         public virtual string Id { get; set; }
-        public virtual string Id_Room { get; set; }
+        public virtual string Id_Device { get; set; }
         public virtual string Name { get; set; }
         public virtual string Code { get; set; }
         public virtual string Type { get; set; }

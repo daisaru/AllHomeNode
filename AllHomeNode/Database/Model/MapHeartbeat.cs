@@ -14,10 +14,10 @@ namespace AllHomeNode.Database.Model
         {
             Id(x => x.Id).Column("Id");
 
-            Map(x => x.DeviceId).Column("DeviceId");
+            Map(x => x.GatewayId).Column("GatewayId");
             Map(x => x.SoftwareVersion).Column("SoftwareVersion");
             Map(x => x.HardwareVersion).Column("HardwareVersion");
-            Map(x => x.DeviceTime).Column("DeviceTime");
+            Map(x => x.DeviceTime).Column("GatewayTime");
             Map(x => x.TimeStamp).Column("TimeStamp");
 
             Table("tb_heartbeat");

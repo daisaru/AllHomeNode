@@ -33,5 +33,15 @@ namespace AllHomeNode.Front
             public static string ELEMETER = "EleMeter";
         }
 
+        public static class DEVICE_TYPE
+        {
+            public static string GATEWAY = "GATEWAY";
+            public static string AIRCON = "AIRCON";
+            public static string VENT = "VENT";
+            public static string CTRL_AIR = "CTRL_AIR";
+            public static string CTRL_HEAT = "CTRL_HEAT";
+            public static string METER_POWER = "METER_POWER";
+        }
+
     }
 }

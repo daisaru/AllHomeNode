@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Database.Model
 {
-    class UserDeviceBind
+    class Gateway
     {
         public virtual string Id { get; set; }
-        public virtual string Id_User { get; set; }
-        public virtual string Id_Device { get; set; }
-        public virtual string DeviceGivenName { get; set; }
-        public virtual string Privilege { get; set; }
-        public virtual string Time { get; set; }
+        public virtual string GatewayId { get; set; }
+        public virtual string GatewayName { get; set; }
         public virtual DateTime TimeStamp { get; set; }
     }
 }

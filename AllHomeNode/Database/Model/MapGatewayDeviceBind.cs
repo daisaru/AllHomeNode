@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Database.Model
 {
-    class MapRoom : ClassMap<Room>
+    class MapGatewayDeviceBind : ClassMap<GatewayDeviceBind>
     {
-        public MapRoom()
+        public MapGatewayDeviceBind()
         {
             Id(x => x.Id).Column("Id");
 
-            Map(x => x.Name).Column("Name");
-            Map(x => x.Type).Column("Type");
-            Map(x => x.Size).Column("Size");
+            Map(x => x.Id_Gateway).Column("Id_Gateway");
+            Map(x => x.Id_Device).Column("Id_Device");
             Map(x => x.TimeStamp).Column("TimeStamp");
 
-            Table("tb_room");
+            Table("tb_gatewaydevicebind");
         }
     }
 }

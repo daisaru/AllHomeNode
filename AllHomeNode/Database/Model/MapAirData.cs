@@ -13,7 +13,7 @@ namespace AllHomeNode.Database.Model
         {
             Id(x => x.Id).Column("Id");
 
-            Map(x => x.DeviceId).Column("DeviceId");
+            Map(x => x.GatewayId).Column("GatewayId");
             Map(x => x.ONOFF).Column("ONOFF");
             Map(x => x.FAN_SPEED).Column("FAN_SPEED");
             Map(x => x.CIRCLE_MODE).Column("CIRCLE_MODE");

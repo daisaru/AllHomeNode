@@ -8,9 +8,9 @@ using AllHomeNode.Database.Model;
 
 namespace AllHomeNode.Database.Manager
 {
-    class DeviceRoomBindManager
+    class UserGatewayBindManager
     {
-        public void Add(DeviceRoomBind item)
+        public void Add(UserGatewayBind item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -19,7 +19,7 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public bool Update(DeviceRoomBind item)
+        public bool Update(UserGatewayBind item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -37,7 +37,7 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public bool Delete(DeviceRoomBind item)
+        public bool Delete(UserGatewayBind item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -55,20 +55,41 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<DeviceRoomBind> GetControlPointByDeviceId(string deviceId)
+        public IList<UserGatewayBind> GetUserDeviceBindByUserId(string userId)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<DeviceRoomBind> list = session.QueryOver<DeviceRoomBind>().Where(c => c.Id_Device == deviceId).List();
+                IList<UserGatewayBind> list = session.QueryOver<UserGatewayBind>().Where(
+                    c => c.Id_User == userId).List();
                 return list;
             }
         }
 
-        public IList<ControlPoint> GetUserList()
+        public IList<UserGatewayBind> GetUserDeviceBindByDeviceId(string deviceId)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<ControlPoint> list = session.QueryOver<ControlPoint>().List();
+                IList<UserGatewayBind> list = session.QueryOver<UserGatewayBind>().Where(
+                    c => c.Id_Gateway == deviceId).List();
+                return list;
+            }
+        }
+
+        public IList<UserGatewayBind> GetUserDeviceBindByUserIdAndDeviceId(string userId, string deviceId)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<UserGatewayBind> list = session.QueryOver<UserGatewayBind>().Where(
+                    c => c.Id_User != userId && c.Id_Gateway == deviceId).List();
+                return list;
+            }
+        }
+
+        public IList<UserGatewayBind> GetUserList()
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<UserGatewayBind> list = session.QueryOver<UserGatewayBind>().List();
                 return list;
             }
         }

@@ -8,9 +8,9 @@ using AllHomeNode.Database.Model;
 
 namespace AllHomeNode.Database.Manager
 {
-    class RoomManager
+    class GatewayDeviceBindManager
     {
-        public void Add(Room item)
+        public void Add(GatewayDeviceBind item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -19,7 +19,7 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public bool Update(Room item)
+        public bool Update(GatewayDeviceBind item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -37,7 +37,7 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public bool Delete(Room item)
+        public bool Delete(GatewayDeviceBind item)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -55,20 +55,20 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<Room> GetRoomByRoomId(string id)
+        public IList<GatewayDeviceBind> GetControlPointByDeviceId(string deviceId)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<Room> list = session.QueryOver<Room>().Where(c => c.Id == id).List();
+                IList<GatewayDeviceBind> list = session.QueryOver<GatewayDeviceBind>().Where(c => c.Id_Gateway == deviceId).List();
                 return list;
             }
         }
 
-        public IList<Room> GetUserList()
+        public IList<ControlPoint> GetUserList()
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<Room> list = session.QueryOver<Room>().List();
+                IList<ControlPoint> list = session.QueryOver<ControlPoint>().List();
                 return list;
             }
         }

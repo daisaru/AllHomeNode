@@ -10,8 +10,8 @@ namespace AllHomeNode.Database.Model
     class Device
     {
         public virtual string Id { get; set; }
-        public virtual string DeviceId { get; set; }
-        public virtual string DeviceName { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string Type { get; set; }
         public virtual DateTime TimeStamp { get; set; }
     }
 }

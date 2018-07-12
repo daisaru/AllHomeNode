@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Database.Model
 {
-    class MapUserDeviceBind : ClassMap<UserDeviceBind>
+    class MapUserGatewayBind : ClassMap<UserGatewayBind>
     {
-        public MapUserDeviceBind()
+        public MapUserGatewayBind()
         {
             Id(x => x.Id).Column("Id");
 
             Map(x => x.Id_User).Column("Id_User");
-            Map(x => x.Id_Device).Column("Id_Device");
-            Map(x => x.DeviceGivenName).Column("DeviceGivenName");
+            Map(x => x.Id_Gateway).Column("Id_Gateway");
+            Map(x => x.GatewayGivenName).Column("GatewayGivenName");
             Map(x => x.Privilege).Column("Privilege");
             Map(x => x.Time).Column("Time");
             Map(x => x.TimeStamp).Column("TimeStamp");
 
-            Table("tb_userdevicebind");
+            Table("tb_usergatewaybind");
         }
     }
 }

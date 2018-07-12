@@ -13,8 +13,8 @@ namespace AllHomeNode.Database.Model
         {
             Id(x => x.Id).Column("Id");
 
-            Map(x => x.DeviceId).Column("DeviceId");
-            Map(x => x.DeviceName).Column("DeviceName");
+            Map(x => x.Name).Column("Name");
+            Map(x => x.Type).Column("Type");
             Map(x => x.TimeStamp).Column("TimeStamp");
 
             Table("tb_device");

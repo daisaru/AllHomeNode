@@ -10,9 +10,9 @@ namespace AllHomeNode.Front
     {
         public GetControlPointsRspData()
         {
-            Rooms = new List<RoomData>();
+            Device = new List<DeviceData>();
         }
         public string Result { get; set; }
-        public List<RoomData> Rooms { get; set; }
+        public List<DeviceData> Device { get; set; }
     }
 }

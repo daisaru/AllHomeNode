@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class GetDeviceShareInfoReqData
+    public class UpdateDeviceInfoReqData
     {
         public string Mobile { get; set; }
         public string DeviceId { get; set; }
+        public string DeviceName { get; set; }
         public string Token { get; set; }
     }
 }

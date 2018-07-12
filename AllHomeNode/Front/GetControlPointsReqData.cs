@@ -9,7 +9,7 @@ namespace AllHomeNode.Front
     public class GetControlPointsReqData
     {
         public string Mobile { get; set; }
-        public string DeviceId { get; set; }
+        public string GatewayId { get; set; }
         public string Token { get; set; }
     }
 }

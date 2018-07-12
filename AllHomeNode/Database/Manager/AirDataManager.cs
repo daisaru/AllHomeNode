@@ -25,7 +25,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<AirData> data = session.QueryOver<AirData>().Where
-                    (c => (c.DeviceId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime)).List();
+                    (c => (c.GatewayId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime)).List();
                 return data;
             }
         }

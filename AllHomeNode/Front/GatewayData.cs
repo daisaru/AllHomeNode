@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace AllHomeNode.Front
 {
-    public class GetDeviceShareInfoRspData
+    public class GatewayData
     {
-        public string Result { get; set; }
-        public List<DeviceShareData> Shares { get; set; }
+        public string GatewayId { get; set; }
+        public string GatewayName { get; set; }
+
     }
 }

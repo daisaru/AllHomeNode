@@ -9,7 +9,7 @@ namespace AllHomeNode.Database.Model
     class Heartbeat
     {
         public virtual int Id { get; set; }
-        public virtual string DeviceId { get; set; }
+        public virtual string GatewayId { get; set; }
         public virtual string SoftwareVersion { get; set; }
         public virtual string HardwareVersion { get; set; }
         public virtual DateTime DeviceTime { get; set; }
