@@ -269,6 +269,7 @@ namespace AllHomeNode.controller
             ReturnResult ret = new ReturnResult();
 
             bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            checkToken = true; // 用户注册时需要获取短信码，不应该验证；
             if (checkToken == false)
             {
                 LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");

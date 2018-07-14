@@ -147,6 +147,8 @@ namespace AllHomeNode.controller
                 return ret;
             }
 
+            //TODO:如果已经绑定了，则不允许再次绑定，一个设备只允许一个管理员账户，其他用户权限由管理员分享。
+
             try
             {
                 repository.BindDeviceWithUser(item.Mobile, item.GatewayId, item.GatewayName);
@@ -183,6 +185,7 @@ namespace AllHomeNode.controller
 
             try
             {
+                //TODO:检查朋友的手机号是否已经注册成为系统账户！
                 repository.ShareGatewayWithFriend(item.Friend, item.GatewayId, item.Privilege, item.Time);
                 ret.Result = CommandUtil.RETURN.SUCCESS;
             }
@@ -356,7 +359,7 @@ namespace AllHomeNode.controller
 
             try
             {
-                bool ret = repository.UploadCtrlPoints(item.GatewayId, item.Rooms);
+                bool ret = repository.UploadCtrlPoints(item.GatewayId, item.Device);
 
                 if (ret == true)
                 {

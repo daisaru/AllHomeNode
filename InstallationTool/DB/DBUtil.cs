@@ -31,8 +31,8 @@ namespace InstallationTool.DB
         public List<DeviceData> GetControlPoints()
         {
             List<DeviceData> ret = new List<DeviceData>();
-            List<Device> rooms = new List<Device>();
-            List<ControlPoint> devices = new List<ControlPoint>();
+            List<Device> devices = new List<Device>();
+            List<ControlPoint> controlpoints = new List<ControlPoint>();
 
             string connStr = @"Data Source=" + @"D:\Share\allhome.db;Initial Catalog=sqlite;Integrated Security=True;Max Pool Size=10";
 
@@ -50,13 +50,13 @@ namespace InstallationTool.DB
                 {
                     while (reader.Read())
                     {
-                        Device room = new Device();
-                        room.id = reader["id"].ToString();
-                        room.name = reader["name"].ToString();
-                        room.type = reader["type"].ToString();
-                        room.timestamp = reader["timestamp"].ToString();
+                        Device device = new Device();
+                        device.id = reader["id"].ToString();
+                        device.name = reader["name"].ToString();
+                        device.type = reader["type"].ToString();
+                        device.timestamp = reader["timestamp"].ToString();
 
-                        rooms.Add(room);
+                        devices.Add(device);
                     }
                 }
 
@@ -67,49 +67,49 @@ namespace InstallationTool.DB
                 {
                     while(reader.Read())
                     {
-                        ControlPoint device = new ControlPoint();
-                        device.id = reader["id"].ToString();
-                        device.id_device = reader["id_device"].ToString();
-                        device.code = reader["code"].ToString();
-                        device.type = reader["type"].ToString();
-                        device.subtype = reader["subtype"].ToString();
-                        device.givenname = reader["givenname"].ToString();
-                        device.brand = reader["brand"].ToString();
-                        device.model = reader["model"].ToString();
-                        device.point = reader["point"].ToString();
-                        device.channel = reader["channel"].ToString();
-                        device.address = reader["address"].ToString();
-                        device.registergroup = reader["registergroup"].ToString();
-                        device.register = reader["register"].ToString();
-                        device.timestamp = reader["timestamp"].ToString();
-                        device.summary = reader["summary"].ToString();
+                        ControlPoint controlpoint = new ControlPoint();
+                        controlpoint.id = reader["id"].ToString();
+                        controlpoint.id_device = reader["id_device"].ToString();
+                        controlpoint.code = reader["code"].ToString();
+                        controlpoint.type = reader["type"].ToString();
+                        controlpoint.subtype = reader["subtype"].ToString();
+                        controlpoint.givenname = reader["givenname"].ToString();
+                        controlpoint.brand = reader["brand"].ToString();
+                        controlpoint.model = reader["model"].ToString();
+                        controlpoint.point = reader["point"].ToString();
+                        controlpoint.channel = reader["channel"].ToString();
+                        controlpoint.address = reader["address"].ToString();
+                        controlpoint.registergroup = reader["registergroup"].ToString();
+                        controlpoint.register = reader["register"].ToString();
+                        controlpoint.timestamp = reader["timestamp"].ToString();
+                        controlpoint.summary = reader["summary"].ToString();
 
-                        devices.Add(device);
+                        controlpoints.Add(controlpoint);
                     }
                 }
 
-                foreach(Device room in rooms)
+                foreach(Device device in devices)
                 {
-                    DeviceData roomData = new DeviceData();
-                    roomData.Name = room.name;
-                    roomData.Type = room.type;
+                    DeviceData deviceData = new DeviceData();
+                    deviceData.Name = device.name;
+                    deviceData.Type = device.type;
 
                     // 获取该房间所有控制点
-                    List<ControlPoint> roomDevices = devices.FindAll(x => x.id_device == room.id);
-                    foreach(ControlPoint device in roomDevices)
+                    List<ControlPoint> deviceControlpoints = controlpoints.FindAll(x => x.id_device == device.id);
+                    foreach(ControlPoint controlpoint in deviceControlpoints)
                     {
                         ControlPointData cp = new ControlPointData();
-                        cp.Brand = device.brand;
-                        cp.Code = device.code;
-                        cp.Model = device.model;
-                        cp.Name = device.givenname;
-                        cp.Point = device.point;
-                        cp.Type = device.type;
+                        cp.Brand = controlpoint.brand;
+                        cp.Code = controlpoint.code;
+                        cp.Model = controlpoint.model;
+                        cp.Name = controlpoint.givenname;
+                        cp.Point = controlpoint.point;
+                        cp.Type = controlpoint.type;
 
-                        roomData.ControlPoints.Add(cp);
+                        deviceData.ControlPoints.Add(cp);
                     }
 
-                    ret.Add(roomData);
+                    ret.Add(deviceData);
                 }
 
                 conn.Close();

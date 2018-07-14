@@ -55,7 +55,7 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<Device> GetRoomByRoomId(string id)
+        public IList<Device> GetDeviceByDeviceId(string id)
         {
             using (var session = NHibernateHelper.OpenSession())
             {

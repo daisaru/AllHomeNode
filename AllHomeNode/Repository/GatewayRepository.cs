@@ -236,15 +236,15 @@ namespace AllHomeNode.Repository
             }
         }
 
-        public void UpdateDeviceInfoById(string roomId, string roomName)
+        public void UpdateDeviceInfoById(string deviceId, string deviceName)
         {
-            DeviceManager roomMgr = new DeviceManager();
+            DeviceManager deviceMgr = new DeviceManager();
 
-            Device room = roomMgr.GetRoomByRoomId(roomId)[0];
-            room.Name = roomName;
-            room.TimeStamp = DateTime.Now;
+            Device device = deviceMgr.GetDeviceByDeviceId(deviceId)[0];
+            device.Name = deviceName;
+            device.TimeStamp = DateTime.Now;
 
-            roomMgr.Update(room);
+            deviceMgr.Update(device);
         }
 
         public void BindDeviceWithUser(string mobile, string deviceId, string deviceName)
@@ -361,7 +361,7 @@ namespace AllHomeNode.Repository
             foreach (GatewayDeviceBind drBind in drBinds)
             {
                 string idRoom = drBind.Id_Device;
-                Device room = roomMgr.GetRoomByRoomId(idRoom).ToList()[0];
+                Device room = roomMgr.GetDeviceByDeviceId(idRoom).ToList()[0];
 
                 DeviceData deviceData = new DeviceData();
                 deviceData.DeviceId = room.Id;

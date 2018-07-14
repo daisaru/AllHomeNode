@@ -210,12 +210,12 @@ namespace AllHomeNode.Repository
                 #region 按月查询
 
                 DateTime monthStart = new DateTime(startTime.Year, startTime.Month, 1);
-                DateTime monthEnd = new DateTime(endTime.Year, endTime.Month + 1, 1).AddDays(-1);
+                DateTime monthEnd = new DateTime(endTime.Year, endTime.Month, 1).AddMonths(1).AddDays(-1);
                 historyDatas = powerDataSummaryMgr.GetMonthPowerConsumeSummary(deviceId, monthStart, monthEnd).ToList();
 
                 DateTime now = DateTime.Now;
                 DateTime currentMonthStart = new DateTime(now.Year, now.Month, 1);
-                if(monthEnd.Year == now.Year && monthEnd.Month == now.Month)
+                if(monthEnd.Year == now.Year && monthEnd.Month >= now.Month)
                 {
                     // 加上本月的已有数据
                     PowerDataSummary latestMonthDataSummary = powerDataSummaryMgr.GetLatestMonthPowerSummary(deviceId, currentMonthStart, endTime);
