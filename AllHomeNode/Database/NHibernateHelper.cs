@@ -13,7 +13,7 @@ namespace AllHomeNode.Database
     public class NHibernateHelper
     {
         private static ISessionFactory _sessionFactory;
-        public static string Conn = "Data Source=115.159.78.40;Database='allhome';User Id='sa';Password='woodhorse2';charset='utf8';pooling=true";
+        public static string Conn = "Data Source=115.159.78.40;Database='allhome';User Id='sa';Password='woodhorse2';charset='utf8';pooling=true;SslMode=None";
 
         private static void InitSessionFactory()
         {

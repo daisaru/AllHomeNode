@@ -16,7 +16,7 @@ namespace AllHomeNode.Database
         public static MySqlConnection mysqlConn = null;
 
         //数据库连接字符串
-        public static string Conn = "Data Source=115.159.78.40;Database='allhome';User Id='sa';Password='woodhorse2';charset='utf8';pooling=true";
+        public static string Conn = "Data Source=115.159.78.40;Database='allhome';User Id='sa';Password='woodhorse2';charset='utf8';pooling=true;SslMode=None";
 
         // 用于缓存参数的HASH表
         private static Hashtable parmCache = Hashtable.Synchronized(new Hashtable());
