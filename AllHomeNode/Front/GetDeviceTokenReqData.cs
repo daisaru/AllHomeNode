@@ -11,6 +11,6 @@ namespace AllHomeNode.Front
         public string Mobile { get; set; }
         public string GatewayId { get; set; }
         public string Token { get; set; }
-        public string GatewayOldToken { get; set; }
+        public string DeviceOldToken { get; set; }
     }
 }

@@ -248,8 +248,8 @@ namespace AllHomeNode.controller
                 LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
 
                 ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
-                ret.GatewayToken = "";
-                ret.GatewayTokenLife = "";
+                ret.DeviceToken = "";
+                ret.DeviceTokenLife = "";
                 ret.TimeStamp = DateTime.Now.ToString();
                 return ret;
             }
@@ -258,8 +258,8 @@ namespace AllHomeNode.controller
             {
                 Token token = GatewayToken.Intance().GetandRefreshToken(item.Mobile, item.GatewayId);
                 ret.Result = CommandUtil.RETURN.SUCCESS;
-                ret.GatewayToken = token.TokenString;
-                ret.GatewayTokenLife = token.TokenLife.ToString();
+                ret.DeviceToken = token.TokenString;
+                ret.DeviceTokenLife = token.TokenLife.ToString();
                 ret.TimeStamp = token.StartTime.ToString();
             }
             catch(Exception exp)
@@ -267,8 +267,8 @@ namespace AllHomeNode.controller
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
                 ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
-                ret.GatewayToken = "";
-                ret.GatewayTokenLife = "";
+                ret.DeviceToken = "";
+                ret.DeviceTokenLife = "";
                 ret.TimeStamp = DateTime.Now.ToString();
                 return ret;
             }

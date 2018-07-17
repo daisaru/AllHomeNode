@@ -9,8 +9,8 @@ namespace AllHomeNode.Front
     public class GetGatewayTokenRspData
     {
         public string Result { get; set; }
-        public string GatewayToken { get; set; }
-        public string GatewayTokenLife { get; set; }
+        public string DeviceToken { get; set; }
+        public string DeviceTokenLife { get; set; }
         public string TimeStamp { get; set; }
     }
 }
