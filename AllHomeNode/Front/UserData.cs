@@ -17,6 +17,9 @@ namespace AllHomeNode.Front
         public string Mobile { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string SquareMeter { get; set; }
+        public string PeakElectricity { get; set; }
+        public string ValleyElectricity { get; set; }
         public string RandomCode { get; set; }
         public Address Address { get; set; }
     }

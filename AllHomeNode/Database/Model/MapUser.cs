@@ -18,6 +18,9 @@ namespace AllHomeNode.Database.Model
             Map(x => x.Mobile).Column("Mobile");
             Map(x => x.Email).Column("Email");
             Map(x => x.Password).Column("Password");
+            Map(x => x.SquareMeter).Column("SquareMeter");
+            Map(x => x.PeakElectricity).Column("PeakElectricity");
+            Map(x => x.ValleyElectricity).Column("ValleyElectricity");
             Map(x => x.Address_Number).Column("Address_Number");
             Map(x => x.Address_Street).Column("Address_Street");
             Map(x => x.Address_City).Column("Address_City");

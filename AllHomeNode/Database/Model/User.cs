@@ -15,6 +15,9 @@ namespace AllHomeNode.Database.Model
         public virtual string Mobile { get; set; }
         public virtual string Email { get; set; }
         public virtual string Password { get; set; }
+        public virtual string SquareMeter { get; set; }
+        public virtual string PeakElectricity { get; set; }
+        public virtual string ValleyElectricity { get; set; }
         public virtual string Address_Number { get; set; }
         public virtual string Address_Street { get; set; }
         public virtual string Address_City { get; set; }
