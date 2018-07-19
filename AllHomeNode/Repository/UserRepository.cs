@@ -49,6 +49,9 @@ namespace AllHomeNode.Repository
             data.Mobile = user.Mobile;
             data.Email = user.Email;
             data.Password = user.Password;
+            data.SquareMeter = user.SquareMeter;
+            data.PeakElectricity = user.PeakElectricity;
+            data.ValleyElectricity = user.ValleyElectricity;
             data.Address.Number = user.Address_Number;
             data.Address.Street = user.Address_Street;
             data.Address.City = user.Address_City;

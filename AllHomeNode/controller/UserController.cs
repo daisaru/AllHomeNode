@@ -91,6 +91,14 @@ namespace AllHomeNode.controller
 
             try
             {
+                //先判断是否手机号已被注册
+                UserData checkUser = repository.Get(item.Mobile);
+                if(checkUser != null)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_USER_MOBILEUSED;
+                    return ret;
+                }
+
                 UserData user = repository.Add(item);
 
                 if (user != null)
@@ -133,6 +141,14 @@ namespace AllHomeNode.controller
 
             try
             {
+                //先判断是否手机号已被注册
+                UserData checkUser = repository.Get(item.Mobile);
+                if (checkUser != null)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_USER_MOBILEUSED;
+                    return ret;
+                }
+
                 bool success = repository.Update(item);
 
                 if (success)
