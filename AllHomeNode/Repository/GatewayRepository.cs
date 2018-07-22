@@ -289,6 +289,10 @@ namespace AllHomeNode.Repository
 
         public IEnumerable<UserGatewayData> GetAllBindGateway(string mobile)
         {
+            HeartbeatManager heartbeatManager = new HeartbeatManager();
+            DateTime timeStart = DateTime.Now.AddMinutes(-20);
+            DateTime timeEnd = DateTime.Now;
+
             List<UserGatewayData> datas = new List<UserGatewayData>();
             UserManager userManager = new UserManager();
             User user = userManager.GetUserByMobile(mobile).ToList()[0];
@@ -304,6 +308,17 @@ namespace AllHomeNode.Repository
                 data.GatewayId = device.GatewayId;
                 data.GatewayName = userdevicebind.GatewayGivenName;
                 data.Privilege = userdevicebind.Privilege;
+
+                // 20分钟内无心跳认为网关不在线
+                List<Heartbeat> heartbeats = heartbeatManager.GetHeartbeats(data.GatewayId, timeStart, timeEnd).ToList();
+                if (heartbeats.Count > 0)
+                {
+                    data.OnineState = CommandUtil.ONLINE_STATE.ONLINE;
+                }
+                else
+                {
+                    data.OnineState = CommandUtil.ONLINE_STATE.OFFLINE;
+                }
 
                 datas.Add(data);
             }

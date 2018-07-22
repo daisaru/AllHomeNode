@@ -19,6 +19,7 @@ using AllHomeNode.Service.MQTT;
 using AllHomeNode.Service.Quartz;
 using AllHomeNode.Service.MQTT.Device;
 using AllHomeNode.Repository;
+using AllHomeNode.Auth;
 
 namespace AllHomeNode
 {
@@ -31,6 +32,11 @@ namespace AllHomeNode
             try
             {
                 LogHelper.WriteLog(LogLevel.Warn, t, "AllHome Node is Starting...");
+
+                // Random code test
+                //string code = RandomCodeUtility.MakeCode(4);
+                //string codepic = RandomCodeUtility.CreateRandomCode(code);
+            
 
                 // Weather & Air Test
                 //VENT_EAWADA eawada = new VENT_EAWADA();

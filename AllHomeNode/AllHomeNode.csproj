@@ -116,7 +116,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth\CodeUtil.cs" />
     <Compile Include="Auth\DeviceToken.cs" />
+    <Compile Include="Auth\RandomCode.cs" />
     <Compile Include="Auth\ServiceToken.cs" />
     <Compile Include="Auth\Token.cs" />
     <Compile Include="Controller\DataController.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Database\Manager\ControlPointManager.cs" />
     <Compile Include="Database\Manager\GatewayManager.cs" />
     <Compile Include="Database\Manager\GatewayDeviceBindManager.cs" />
+    <Compile Include="Database\Manager\HeartbeatManager.cs" />
     <Compile Include="Database\Manager\PowerDataSummaryManager.cs" />
     <Compile Include="Database\Manager\PowerDataManager.cs" />
     <Compile Include="Database\Manager\DeviceManager.cs" />

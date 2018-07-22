@@ -58,7 +58,7 @@ namespace AllHomeNode.Repository
             ret.Power_Light = data.Light;
             ret.Power_Air = data.Air;
             ret.Power_Total = data.Total;
-            ret.Date = data.SummaryTime.ToShortDateString();
+            ret.Date = data.SummaryTime.AddDays(-1).ToShortDateString();
             return ret;
         }
 
@@ -201,7 +201,37 @@ namespace AllHomeNode.Repository
             {
                 #region 按天查询
 
+                DateTime dayStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                DateTime dayEnd = dayStart.AddDays(1).AddMinutes(-1);
                 historyDatas = powerDataSummaryMgr.GetDayPowerConsumeSummary(deviceId, startTime, endTime).ToList();
+
+                if(dayEnd.Day >= DateTime.Now.Day)
+                {
+                    // 加上今天的数据：由于数据可能不连续，所以未必准确，使用今天最新一条数据减去除今天外，最后一条数据；
+                    PowerDataManager powerDataMgr = new PowerDataManager();
+                    List<PowerData> powerdatas = powerDataMgr.GetPowerConsume(deviceId, startTime, endTime).ToList();
+
+                    PowerData latestPower = powerdatas[0];
+
+                    foreach(PowerData p in powerdatas)
+                    {
+                        if (p.TimeStamp > dayEnd.AddDays(-1))
+                            continue;
+
+                        PowerDataSummary todayData = new PowerDataSummary();
+                        todayData.GatewayId = deviceId;
+                        double pwr = double.Parse(latestPower.PowerConsume) - double.Parse(p.PowerConsume);
+                        todayData.Air = pwr.ToString();
+                        todayData.Light = "0";
+                        todayData.Total = todayData.Air;
+                        todayData.SummaryTime = DateTime.Now.AddDays(1);
+                        todayData.TimeStamp = DateTime.Now;
+                        todayData.IsMonth = 0;
+
+                        historyDatas.Add(todayData);
+                        break;
+                    }
+                }
 
                 #endregion
             }

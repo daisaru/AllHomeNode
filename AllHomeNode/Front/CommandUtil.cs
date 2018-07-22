@@ -45,5 +45,11 @@ namespace AllHomeNode.Front
             public static string METER_POWER = "METER_POWER";
         }
 
+        public static class ONLINE_STATE
+        {
+            public static string ONLINE = "Online";
+            public static string OFFLINE = "Offline";
+        }
+
     }
 }

@@ -11,5 +11,6 @@ namespace AllHomeNode.Front
         public string GatewayId { get; set; }
         public string GatewayName { get; set; }
         public string Privilege { get; set; }
+        public string OnineState { get; set; }
     }
 }
