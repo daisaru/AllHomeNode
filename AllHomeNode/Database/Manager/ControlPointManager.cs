@@ -38,6 +38,24 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
+        public bool Delete(string deviceId)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                try
+                {
+                    int count = session.Delete("from ControlPoint where ID_Device = ?", deviceId, NHibernateUtil.String);
+                    session.Flush();
+                    return count >= 0 ? true : false;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+        }
+
         public bool Delete(ControlPoint item)
         {
             using (var session = NHibernateHelper.OpenSession())

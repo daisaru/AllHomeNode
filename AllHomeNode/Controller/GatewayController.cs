@@ -19,7 +19,7 @@ namespace AllHomeNode.controller
     {
         private GatewayRepository repository = new GatewayRepository();
 
-        // 获取用户名下某网关的分享信息
+        #region// 获取用户名下某网关的分享信息
         // POST api/gateway/fetchshareinfo
         public GetGatewayShareInfoRspData FetchShareInfo([FromBody]GetGatewayShareInfoReqData item)
         {
@@ -40,7 +40,7 @@ namespace AllHomeNode.controller
 
             try
             {
-                List<GatewayShareData> shares = repository.GetDeviceShareData(item.Mobile, item.GatewayId).ToList();
+                List<GatewayShareData> shares = repository.GetGatewayShareData(item.Mobile, item.GatewayId).ToList();
                 ret.Result = CommandUtil.RETURN.SUCCESS;
                 ret.Shares = shares;
             }
@@ -56,9 +56,111 @@ namespace AllHomeNode.controller
             return ret;
         }
 
-        // 根据设备ID，更新指定设备的名称
+        #endregion
+
+        #region// 根据网关ID，删除其所属的所有设备及其控制点信息
+        // POST api/gateway/uninstallalldevice
+        public DeleteAllDeviceRspData UninstallAllDevice([FromBody]DeleteAllDeviceReqData item)
+        {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            DeleteAllDeviceRspData ret = new DeleteAllDeviceRspData();
+            ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                return ret;
+            }
+
+            try
+            {
+                // 检查权限
+                bool checkRight = repository.CheckRight(item.Mobile, item.GatewayId);
+                if (checkRight == false)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_NO_PRIVILEGE;
+                    return ret;
+                }
+
+                // 删除所有设备
+                bool uninstallRet = repository.DeleteAllDeviceFromGateway(item.GatewayId);
+                if (uninstallRet == false)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    return ret;
+                }
+            }
+            catch (Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
+            }
+
+            ret.Result = CommandUtil.RETURN.SUCCESS;
+            return ret;
+        }
+        #endregion
+
+        #region// 根据设备ID，从其所隶属的网关中删除，同时删除所有控制点信息
+        // POST api/gateway/uninstalldevice
+        public DeleteDeviceRspData UninstallDevice([FromBody]DeleteDeviceReqData item)
+        {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            DeleteDeviceRspData ret = new DeleteDeviceRspData();
+            ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+
+            bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            if (checkToken == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                return ret;
+            }
+
+            try
+            {
+                // 检查权限
+                bool checkRight = repository.CheckRight(item.Mobile, item.GatewayId);
+                if(checkRight == false)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_NO_PRIVILEGE;
+                    return ret;
+                }
+
+                // 删除设备信息
+                bool deleteDevice = repository.DeleteDeviceFromGateway(item.DeviceId);
+                if(deleteDevice == false)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    return ret;
+                }
+            }
+            catch(Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
+            }
+
+            ret.Result = CommandUtil.RETURN.SUCCESS;
+            return ret;
+        }
+        #endregion
+
+        #region// 根据设备ID，更新指定设备的名称
         // POST api/gateway/updatedeviceinfo
-        public UpdateDeviceInfoRspData UpdateRoomInfo([FromBody]UpdateDeviceInfoReqData item)
+        public UpdateDeviceInfoRspData UpdateDeviceInfo([FromBody]UpdateDeviceInfoReqData item)
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
@@ -90,9 +192,9 @@ namespace AllHomeNode.controller
 
             return ret;
         }
+        #endregion
 
-
-        // 获取用户名下所有绑定网关设备
+        #region// 获取用户名下所有绑定网关设备
         // POST api/gateway/fetchallgateway
         public GetAllGatewayRspData FetchAllGateway([FromBody]GetAllGatewayReqData item)
         {
@@ -128,8 +230,9 @@ namespace AllHomeNode.controller
 
             return ret;
         }
+        #endregion
 
-        // 绑定设备及已绑设备信息更新(管理员)
+        #region// 绑定设备及已绑设备信息更新(管理员)
         // POST api/gateway/bind
         public ReturnResult Bind([FromBody]BindGatewayReqData item)
         {
@@ -151,7 +254,7 @@ namespace AllHomeNode.controller
 
             try
             {
-                repository.BindDeviceWithUser(item.Mobile, item.GatewayId, item.GatewayName);
+                repository.BindGatewayWithUser(item.Mobile, item.GatewayId, item.GatewayName);
                 ret.Result = CommandUtil.RETURN.SUCCESS;
             }
             catch(Exception exp)
@@ -164,8 +267,9 @@ namespace AllHomeNode.controller
 
             return ret;
         }
+        #endregion
 
-        // 分享设备及变更
+        #region// 分享设备及变更
         // POST api/gateway/share
         public ReturnResult Share([FromBody]ShareGatewayReqData item)
         {
@@ -199,8 +303,9 @@ namespace AllHomeNode.controller
               
             return ret;
         }
+        #endregion
 
-        // 分享取消
+        #region// 分享取消
         // POST api/gateway/sharerevoke
         public ReturnResult ShareRevoke([FromBody]ShareGatewayReqData item)
         {
@@ -232,8 +337,9 @@ namespace AllHomeNode.controller
             
             return ret;
         }
+        #endregion
 
-        // 获取设备访问权限
+        #region// 获取设备访问权限
         // POST api/gateway/fetchaccesstoken
         public GetGatewayTokenRspData FetchAccessToken([FromBody]GetGatewayTokenReqData item)
         {
@@ -275,8 +381,9 @@ namespace AllHomeNode.controller
 
             return ret;
         }
+        #endregion
 
-        // 获取网关设备所有访问控制点
+        #region// 获取网关设备所有访问控制点
         // POST api/gateway/fetchcontrolpoints
         public GetControlPointsRspData FetchControlPoints([FromBody]GetControlPointsReqData item)
         {
@@ -311,10 +418,11 @@ namespace AllHomeNode.controller
 
             return ret;
         }
+        #endregion
 
-        // 网关设备注册
+        #region// 网关设备注册
         // POST api/gateway/registerdevice
-        public GatewayRegisterRspData RegisterDevice(GatewayRegisterReqData item)
+        public GatewayRegisterRspData RegisterDevice([FromBody]GatewayRegisterReqData item)
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
@@ -347,10 +455,60 @@ namespace AllHomeNode.controller
 
             return rsp;
         }
+        #endregion
 
-        // 网关上报房间及控制点信息
+        #region// 添加设备到指定网关
+        // POST api/gateway/adddevice
+        public AddDeviceRspData AddDevice([FromBody]AddDeviceReqData item)
+        {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            AddDeviceRspData ret = new AddDeviceRspData();
+            ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+
+            try
+            {
+                bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+                if (checkToken == false)
+                {
+                    LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+                    ret.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+                    return ret;
+                }
+
+                // 检查权限
+                bool checkRight = repository.CheckRight(item.Mobile, item.GatewayId);
+                if (checkRight == false)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_NO_PRIVILEGE;
+                    return ret;
+                }
+
+                bool addRet = repository.AddDeviceToGateway(item.GatewayId, item.Device);   
+                if(addRet == false)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    return ret;
+                }
+            }
+            catch (Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return ret;
+            }
+
+            ret.Result = CommandUtil.RETURN.SUCCESS;
+            return ret;
+        }
+        #endregion
+
+        #region// 网关上报房间及控制点信息
         // POST api/gateway/uploadcontrolpoints
-        public GatewayUploadCtrlPointsRspData UploadControlPoints(GatewayUploadCtrlPointsReqData item)
+        public GatewayUploadCtrlPointsRspData UploadControlPoints([FromBody]GatewayUploadCtrlPointsReqData item)
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
@@ -382,5 +540,6 @@ namespace AllHomeNode.controller
 
             return rsp;
         }
+        #endregion
     }
 }

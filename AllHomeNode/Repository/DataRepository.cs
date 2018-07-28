@@ -68,7 +68,7 @@ namespace AllHomeNode.Repository
             PowerDataSummaryManager powerDataSummaryMgr = new PowerDataSummaryManager();
 
             GatewayManager deviceMgr = new GatewayManager();
-            List<Gateway> devices = deviceMgr.GetDeviceList().ToList();
+            List<Gateway> devices = deviceMgr.GetGatewayList().ToList();
 
             foreach (Gateway d in devices)
             {
@@ -151,7 +151,7 @@ namespace AllHomeNode.Repository
             PowerDataSummaryManager powerDataSummaryMgr = new PowerDataSummaryManager();
 
             GatewayManager deviceMgr = new GatewayManager();
-            List<Gateway> devices = deviceMgr.GetDeviceList().ToList();
+            List<Gateway> devices = deviceMgr.GetGatewayList().ToList();
 
             foreach(Gateway d in devices)
             {
@@ -396,7 +396,7 @@ namespace AllHomeNode.Repository
                 UserGatewayBindManager userDeviceBindMgr = new UserGatewayBindManager();
                 GatewayManager deviceMgr = new GatewayManager();
 
-                Gateway device = deviceMgr.GetDeviceByDeviceId(deviceId)[0];
+                Gateway device = deviceMgr.GetGatewayByGatewayIdentifier(deviceId)[0];
                 // 随便使用一个绑定该网关的用户地址
                 UserGatewayBind userDeviceBind = userDeviceBindMgr.GetUserDeviceBindByDeviceId(device.Id)[0];
                 // 从用户的个人信息得到地址

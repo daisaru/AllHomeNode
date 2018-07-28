@@ -38,7 +38,7 @@ namespace AllHomeNode.Database.Manager
 
         public bool Delete(string deviceId)
         {
-            Gateway item = GetDeviceById(deviceId).ToList()[0];
+            Gateway item = GetGatewayById(deviceId).ToList()[0];
             using (var session = NHibernateHelper.OpenSession())
             {
                 try
@@ -73,16 +73,16 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<Gateway> GetDeviceByDeviceId(string deviceId)
+        public IList<Gateway> GetGatewayByGatewayIdentifier(string gateway)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<Gateway> device = session.QueryOver<Gateway>().Where(c => c.GatewayId == deviceId).List();
+                IList<Gateway> device = session.QueryOver<Gateway>().Where(c => c.GatewayId == gateway).List();
                 return device;
             }
         }
 
-        public IList<Gateway> GetDeviceById(string id)
+        public IList<Gateway> GetGatewayById(string id)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
@@ -91,7 +91,7 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<Gateway> GetDeviceList()
+        public IList<Gateway> GetGatewayList()
         {
             using (var session = NHibernateHelper.OpenSession())
             {

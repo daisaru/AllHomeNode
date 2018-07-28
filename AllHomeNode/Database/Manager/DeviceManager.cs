@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using AllHomeNode.Database.Model;
+using NHibernate;
 
 namespace AllHomeNode.Database.Manager
 {
@@ -28,6 +29,24 @@ namespace AllHomeNode.Database.Manager
                     session.Update(item);
                     session.Flush();
                     return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        public bool Delete(string deviceId)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                try
+                {
+                    int count = session.Delete("from Device where Id = ?", deviceId, NHibernateUtil.String);
+                    session.Flush();
+                    return count >= 0 ? true : false;
                 }
                 catch (Exception ex)
                 {

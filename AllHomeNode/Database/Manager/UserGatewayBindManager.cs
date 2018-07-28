@@ -75,12 +75,12 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<UserGatewayBind> GetUserDeviceBindByUserIdAndDeviceId(string userId, string deviceId)
+        public IList<UserGatewayBind> GetUserGatewayBindByUserIdAndGatewayId(string userId, string gatewayId)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<UserGatewayBind> list = session.QueryOver<UserGatewayBind>().Where(
-                    c => c.Id_User != userId && c.Id_Gateway == deviceId).List();
+                    c => c.Id_User != userId && c.Id_Gateway == gatewayId).List();
                 return list;
             }
         }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using AllHomeNode.Database.Model;
+using NHibernate;
 
 namespace AllHomeNode.Database.Manager
 {
@@ -37,6 +38,24 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
+        public bool Delete(string deviceId)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                try
+                {
+                    int count = session.Delete("from GatewayDeviceBind where ID_Device = ?", deviceId, NHibernateUtil.String);
+                    session.Flush();
+                    return count >= 0 ? true : false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+        }
+
         public bool Delete(GatewayDeviceBind item)
         {
             using (var session = NHibernateHelper.OpenSession())
@@ -55,11 +74,11 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<GatewayDeviceBind> GetControlPointByDeviceId(string deviceId)
+        public IList<GatewayDeviceBind> GetBindsByGatewayId(string GatewayId)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<GatewayDeviceBind> list = session.QueryOver<GatewayDeviceBind>().Where(c => c.Id_Gateway == deviceId).List();
+                IList<GatewayDeviceBind> list = session.QueryOver<GatewayDeviceBind>().Where(c => c.Id_Gateway == GatewayId).List();
                 return list;
             }
         }

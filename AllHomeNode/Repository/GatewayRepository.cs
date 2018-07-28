@@ -26,11 +26,11 @@ namespace AllHomeNode.Repository
             return device;
         }
 
-        private GatewayData FillDeviceDataObject(Gateway device)
+        private GatewayData FillDeviceDataObject(Gateway gateway)
         {
             GatewayData data = new GatewayData();
-            data.GatewayId = device.GatewayId;
-            data.GatewayName = device.GatewayName;
+            data.GatewayId = gateway.GatewayId;
+            data.GatewayName = gateway.GatewayName;
             return data;
         }
 
@@ -38,7 +38,7 @@ namespace AllHomeNode.Repository
         {
             List<GatewayData> devicedata = new List<GatewayData>();
             GatewayManager deviceMgr = new GatewayManager();
-            List<Gateway> devices = deviceMgr.GetDeviceList().ToList();
+            List<Gateway> devices = deviceMgr.GetGatewayList().ToList();
             foreach (Gateway device in devices)
             {
                 GatewayData data = FillDeviceDataObject(device);
@@ -47,10 +47,10 @@ namespace AllHomeNode.Repository
             return devicedata;
         }
 
-        public GatewayData Get(string deviceId)
+        public GatewayData Get(string gateway)
         {
             GatewayManager deviceMgr = new GatewayManager();
-            Gateway device = deviceMgr.GetDeviceById(deviceId).ToList()[0];
+            Gateway device = deviceMgr.GetGatewayById(gateway).ToList()[0];
             GatewayData data = FillDeviceDataObject(device);
             return data;
         }
@@ -105,13 +105,13 @@ namespace AllHomeNode.Repository
             return true;
         }
 
-        public void Remove(string deviceId)
+        public void Remove(string GatewayId)
         {
             GatewayManager deviceMgr = new GatewayManager();
-            deviceMgr.Delete(deviceId);
+            deviceMgr.Delete(GatewayId);
         }
 
-        public IEnumerable<GatewayShareData> GetDeviceShareData(string mobile, string deviceId)
+        public IEnumerable<GatewayShareData> GetGatewayShareData(string mobile, string gateway)
         {
             List<GatewayShareData> datas = new List<GatewayShareData>();
 
@@ -119,10 +119,10 @@ namespace AllHomeNode.Repository
             User user = userManager.GetUserByMobile(mobile).ToList()[0];
 
             GatewayManager deviceMgr = new GatewayManager();
-            Gateway device = deviceMgr.GetDeviceByDeviceId(deviceId).ToList()[0];
+            Gateway device = deviceMgr.GetGatewayByGatewayIdentifier(gateway).ToList()[0];
 
             UserGatewayBindManager userDeviceBindManager = new UserGatewayBindManager();
-            List<UserGatewayBind> userdevices = userDeviceBindManager.GetUserDeviceBindByUserIdAndDeviceId(user.Id, device.Id).ToList();
+            List<UserGatewayBind> userdevices = userDeviceBindManager.GetUserGatewayBindByUserIdAndGatewayId(user.Id, device.Id).ToList();
 
             foreach (UserGatewayBind userdevicebind in userdevices)
             {
@@ -149,13 +149,13 @@ namespace AllHomeNode.Repository
             return datas;
         }
 
-        public void RevokeShareWithFriend(string friend, string deviceId)
+        public void RevokeShareWithFriend(string friend, string gateway)
         {
             UserManager userMgr = new UserManager();
             User user = userMgr.GetUserByMobile(friend).ToList()[0];
 
             GatewayManager deviceMgr = new GatewayManager();
-            Gateway device = deviceMgr.GetDeviceByDeviceId(deviceId).ToList()[0];
+            Gateway device = deviceMgr.GetGatewayByGatewayIdentifier(gateway).ToList()[0];
 
             UserGatewayBindManager bindMgr = new UserGatewayBindManager();
             List<UserGatewayBind> binds = bindMgr.GetUserDeviceBindByUserId(user.Id).ToList();
@@ -173,13 +173,13 @@ namespace AllHomeNode.Repository
             bindMgr.Delete(needDelete);
         }
 
-        public void ShareGatewayWithFriend(string friend, string deviceId, string privilege, string time)
+        public void ShareGatewayWithFriend(string friend, string gateway, string privilege, string time)
         {
             UserManager userMgr = new UserManager();
             User user = userMgr.GetUserByMobile(friend).ToList()[0];
 
             GatewayManager deviceMgr = new GatewayManager();
-            Gateway device = deviceMgr.GetDeviceByDeviceId(deviceId).ToList()[0];
+            Gateway device = deviceMgr.GetGatewayByGatewayIdentifier(gateway).ToList()[0];
 
             UserGatewayBindManager bindMgr = new UserGatewayBindManager();
             List<UserGatewayBind> binds = bindMgr.GetUserDeviceBindByUserId(user.Id).ToList();
@@ -247,13 +247,13 @@ namespace AllHomeNode.Repository
             deviceMgr.Update(device);
         }
 
-        public void BindDeviceWithUser(string mobile, string deviceId, string deviceName)
+        public void BindGatewayWithUser(string mobile, string gatewayId, string gatewayName)
         {
             UserManager userMgr = new UserManager();
             User user = userMgr.GetUserByMobile(mobile).ToList()[0];
 
             GatewayManager deviceMgr = new GatewayManager();
-            Gateway device = deviceMgr.GetDeviceByDeviceId(deviceId).ToList()[0];
+            Gateway device = deviceMgr.GetGatewayByGatewayIdentifier(gatewayId).ToList()[0];
             string id = device.Id;
 
             UserGatewayBindManager bindMgr = new UserGatewayBindManager();
@@ -265,7 +265,7 @@ namespace AllHomeNode.Repository
                 {
                     if (udbind.Id_Gateway == id)
                     {
-                        udbind.GatewayGivenName = deviceName;
+                        udbind.GatewayGivenName = gatewayName;
                         udbind.TimeStamp = DateTime.Now;
 
                         bindMgr.Update(udbind);
@@ -280,7 +280,7 @@ namespace AllHomeNode.Repository
                 bind.Id_User = user.Id;
                 bind.Privilege = CommandUtil.PRIVILEGE.ADMIN;
                 bind.Time = "0";
-                bind.GatewayGivenName = deviceName;
+                bind.GatewayGivenName = gatewayName;
                 bind.TimeStamp = DateTime.Now;
 
                 bindMgr.Add(bind);
@@ -304,7 +304,7 @@ namespace AllHomeNode.Repository
 
                 string id_device = userdevicebind.Id_Gateway;
                 GatewayManager deviceManager = new GatewayManager();
-                Gateway device = deviceManager.GetDeviceById(id_device).ToList()[0];
+                Gateway device = deviceManager.GetGatewayById(id_device).ToList()[0];
                 data.GatewayId = device.GatewayId;
                 data.GatewayName = userdevicebind.GatewayGivenName;
                 data.Privilege = userdevicebind.Privilege;
@@ -325,11 +325,11 @@ namespace AllHomeNode.Repository
             return datas;
         }
 
-        private ControlPoint FillControlPointObject(ControlPointData item, string idRoom)
+        private ControlPoint FillControlPointObject(ControlPointData item, string deviceId)
         {
             ControlPoint cp = new ControlPoint();
             cp.Id = Guid.NewGuid().ToString("N");
-            cp.Id_Device = idRoom;
+            cp.Id_Device = deviceId;
             cp.Code = item.Code;
             cp.Point = item.Point;
             cp.Name = item.Name;
@@ -361,13 +361,13 @@ namespace AllHomeNode.Repository
             return ret;
         }
 
-        public IEnumerable<DeviceData> GetAllControlPoints(string deviceId)
+        public IEnumerable<DeviceData> GetAllControlPoints(string gatewayId)
         {
             GatewayManager deviceMgr = new GatewayManager();
-            Gateway device = deviceMgr.GetDeviceByDeviceId(deviceId).ToList()[0];
+            Gateway device = deviceMgr.GetGatewayByGatewayIdentifier(gatewayId).ToList()[0];
 
             GatewayDeviceBindManager drBindMgr = new GatewayDeviceBindManager();
-            List<GatewayDeviceBind> drBinds = drBindMgr.GetControlPointByDeviceId(device.Id).ToList();
+            List<GatewayDeviceBind> drBinds = drBindMgr.GetBindsByGatewayId(device.Id).ToList();
 
             DeviceManager roomMgr = new DeviceManager();
             ControlPointManager cpMgr = new ControlPointManager();
@@ -397,18 +397,18 @@ namespace AllHomeNode.Repository
             return result;
         }
 
-        public bool RegisterGateway(string deviceId, string deviceName)
+        public bool RegisterGateway(string gatewayId, string gatewayName)
         {
             GatewayManager devMgr = new GatewayManager();
-            List<Gateway> devices = devMgr.GetDeviceByDeviceId(deviceId).ToList();
+            List<Gateway> devices = devMgr.GetGatewayByGatewayIdentifier(gatewayId).ToList();
 
             if (devices.Count == 0)
             {
                 // new register
                 Gateway dev = new Gateway();
                 dev.Id = Guid.NewGuid().ToString("N");
-                dev.GatewayId = deviceId;
-                dev.GatewayName = deviceName;
+                dev.GatewayId = gatewayId;
+                dev.GatewayName = gatewayName;
                 dev.TimeStamp = DateTime.Now;
 
                 devMgr.Add(dev);
@@ -417,39 +417,179 @@ namespace AllHomeNode.Repository
             return true;
         }
 
-        public bool UploadCtrlPoints(string deviceId, List<DeviceData> rooms)
+        public bool AddDeviceToGateway(string gateway, DeviceData device)
         {
-            GatewayManager devMgr = new GatewayManager();
-            Gateway dev = devMgr.GetDeviceByDeviceId(deviceId).ToList()[0];
+            GatewayManager gtwMgr = new GatewayManager();
+            Gateway dev = gtwMgr.GetGatewayByGatewayIdentifier(gateway).ToList()[0];
 
-            DeviceManager roomMgr = new DeviceManager();
+            DeviceManager deviceMgr = new DeviceManager();
             GatewayDeviceBindManager drBindMgr = new GatewayDeviceBindManager();
             ControlPointManager cpMgr = new ControlPointManager();
 
-            foreach (DeviceData r in rooms)
+            try
             {
-                Device roomTmp = new Device();
-                roomTmp.Id = Guid.NewGuid().ToString("N");
-                roomTmp.Name = r.Name;
-                roomTmp.Type = r.Type;
-                roomTmp.TimeStamp = DateTime.Now;
+                Device deviceTmp = new Device();
+                deviceTmp.Id = Guid.NewGuid().ToString("N");
+                deviceTmp.Name = device.Name;
+                deviceTmp.Type = device.Type;
+                deviceTmp.TimeStamp = DateTime.Now;
 
-                roomMgr.Add(roomTmp);
+                deviceMgr.Add(deviceTmp);
 
                 GatewayDeviceBind drBindTmp = new GatewayDeviceBind();
                 drBindTmp.Id = Guid.NewGuid().ToString("N");
                 drBindTmp.Id_Gateway = dev.Id;
-                drBindTmp.Id_Device = roomTmp.Id;
+                drBindTmp.Id_Device = deviceTmp.Id;
                 drBindTmp.TimeStamp = DateTime.Now;
 
                 drBindMgr.Add(drBindTmp);
 
-                List<ControlPointData> controlpoints = r.ControlPoints;
+                List<ControlPointData> controlpoints = device.ControlPoints;
                 foreach (ControlPointData cpdata in controlpoints)
                 {
-                    ControlPoint cp = FillControlPointObject(cpdata, roomTmp.Id);
+                    ControlPoint cp = FillControlPointObject(cpdata, deviceTmp.Id);
                     cpMgr.Add(cp);
                 }
+            }
+            catch(Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool UploadCtrlPoints(string gateway, List<DeviceData> devices)
+        {
+            GatewayManager gtwMgr = new GatewayManager();
+            Gateway dev = gtwMgr.GetGatewayByGatewayIdentifier(gateway).ToList()[0];
+
+            DeviceManager deviceMgr = new DeviceManager();
+            GatewayDeviceBindManager drBindMgr = new GatewayDeviceBindManager();
+            ControlPointManager cpMgr = new ControlPointManager();
+
+            try
+            { 
+                foreach (DeviceData r in devices)
+                {
+                    Device deviceTmp = new Device();
+                    deviceTmp.Id = Guid.NewGuid().ToString("N");
+                    deviceTmp.Name = r.Name;
+                    deviceTmp.Type = r.Type;
+                    deviceTmp.TimeStamp = DateTime.Now;
+
+                    deviceMgr.Add(deviceTmp);
+
+                    GatewayDeviceBind drBindTmp = new GatewayDeviceBind();
+                    drBindTmp.Id = Guid.NewGuid().ToString("N");
+                    drBindTmp.Id_Gateway = dev.Id;
+                    drBindTmp.Id_Device = deviceTmp.Id;
+                    drBindTmp.TimeStamp = DateTime.Now;
+
+                    drBindMgr.Add(drBindTmp);
+
+                    List<ControlPointData> controlpoints = r.ControlPoints;
+                    foreach (ControlPointData cpdata in controlpoints)
+                    {
+                        ControlPoint cp = FillControlPointObject(cpdata, deviceTmp.Id);
+                        cpMgr.Add(cp);
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool CheckRight(string mobile, string gateway)
+        {
+            bool ret = false;
+
+            GatewayManager gatewayMgr = new GatewayManager();
+            Gateway gtw = gatewayMgr.GetGatewayByGatewayIdentifier(gateway).ToList()[0];
+            UserManager userMgr = new UserManager();
+            User user = userMgr.GetUserByMobile(mobile).ToList()[0];
+            UserGatewayBindManager userGatewayBindMgr = new UserGatewayBindManager();
+            UserGatewayBind usergatewayBind = userGatewayBindMgr.GetUserGatewayBindByUserIdAndGatewayId(user.Id, gtw.Id).ToList()[0];
+            if(usergatewayBind.Privilege == CommandUtil.PRIVILEGE.ADMIN)
+            {
+                ret = true;
+            }
+
+            return ret;
+        }
+
+        public bool DeleteAllDeviceFromGateway(string gateway)
+        {
+            GatewayManager gatewayMgr = new GatewayManager();
+            DeviceManager deviceMgr = new DeviceManager();
+            GatewayDeviceBindManager gatewayDeviceBindMgr = new GatewayDeviceBindManager();
+            ControlPointManager controlPointMgr = new ControlPointManager();
+
+            // 找到网关
+            Gateway gtw = gatewayMgr.GetGatewayByGatewayIdentifier(gateway).ToList()[0];
+
+            bool ret = false;
+            List<GatewayDeviceBind> devicesBinds = gatewayDeviceBindMgr.GetBindsByGatewayId(gtw.Id).ToList();
+            foreach(GatewayDeviceBind devicebind in devicesBinds)
+            {
+                string deviceId = devicebind.Id_Device;
+
+                // 删除所有的CP
+                ret = controlPointMgr.Delete(deviceId);
+                if (ret == false)
+                {
+                    return false;
+                }
+
+                // 删除device
+                ret = deviceMgr.Delete(deviceId);
+                if (ret == false)
+                {
+                    return false;
+                }
+
+                // 删除绑定
+                ret = gatewayDeviceBindMgr.Delete(deviceId);
+                if (ret == false)
+                {
+                    return false;
+                }
+            }
+
+            return ret;
+        }
+
+        public bool DeleteDeviceFromGateway(string deviceId)
+        {
+            DeviceManager deviceMgr = new DeviceManager();
+            GatewayDeviceBindManager gatewayDeviceBindMgr = new GatewayDeviceBindManager();
+            ControlPointManager controlPointMgr = new ControlPointManager();
+
+            // 删除该设备所有的CP
+            bool ret = controlPointMgr.Delete(deviceId);
+            if(ret == false)
+            {
+                return false;
+            }
+
+            // 删除设备和网关绑定信息
+            ret = gatewayDeviceBindMgr.Delete(deviceId);
+            if(ret == false)
+            {
+                return false;
+            }
+
+            // 删除设备信息
+            ret = deviceMgr.Delete(deviceId);
+            if(ret == false)
+            {
+                return false;
             }
 
             return true;

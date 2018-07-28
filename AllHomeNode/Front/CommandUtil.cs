@@ -14,6 +14,7 @@ namespace AllHomeNode.Front
             public static string ERROR_UNKNOW = "E00000";
             public static string ERROR_TOKEN_INVALID = "E00001";
             public static string ERROR_RANDOMCODE_INVALID = "E00002";
+            public static string ERROR_NO_PRIVILEGE = "E00003";
 
             public static string ERROR_USER_MOBILEUSED = "E10001";  //手机号已经被使用
         }
