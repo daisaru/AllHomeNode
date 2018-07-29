@@ -19,12 +19,12 @@ namespace InstallationTool
             string deviceName = "测试设备";
             string deviceSignature = DateTime.Now.ToString();
 
-            GatewayRegisterRspData registerRet =
-                HttpHelper.Instance().RegisterGateway(deviceId, deviceName, deviceSignature);
+            //GatewayRegisterRspData registerRet =
+            //    HttpHelper.Instance().RegisterGateway(deviceId, deviceName, deviceSignature);
 
-            List<DeviceData> datas = DBUtil.Instance().GetControlPoints();
-            GatewayUploadCtrlPointsRspData uploadRet =
-                HttpHelper.Instance().UploadControllPoints(deviceId, datas, deviceSignature);
+            //List<DeviceData> datas = DBUtil.Instance().GetControlPoints();
+            //GatewayUploadCtrlPointsRspData uploadRet =
+            //    HttpHelper.Instance().UploadControllPoints(deviceId, datas, deviceSignature);
 
         }
     }

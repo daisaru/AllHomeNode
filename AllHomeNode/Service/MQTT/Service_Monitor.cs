@@ -59,6 +59,8 @@ namespace AllHomeNode.Service.MQTT
         // 发送心跳包
         private void TimerUp(object value)
         {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, "HEART BEAT");
             CommandDownload cmd = CommandHelper.Instance().GetTimeSyncCommand();
             string cmdStr = cmd.ToJSON();
             MQTT_Send("to/device/timesync", cmdStr);
