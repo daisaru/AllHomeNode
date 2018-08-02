@@ -27,7 +27,6 @@ namespace AllHomeNode.Service.MQTT
             RESERVE = 0,
             LIGHT = 1,          // 照明
             AIRCONTROL = 2,     // 空调
-            VENT = 3            // 新风
         }
 
         public enum DEVICEBRAND

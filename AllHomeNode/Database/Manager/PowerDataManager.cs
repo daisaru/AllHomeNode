@@ -21,6 +21,19 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
+        public IList<PowerData> GetLatestPowerConsume(string deviceId, DateTime startTime, DateTime endTime, POWERCONSUMERTYPE type)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<PowerData> data = session.QueryOver<PowerData>().Where
+                    (c => (c.GatewayId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime && c.PowerType == type.ToString()))
+                    .OrderBy(c => c.TimeStamp)
+                    .Desc
+                    .List();
+                return data;
+            }
+        }
+
         public IList<PowerData> GetOldestPowerConsume(string deviceId, DateTime startTime, DateTime endTime, POWERCONSUMERTYPE type)
         {
             using (var session = NHibernateHelper.OpenSession())

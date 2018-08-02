@@ -33,6 +33,16 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
+        public IList<PowerDataSummary> GetDayPowerConsumeSummary(string deviceId, DateTime startTime, DateTime endTime)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                IList<PowerDataSummary> data = session.QueryOver<PowerDataSummary>().Where
+                    (c => (c.GatewayId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 0)).List();
+                return data;
+            }
+        }
+
         public PowerDataSummary GetOldestMonthPowerSummary(string deviceId, DateTime startTime, DateTime endTime)
         {
             using (var session = NHibernateHelper.OpenSession())
@@ -67,14 +77,14 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public PowerDataSummary GetLatestPowerSummary(string deviceId, DateTime startTime, DateTime endTime)
+        public PowerDataSummary GetOldestPowerDataInTimeSpan(string deviceId, DateTime startTime, DateTime endTime)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
                 List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
                     (c => (c.GatewayId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime && c.IsMonth == 0))
-                    .OrderBy(c => c.SummaryTime)
-                    .Desc
+                    .OrderBy(c => c.TimeStamp)
+                    .Asc
                     .List()
                     .ToList();
                 if (datas != null && datas.Count > 0)
@@ -84,13 +94,20 @@ namespace AllHomeNode.Database.Manager
             }
         }
 
-        public IList<PowerDataSummary> GetDayPowerConsumeSummary(string deviceId, DateTime startTime, DateTime endTime)
+        public PowerDataSummary GetLatestPowerDataInTimeSpan(string deviceId, DateTime startTime, DateTime endTime)
         {
             using (var session = NHibernateHelper.OpenSession())
             {
-                IList<PowerDataSummary> data = session.QueryOver<PowerDataSummary>().Where
-                    (c => (c.GatewayId == deviceId && c.SummaryTime >= startTime && c.SummaryTime <= endTime)).List();
-                return data;
+                List<PowerDataSummary> datas = session.QueryOver<PowerDataSummary>().Where
+                    (c => (c.GatewayId == deviceId && c.TimeStamp >= startTime && c.TimeStamp <= endTime && c.IsMonth == 0))
+                    .OrderBy(c => c.TimeStamp)
+                    .Desc
+                    .List()
+                    .ToList();
+                if (datas != null && datas.Count > 0)
+                    return datas[0];
+                else
+                    return null;
             }
         }
     }

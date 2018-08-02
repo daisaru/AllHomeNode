@@ -10,36 +10,11 @@ using System.Windows.Forms;
 
 namespace AllHomeDBConfig
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
-        }
-
-        private void btn_selectfile_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "SQLite数据文件(*.db)|*.db";//设置文件类型
-            sfd.FileName = "allhome";//设置默认文件名
-            sfd.DefaultExt = "db";//设置默认格式（可以不设）
-            sfd.AddExtension = true;//设置自动在文件名中添加扩展名
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                tb_db_filepath.Text = sfd.FileName;
-            }
-        }
-
-        private void btn_generatedb_Click(object sender, EventArgs e)
-        {
-            if(tb_db_filepath.Text == "")
-            {
-                MessageBox.Show(this, "请先手动输入或选择要保存数据库文件！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            ConfigurationHelper confHelper = ConfigurationHelper.Instance();
-            confHelper.GenerateDatabase(tb_db_filepath.Text);
         }
 
         private void btn_register_gateway_Click(object sender, EventArgs e)
@@ -142,6 +117,35 @@ namespace AllHomeDBConfig
             }
         }
 
+        private void btn_select_file_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "SQLite数据文件(*.db)|*.db";//设置文件类型
+            sfd.FileName = "allhome";//设置默认文件名
+            sfd.DefaultExt = "db";//设置默认格式（可以不设）
+            sfd.AddExtension = true;//设置自动在文件名中添加扩展名
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                tb_db_filepath.Text = sfd.FileName;
+            }
+        }
 
+        private void btn_generate_db_Click(object sender, EventArgs e)
+        {
+            if (tb_db_filepath.Text == "")
+            {
+                MessageBox.Show(this, "请先手动输入或选择要保存数据库文件！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // 生成数据库文件
+            ConfigurationHelper confHelper = ConfigurationHelper.Instance();
+            confHelper.GenerateDatabase(tb_db_filepath.Text);
+
+            // 生成数据库表
+            confHelper.GenerateDBTables(tb_db_filepath.Text);
+
+            // 填充填充数据
+        }
     }
 }

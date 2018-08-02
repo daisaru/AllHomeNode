@@ -220,6 +220,16 @@ namespace AllHomeDBConfig
         }
 
         /// <summary>
+        /// 创建数据表
+        /// </summary>
+        /// <param name="sqlString">建表SQL字符串</param>
+        /// <returns>The table</returns>
+        public SQLiteDataReader CreateTable(string sqlString)
+        {
+            return ExecuteQuery(sqlString);
+        }
+
+        /// <summary>
         /// Reads the table.
         /// </summary>
         /// <returns>The table.</returns>

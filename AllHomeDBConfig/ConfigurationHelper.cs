@@ -11,6 +11,37 @@ namespace AllHomeDBConfig
     {
         private static ConfigurationHelper _instance = null;
 
+        #region SQL
+        private const string strSQLTable_task = "CREATE TABLE IF NOT EXISTS task (" +
+                                                "id VARCHAR(50)  PRIMARY KEY NOT NULL," +
+                                                "taskdata  VARCHAR(500)," +
+                                                "timestamp DATETIME);";
+
+        private const string strSQLTable_device = "CREATE TABLE IF NOT EXISTS device (" +
+                                                  "id VARCHAR(50) PRIMARY KEY NOT NULL," + 
+                                                  "name      VARCHAR(50)," +
+                                                  "type      VARCHAR(50)," +
+                                                  "timestamp DATETIME" +
+                                                  ");";
+
+        private const string strSQLTable_controlpoint = "CREATE TABLE IF NOT EXISTS controlpoint (" +
+                                                        "id            INTEGER      PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                                                        "id_device     VARCHAR (50) NOT NULL," +
+                                                        "code          VARCHAR (50) NOT NULL UNIQUE," +
+                                                        "type          VARCHAR (50) NOT NULL," +
+                                                        "subtype       VARCHAR (50)," +
+                                                        "givenname     VARCHAR (50)," +
+                                                        "brand         VARCHAR (50)," +
+                                                        "model         VARCHAR (50)," +
+                                                        "point         VARCHAR (50) NOT NULL," +
+                                                        "channel       VARCHAR (50) NOT NULL," +
+                                                        "address       VARCHAR (50) NOT NULL," +
+                                                        "registergroup VARCHAR (50)," +
+                                                        "register      VARCHAR (50) NOT NULL," +
+                                                        "timestamp     DATETIME," +
+                                                        "summary       VARCHAR (50));";
+        #endregion
+
         private ConfigurationHelper()
         {
 
@@ -24,6 +55,20 @@ namespace AllHomeDBConfig
             }
 
             return _instance;
+        }
+
+        public void GenerateDBTables(string dbFilePath)
+        {
+            SQLiteHelper sQLiteHelper = new SQLiteHelper("data source=" + dbFilePath);
+
+            // 生成task表
+            sQLiteHelper.CreateTable(strSQLTable_task);
+
+            // 生成device表
+            sQLiteHelper.CreateTable(strSQLTable_device);
+
+            // 生成controlpoint表
+            sQLiteHelper.CreateTable(strSQLTable_controlpoint);
         }
 
         public void GenerateDatabase(string filePath)

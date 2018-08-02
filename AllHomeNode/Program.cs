@@ -33,10 +33,13 @@ namespace AllHomeNode
             {
                 LogHelper.WriteLog(LogLevel.Warn, t, "AllHome Node is Starting...");
 
+                // Power Monthly Summary Test
+                //QuartzTask_SummaryPowerData.SummaryMonthlyPower();
+
                 // Random code test
                 //string code = RandomCodeUtility.MakeCode(4);
                 //string codepic = RandomCodeUtility.CreateRandomCode(code);
-            
+
 
                 // Weather & Air Test
                 //VENT_EAWADA eawada = new VENT_EAWADA();
