@@ -8,7 +8,7 @@ namespace AllHomeDBConfig
 {
     public class Controlpoint
     {
-        public static string GetSelectSQL()
+        public static string GetSelectSQL(string deviceId)
         {
             string sql = "SELECT id_device," +
                                 "code," +
@@ -24,7 +24,7 @@ namespace AllHomeDBConfig
                                 "register," +
                                 "timestamp," +
                                 "summary " +
-                                "FROM controlpoint;";
+                                "FROM controlpoint where id_device='"+ deviceId + "'";
             return sql;
         }
 

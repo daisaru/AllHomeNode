@@ -101,6 +101,15 @@ namespace AllHomeDBConfig
             return ExecuteQuery(queryString);
         }
 
+        /// <summary>
+        /// 执行SQL语句
+        /// </summary>
+        /// <param name="sql">SQL</param>
+        /// <returns>执行结果</returns>
+        public SQLiteDataReader ExecuteSQL(string sql)
+        {
+            return ExecuteQuery(sql);
+        }
 
         /// <summary>
         /// 向指定数据表中插入数据

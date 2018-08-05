@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,10 @@ namespace AllHomeDBConfig
     public class ConfigurationHelper
     {
         private static ConfigurationHelper _instance = null;
+        private SQLiteHelper sQLiteHelper = null;
+        private SQLiteHelper tempSQLiteHelper = null;
+
+        private string _configFilePath = "";
 
         #region SQL
         private const string strSQLTable_task = "CREATE TABLE IF NOT EXISTS task (" +
@@ -44,7 +49,7 @@ namespace AllHomeDBConfig
 
         private ConfigurationHelper()
         {
-
+            tempSQLiteHelper = new SQLiteHelper("data source=template.db");
         }
 
         public static ConfigurationHelper Instance()
@@ -59,7 +64,7 @@ namespace AllHomeDBConfig
 
         public void GenerateDBTables(string dbFilePath)
         {
-            SQLiteHelper sQLiteHelper = new SQLiteHelper("data source=" + dbFilePath);
+            sQLiteHelper = new SQLiteHelper("data source=" + dbFilePath);
 
             // 生成task表
             sQLiteHelper.CreateTable(strSQLTable_task);
@@ -71,27 +76,122 @@ namespace AllHomeDBConfig
             sQLiteHelper.CreateTable(strSQLTable_controlpoint);
         }
 
-        public void GenerateDatabase(string filePath)
-        {
-            bool ret = NewDbFile(filePath);
-        }
-
-        /// <summary>
-        /// 新建数据库文件
-        /// </summary>
-        /// <param name="dbPath">数据库文件路径及名称</param>
-        /// <returns>新建成功，返回true，否则返回false</returns>
-        private Boolean NewDbFile(string dbPath)
+        public bool GenerateDatabase(string filePath)
         {
             try
             {
-                SQLiteConnection.CreateFile(dbPath);
+                SQLiteConnection.CreateFile(filePath);
+                _configFilePath = filePath + ".txt";
                 return true;
             }
             catch (Exception ex)
             {
-                throw new Exception("新建数据库文件" + dbPath + "失败：" + ex.Message);
+                throw new Exception("新建数据库文件" + filePath + "失败：" + ex.Message);
             }
+        }
+
+        public string InsertDeviceAndControlpoints(string name, string devType, string indexCode, string modbusAddr)
+        {
+            StreamWriter sw = new StreamWriter(_configFilePath, true, Encoding.UTF8);
+
+            string id = Guid.NewGuid().ToString("N");
+            string time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            SQLiteDataReader tempReader = sQLiteHelper.InsertValues("device", new string[] {id, name, devType, time});
+
+            string querySQL = "";
+
+            switch(devType)
+            {
+                case Utility.DEV_TYPE_GATEWAY:
+                    {
+                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_GATEWAY);
+                        break;
+                    }
+                case Utility.DEV_TYPE_METER_POWER:
+                    {
+                        sw.WriteLine(indexCode + "  名称：" + name + "         类型：电量计量" + "        RS485地址： " + modbusAddr);
+                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_METER_POWER);
+                        break;
+                    }
+                case Utility.DEV_TYPE_VENT:
+                    {
+                        sw.WriteLine(indexCode + "  名称：" + name + "         类型：新风系统" + "        Modbus地址： " + modbusAddr);
+                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_VENT);
+                        break;
+                    }
+                case Utility.DEV_TYPE_AIRCON:
+                    {
+                        sw.WriteLine(indexCode + "  名称：" + name + "         类型：空气源主机" + "       Modbus地址： " + modbusAddr);
+                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_AIRCON);
+                        break;
+                    }
+                case Utility.DEV_TYPE_CTRL_AIR:
+                    {
+                        sw.WriteLine(indexCode + "  名称：" + name + "         类型：空调面板" + "        Modbus地址： " + modbusAddr);
+                        querySQL = Controlpoint.GetSelectSQL(Utility.DEV_TYPE_CTRL_AIR);
+                        break;
+                    }
+                case Utility.DEV_TYPE_CTRL_HEAT:
+                    {
+                        sw.WriteLine(indexCode + "  名称：" + name + "         类型：地暖面板" + "        Modbus地址： " + modbusAddr);
+                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_CTRL_HEAT);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+
+            tempReader = tempSQLiteHelper.ExecuteSQL(querySQL);
+            while(tempReader.Read())
+            {
+                string id_device = tempReader["id_device"].ToString();
+                string code = "";
+                if(devType == Utility.DEV_TYPE_GATEWAY)
+                {
+                    code = tempReader["code"].ToString();
+                }
+                else
+                {
+                    code = indexCode + "_" + tempReader["code"].ToString();
+                }
+                string type = tempReader["type"].ToString();
+                string subtype = tempReader["subtype"].ToString();
+                string givenname = tempReader["givenname"].ToString();
+                string brand = tempReader["brand"].ToString();
+                string model = tempReader["model"].ToString();
+                string point = tempReader["point"].ToString();
+                string channel = tempReader["channel"].ToString();
+                string address = modbusAddr;
+                string registergroup = tempReader["registergroup"].ToString();
+                string register = tempReader["register"].ToString();
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                string summary = tempReader["summary"].ToString();
+
+                string insertSQL = Controlpoint.GetInsertSQL(id,
+                                                             code,
+                                                             type,
+                                                             subtype,
+                                                             givenname,
+                                                             brand,
+                                                             model,
+                                                             point,
+                                                             channel,
+                                                             address,
+                                                             registergroup,
+                                                             register,
+                                                             timestamp,
+                                                             summary);
+
+                SQLiteDataReader insertRet = sQLiteHelper.ExecuteQuery(insertSQL);
+            }
+
+            sw.Flush();
+            sw.Close();
+
+            return id;
         }
     }
 }

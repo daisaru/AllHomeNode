@@ -420,43 +420,6 @@ namespace AllHomeNode.controller
         }
         #endregion
 
-        #region// 网关设备注册
-        // POST api/gateway/registerdevice
-        public GatewayRegisterRspData RegisterDevice([FromBody]GatewayRegisterReqData item)
-        {
-            Type t = MethodBase.GetCurrentMethod().DeclaringType;
-            LogHelper.WriteLog(LogLevel.Warn, t, item);
-
-            GatewayRegisterRspData rsp = new GatewayRegisterRspData();
-
-            try
-            {
-                bool ret = repository.RegisterGateway(item.GatewayId, item.GatewayName);
-
-                if (ret == true)
-                {
-                    rsp.Result = CommandUtil.RETURN.SUCCESS;
-                }
-                else
-                {
-                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
-                }
-
-                rsp.TimeStamp = DateTime.Now.ToString();
-            }
-            catch(Exception exp)
-            {
-                LogHelper.WriteLog(LogLevel.Error, t, exp);
-
-                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
-                rsp.TimeStamp = DateTime.Now.ToString();
-                return rsp;
-            }
-
-            return rsp;
-        }
-        #endregion
-
         #region// 添加设备到指定网关
         // POST api/gateway/adddevice
         public AddDeviceRspData AddDevice([FromBody]AddDeviceReqData item)
@@ -503,6 +466,43 @@ namespace AllHomeNode.controller
 
             ret.Result = CommandUtil.RETURN.SUCCESS;
             return ret;
+        }
+        #endregion
+
+        #region// 网关设备注册
+        // POST api/gateway/registerdevice
+        public GatewayRegisterRspData RegisterDevice([FromBody]GatewayRegisterReqData item)
+        {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            GatewayRegisterRspData rsp = new GatewayRegisterRspData();
+
+            try
+            {
+                bool ret = repository.RegisterGateway(item.GatewayId, item.GatewayName);
+
+                if (ret == true)
+                {
+                    rsp.Result = CommandUtil.RETURN.SUCCESS;
+                }
+                else
+                {
+                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                }
+
+                rsp.TimeStamp = DateTime.Now.ToString();
+            }
+            catch (Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.TimeStamp = DateTime.Now.ToString();
+                return rsp;
+            }
+
+            return rsp;
         }
         #endregion
 
