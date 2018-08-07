@@ -245,7 +245,7 @@ namespace AllHomeNode.Repository
                
                 DateTime now = DateTime.Now;
                 DateTime currentMonthStart = new DateTime(now.Year, now.Month, 1);
-                DateTime previousMonthEnd = currentMonthStart.AddDays(-1);
+                DateTime previousMonthEnd = currentMonthStart.AddSeconds(-1);
                 DateTime previousMonthStart = currentMonthStart.AddMonths(-1);
 
                 if(monthEnd.Year == now.Year && monthEnd.Month >= now.Month)
@@ -272,7 +272,7 @@ namespace AllHomeNode.Repository
                                     {
                                         double value = double.Parse(data.PowerConsume);
                                         // 寻找本月出现的空调电量最小值
-                                        if (value <= lMinAirValue)
+                                        if (value <= lMinAirValue && value > 0)
                                         {
                                             lMinAirValue = value;
                                         }
@@ -288,7 +288,7 @@ namespace AllHomeNode.Repository
                                     {
                                         double value = double.Parse(data.PowerConsume);
                                         // 寻找本月出现的照明电量最小值
-                                        if (value <= lMinLightValue)
+                                        if (value <= lMinLightValue && value > 0)
                                         {
                                             lMinLightValue = value;
                                         }

@@ -20,7 +20,7 @@ namespace AllHomeNode.Controller
 
         public LogHelper Log { get; set; }
 
-        // 获取一段时间内空气质量数据
+        #region // 获取一段时间内空气质量数据
         // POST /api/data/fetchairdata
         public GetAirQualityRspData FetchAirData([FromBody]GetAirQualityReqData item)
         {
@@ -57,7 +57,9 @@ namespace AllHomeNode.Controller
             return ret;
         }
 
-        // 获取一段时间电量消耗数据
+        #endregion
+
+        #region // 获取一段时间电量消耗数据
         // POST /api/data/fetchpowerconsumedata
         public GetMonthPowerConsumeRspData FetchPowerConsumeData([FromBody]GetMonthPowerConsumeReqData item)
         {
@@ -67,7 +69,7 @@ namespace AllHomeNode.Controller
             GetMonthPowerConsumeRspData ret = new GetMonthPowerConsumeRspData();
 
             bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
-            if (checkToken == false)
+           if (checkToken == false)
             {
                 LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
 
@@ -105,5 +107,7 @@ namespace AllHomeNode.Controller
 
             return ret;
         }
+
+        #endregion
     }
 }
