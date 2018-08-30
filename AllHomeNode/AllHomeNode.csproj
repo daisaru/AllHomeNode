@@ -160,6 +160,7 @@
     <Compile Include="Data\Weather.cs" />
     <Compile Include="Front\AirQualityData.cs" />
     <Compile Include="Front\BindDeviceReqData.cs" />
+    <Compile Include="Front\ChangeMobileReqData.cs" />
     <Compile Include="Front\CommandUtil.cs" />
     <Compile Include="Front\ControlPointData.cs" />
     <Compile Include="Front\controlpoints\Vent_EAWADA.cs" />
@@ -202,7 +203,7 @@
     <Compile Include="Front\DeviceData.cs" />
     <Compile Include="Front\ShareGatewayReqData.cs" />
     <Compile Include="Front\UserData.cs" />
-    <Compile Include="Front\UserDeviceData.cs" />
+    <Compile Include="Front\UserGatewayData.cs" />
     <Compile Include="Help\HttpRequestHelper.cs" />
     <Compile Include="Help\JsonHelper.cs" />
     <Compile Include="Help\LogHelper.cs" />

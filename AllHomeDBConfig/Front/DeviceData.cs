@@ -12,8 +12,9 @@ namespace InstallationTool.Front
         {
             ControlPoints = new List<ControlPointData>();
         }
+        public string DeviceId { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public List<ControlPointData> ControlPoints {get;set;}
+        public List<ControlPointData> ControlPoints { get; set; }
     }
 }

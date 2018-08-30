@@ -13,19 +13,6 @@ using InstallationTool.Front;
 
 namespace AllHomeDBConfig
 {
-    public class LogsEventArgs : EventArgs
-    {
-        private string _args = string.Empty;
-        public LogsEventArgs(string args)
-        {
-            _args = args;
-        }
-        public string Args
-        {
-            get { return _args; }
-        }
-    }
-
     public partial class MainForm : Form
     {
         private delegate void DlgAsynShowMsg(string s);
@@ -33,53 +20,13 @@ namespace AllHomeDBConfig
         public MainForm()
         {
             InitializeComponent();
-            this.cb_count_vent_v1.SelectedIndex = 0;
             this.cb_count_vent_v2.SelectedIndex = 0;
             this.cb_count_cp_aircon.SelectedIndex = 0;
             this.cb_count_cp_heater.SelectedIndex = 0;
             this.cb_count_aircon.SelectedIndex = 0;
         }
 
-        private void btn_register_gateway_Click(object sender, EventArgs e)
-        {
-            ShowMsgWithString("准备向服务器注册网关...");
-
-            string gatewayId = this.tb_gwid.Text.Trim();
-            string gatewayName = this.tb_gwname.Text.Trim();
-            string deviceSignature = DateTime.Now.ToString();
-
-            string dbFilePath = "";
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "c:\\";//注意这里写路径时要用c:\\而不是c:\
-            openFileDialog.Filter = "SQLite数据库文件|*.db";
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.FilterIndex = 1;
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                dbFilePath = openFileDialog.FileName;
-                ShowMsgWithString("数据库文件路径：" + dbFilePath);
-            }
-            else
-            {
-                return;
-            }
-
-            ShowMsgWithString("网关ID：" + gatewayId);
-            ShowMsgWithString("网关名称：" + gatewayName);
-            GatewayRegisterRspData registerRet =
-                HttpHelper.Instance().RegisterGateway(gatewayId, gatewayName, deviceSignature);
-
-            ShowMsgWithString("网关注册成功！");
-            ShowMsgWithString("准备提交设备控制点：");
-
-            List<DeviceData> datas = DBUtil.Instance().GetControlPoints(dbFilePath);
-            GatewayUploadCtrlPointsRspData uploadRet =
-                HttpHelper.Instance().UploadControllPoints(gatewayId, datas, deviceSignature);
-
-            ShowMsgWithString("设备控制点提交成功。");
-            ShowMsgWithString("网关注册工作全部完成！");
-        }
+        #region 界面逻辑
 
         private void btn_select_file_Click(object sender, EventArgs e)
         {
@@ -115,29 +62,41 @@ namespace AllHomeDBConfig
 
             ShowMsgWithString("生成数据表成功。");
 
-            // 填充填充数据
-            string idGateway = confHelper.InsertDeviceAndControlpoints("网关", Utility.DEV_TYPE_GATEWAY, "0", "0");
+            // 填充控制点数据
+            string idGateway = confHelper.InsertDeviceAndControlpoints("网关",
+                                                                       Utility.DEV_TYPE_GATEWAY,
+                                                                       Utility.MODEL_GATEWAY_JADECORE, 
+                                                                       "0", 
+                                                                       "0");
 
             ShowMsgWithString("填充网关数据成功。");
 
-            if (cb_vent_eavada_v1.Checked)
+            if (rb_vent_eavada_v1.Checked)
             {
-                int defaultAddr = 1;    // 1-2
-                int count = int.Parse(cb_count_vent_v1.SelectedItem.ToString());
+                int defaultAddr = 1;    // 1-4
+                int count = int.Parse(cb_count_vent_v2.SelectedItem.ToString());
                 for(int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("新风1代", Utility.DEV_TYPE_VENT, i.ToString(), (defaultAddr + i).ToString());
+                    string id = confHelper.InsertDeviceAndControlpoints("新风1代", 
+                                                                        Utility.DEV_TYPE_VENT, 
+                                                                        Utility.MODEL_VENT_EAWADA_V1, 
+                                                                        i.ToString(), 
+                                                                        (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充新风1代设备数据成功。");
             }
 
-            if(cb_vent_eavada_v2.Checked)
+            if(rb_vent_eavada_v2.Checked)
             {
-                int defaultAddr = 3;    // 3-4
+                int defaultAddr = 1;    // 1-4
                 int count = int.Parse(cb_count_vent_v2.SelectedItem.ToString());
                 for(int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("新风2代", Utility.DEV_TYPE_VENT, i.ToString(), (defaultAddr + i).ToString());
+                    string id = confHelper.InsertDeviceAndControlpoints("新风2代", 
+                                                                        Utility.DEV_TYPE_VENT, 
+                                                                        Utility.MODEL_VENT_EAWASA_V2,
+                                                                        i.ToString(), 
+                                                                        (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充新风2代设备数据成功。");
             }
@@ -148,7 +107,11 @@ namespace AllHomeDBConfig
                 int count = int.Parse(cb_count_cp_aircon.SelectedItem.ToString());
                 for (int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("空调温控器", Utility.DEV_TYPE_CTRL_AIR, i.ToString(), (defaultAddr + i).ToString());
+                    string id = confHelper.InsertDeviceAndControlpoints("空调温控器", 
+                                                                        Utility.DEV_TYPE_CTRL_AIR, 
+                                                                        Utility.MODEL_CTRL_AIR_YILIN,
+                                                                        i.ToString(), 
+                                                                        (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充空调温控器设备数据成功。");
             }
@@ -159,7 +122,11 @@ namespace AllHomeDBConfig
                 int count = int.Parse(cb_count_cp_heater.SelectedItem.ToString());
                 for (int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("地暖温控器", Utility.DEV_TYPE_CTRL_HEAT, i.ToString(), (defaultAddr + i).ToString());
+                    string id = confHelper.InsertDeviceAndControlpoints("地暖温控器", 
+                                                                        Utility.DEV_TYPE_CTRL_HEAT, 
+                                                                        Utility.MODEL_CTRL_HEAT_YILIN,
+                                                                        i.ToString(), 
+                                                                        (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充地暖温控器数据成功。");
             }
@@ -167,7 +134,11 @@ namespace AllHomeDBConfig
             if(cb_meter_jsy.Checked)
             {
                 int defaultAddr = 1;
-                string id = confHelper.InsertDeviceAndControlpoints("电量计量", Utility.DEV_TYPE_METER_POWER, "0", defaultAddr.ToString());
+                string id = confHelper.InsertDeviceAndControlpoints("电量计量", 
+                                                                    Utility.DEV_TYPE_METER_POWER, 
+                                                                    Utility.MODEL_METER_POWER_JSY,
+                                                                    "0", 
+                                                                    defaultAddr.ToString());
                 ShowMsgWithString("填充电量计量数据成功。");
             }
 
@@ -177,7 +148,11 @@ namespace AllHomeDBConfig
                 int count = int.Parse(cb_count_aircon.SelectedItem.ToString());
                 for (int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("空气源主机", Utility.DEV_TYPE_AIRCON, i.ToString(), (defaultAddr + i).ToString());
+                    string id = confHelper.InsertDeviceAndControlpoints("空气源主机", 
+                                                                        Utility.DEV_TYPE_AIRCON,
+                                                                        Utility.MODEL_AIRCON_LINESHOW,
+                                                                        i.ToString(), 
+                                                                        (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充空气源数据成功。");
             }
@@ -213,6 +188,113 @@ namespace AllHomeDBConfig
                 }
                 tb_log.AppendText(args.Args + "\r\n");
             }
+        }
+
+        #endregion
+
+        #region WebAPIs
+
+        private void btn_registe_gateway_Click(object sender, EventArgs e)
+        {
+            ShowMsgWithString("准备向服务器注册网关...");
+
+            string gatewayId = this.tb_gwid.Text.Trim();
+            string gatewayName = this.tb_gwname.Text.Trim();
+
+            if(gatewayId == "" || gatewayName == "")
+            {
+                MessageBox.Show(this, "网关ID和网关名称不可以为空！", "注意",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string deviceSignature = DateTime.Now.ToString();
+
+            string dbFilePath = "";
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = "c:\\";//注意这里写路径时要用c:\\而不是c:\
+            openFileDialog.Filter = "SQLite数据库文件|*.db";
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.FilterIndex = 1;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                dbFilePath = openFileDialog.FileName;
+                ShowMsgWithString("数据库文件路径：" + dbFilePath);
+            }
+            else
+            {
+                return;
+            }
+
+            ShowMsgWithString("网关ID：" + gatewayId);
+            ShowMsgWithString("网关名称：" + gatewayName);
+            GatewayRegisterRspData registerRet =
+                HttpHelper.Instance().RegisterGateway(gatewayId, gatewayName, deviceSignature);
+
+            ShowMsgWithString("网关注册成功！");
+            ShowMsgWithString("准备提交设备控制点：");
+
+            List<DeviceData> datas = DBUtil.Instance().GetControlPoints(dbFilePath);
+            GatewayUploadCtrlPointsRspData uploadRet =
+                HttpHelper.Instance().UploadControllPoints(gatewayId, datas, deviceSignature);
+
+            ShowMsgWithString("设备控制点提交成功。");
+            ShowMsgWithString("网关注册工作全部完成！");
+        }
+
+        private void btn_searchDevice_Click(object sender, EventArgs e)
+        {
+            // 登陆
+            string username = tb_username.Text.Trim();
+            string password = tb_password.Text.Trim();
+
+            if (username == "" || password == "")
+            {
+                MessageBox.Show(this, "用户名及密码不可以为空！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            LoginRspData loginRsp = HttpHelper.Instance().UserLogin(username, password);
+            if(!loginRsp.Result.Equals("Success"))
+            {
+                MessageBox.Show(this, "密码错误，登陆失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 获取所有设备信息
+            GetAllGatewayRspData deviceData = HttpHelper.Instance().GetAllGateways(username);
+            foreach(UserGatewayData gateway in deviceData.Gateway)
+            {
+                string gwname = gateway.GatewayName;
+                string gwid = gateway.GatewayId;
+                string gwonline = gateway.OnineState;
+                string privilege = gateway.Privilege;
+                TreeNode node = treeview_devices.Nodes.Add(gwid, gwname + " " + privilege, " " + gwonline);
+
+                GetControlPointsRspData cpDatas = HttpHelper.Instance().GetAllControlPoints(username, gwid);
+                foreach(DeviceData device in cpDatas.Device)
+                {
+                    string devid = device.DeviceId;
+                    string devname = device.Name;
+                    string devtype = device.Type;
+                    node.Nodes.Add(devid, devname + " " + devtype);
+                }
+            }
+        }
+
+        #endregion
+    }
+
+    public class LogsEventArgs : EventArgs
+    {
+        private string _args = string.Empty;
+        public LogsEventArgs(string args)
+        {
+            _args = args;
+        }
+        public string Args
+        {
+            get { return _args; }
         }
     }
 }

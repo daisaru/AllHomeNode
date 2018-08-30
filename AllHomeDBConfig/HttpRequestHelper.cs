@@ -20,9 +20,21 @@ namespace AllHomeDBConfig
 
         private const string _strRegisterGatewayUrl = "http://115.159.78.40:9000/api/gateway/registerdevice";
         private const string _strUoloadControlPointsUrl = "http://115.159.78.40:9000/api/gateway/uploadcontrolpoints";
+        private const string _strLoginUrl = "http://115.159.78.40:9000/api/user/login";
+        private const string _strUninstallAllDevices = "http://115.159.78.40:9000/api/gateway/uninstallalldevice";
+        private const string _strUninstallDevice = "http://115.159.78.40:9000/api/gateway/uninstalldevice";
+        private const string _strGetAllGateway = "http://115.159.78.40:9000/api/gateway/fetchallgateway";
+        private const string _strGetAllControlpoints = "http://115.159.78.40:9000/api/gateway/fetchcontrolpoints";
 
         private const string _strRegisterGatewayUrl_test = "http://localhost:9000/api/device/registerdevice";
         private const string _strUoloadControlPointsUrl_test = "http://localhost:9000/api/device/uploadcontrolpoints";
+        private const string _strLoginUrl_test = "http://localhost:9000/api/user/login";
+        private const string _strUninstallAllDevices_test = "http://localhost:9000/api/gateway/uninstallalldevice";
+        private const string _strUninstallDevice_test = "http://localhost:9000/api/gateway/uninstalldevice";
+        private const string _strGetAllGateway_test = "http://localhost:9000/api/gateway/fetchallgateway";
+        private const string _strGetAllControlpoints_test = "http://localhost:9000/api/gateway/fetchcontrolpoints";
+
+        private string _strLoginToken = "";
 
         private HttpHelper()
         {
@@ -35,6 +47,93 @@ namespace AllHomeDBConfig
                 _instance = new HttpHelper();
             }
             return _instance;
+        }
+
+        public GetControlPointsRspData GetAllControlPoints(string mobile, string gatewayid)
+        {
+            GetControlPointsRspData ret = null;
+
+            GetControlPointsReqData data = new GetControlPointsReqData();
+            data.GatewayId = gatewayid;
+            data.Mobile = mobile;
+            data.Token = _strLoginToken;
+
+            string jsonData = JsonConvert.SerializeObject(data);
+            string retStr = SendRequest(jsonData, _strGetAllControlpoints);
+
+            ret = JsonConvert.DeserializeObject<GetControlPointsRspData>(retStr);
+
+            return ret;
+        }
+
+        public GetAllGatewayRspData GetAllGateways(string mobile)
+        {
+            GetAllGatewayRspData ret = null;
+
+            GetAllGatewayReqData data = new GetAllGatewayReqData();
+            data.Mobile = mobile;
+            data.Token = _strLoginToken;
+
+            string jsonData = JsonConvert.SerializeObject(data);
+            string retStr = SendRequest(jsonData, _strGetAllGateway);
+
+            ret = JsonConvert.DeserializeObject<GetAllGatewayRspData>(retStr);
+
+            return ret;
+        }
+
+        public DeleteAllDeviceRspData DeleteAllDevices(string mobile, string gatewayid)
+        {
+            DeleteAllDeviceRspData ret = null;
+
+            DeleteAllDeviceReqData data = new DeleteAllDeviceReqData();
+            data.GatewayId = gatewayid;
+            data.Mobile = mobile;
+            data.Token = _strLoginToken;
+
+            string jsonData = JsonConvert.SerializeObject(data);
+            string retStr = SendRequest(jsonData, _strUninstallAllDevices);
+
+            ret = JsonConvert.DeserializeObject<DeleteAllDeviceRspData>(retStr);
+
+            return ret;
+        }
+
+        public DeleteDeviceRspData DeleteDevice(string mobile, string gatewayid, string deviceid)
+        {
+            DeleteDeviceRspData ret = null;
+
+            DeleteDeviceReqData data = new DeleteDeviceReqData();
+            data.Mobile = mobile;
+            data.GatewayId = gatewayid;
+            data.DeviceId = deviceid;
+            data.Token = _strLoginToken;
+
+            string jsonData = JsonConvert.SerializeObject(data);
+            string retStr = SendRequest(jsonData, _strUninstallDevice);
+
+            ret = JsonConvert.DeserializeObject<DeleteDeviceRspData>(retStr);
+
+            return ret;
+        }
+
+        public LoginRspData UserLogin(string username, string password)
+        {
+            LoginRspData ret = null;
+
+            LoginReqData data = new LoginReqData();
+            data.Mobile = username;
+            data.Password = password;
+            data.OldToken = "";
+
+            string jsonData = JsonConvert.SerializeObject(data);
+            string retStr = SendRequest(jsonData, _strLoginUrl);
+
+            ret = JsonConvert.DeserializeObject<LoginRspData>(retStr);
+
+            _strLoginToken = ret.Token;
+
+            return ret;
         }
 
         public GatewayRegisterRspData RegisterGateway(string id, string name, string signature)

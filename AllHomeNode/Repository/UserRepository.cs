@@ -149,6 +149,16 @@ namespace AllHomeNode.Repository
             }
         }
 
+        public bool ChangeMobile(string mobile, string newMobile, string password)
+        {
+            UserManager userMgr = new UserManager();
+            User usr = userMgr.GetUserByMobile(mobile).ToList()[0];
+            usr.Mobile = newMobile;
+            usr.Password = password;
+            bool ret = userMgr.Update(usr);
+            return ret;
+        }
+
         public bool ResetPassword(string mobile, string password)
         {
             UserManager userMgr = new UserManager();

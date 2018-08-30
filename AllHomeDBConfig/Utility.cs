@@ -15,11 +15,17 @@ namespace AllHomeDBConfig
         public const string DEV_TYPE_METER_POWER = "METER_POWER";
         public const string DEV_TYPE_GATEWAY = "GATEWAY";
 
-        public const string DEVID_GATEWAY = "ee6a13575d244a5cbe021f29ca1b41f0";
-        public const string DEVID_METER_POWER = "ee6a13575d244a5cbe021f29ca1b41f6";
-        public const string DEVID_CTRL_HEAT = "ee6a13575d244a5cbe021f29ca1b41f9";
-        public const string DEVID_CTRL_AIR = "ee6a13575d244a5cbe021f29ca1b41f4";
-        public const string DEVID_VENT = "ee6a13575d244a5cbe021f29ca1b41f2";
-        public const string DEVID_AIRCON = "ee6a13575d244a5cbe021f29ca1b41f1";
+        public const string MODEL_GATEWAY_JADECORE = "ee6a13575d244a5cbe021f29ca1b41f0";
+
+        public const string MODEL_AIRCON_LINESHOW = "ee6a13575d244a5cbe021f29ca1b41f1";
+
+        public const string MODEL_VENT_EAWADA_V1 = "ee6a13575d244a5cbe021f29ca1b41f2";
+        public const string MODEL_VENT_EAWASA_V2 = "ee6a13575d244a5cbe021f29ca1b41f3";
+
+        public const string MODEL_CTRL_AIR_YILIN = "ee6a13575d244a5cbe021f29ca1b41f4";
+        public const string MODEL_CTRL_HEAT_YILIN = "ee6a13575d244a5cbe021f29ca1b41f9";
+
+        public const string MODEL_METER_POWER_JSY = "ee6a13575d244a5cbe021f29ca1b41f6";
+
     }
 }

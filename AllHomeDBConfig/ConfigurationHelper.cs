@@ -90,7 +90,7 @@ namespace AllHomeDBConfig
             }
         }
 
-        public string InsertDeviceAndControlpoints(string name, string devType, string indexCode, string modbusAddr)
+        public string InsertDeviceAndControlpoints(string name, string devType, string model, string indexCode, string modbusAddr)
         {
             StreamWriter sw = new StreamWriter(_configFilePath, true, Encoding.UTF8);
 
@@ -104,38 +104,39 @@ namespace AllHomeDBConfig
             switch(devType)
             {
                 case Utility.DEV_TYPE_GATEWAY:
-                    {
-                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_GATEWAY);
+                    {                 
+                        querySQL = Controlpoint.GetSelectSQL(model);
                         break;
                     }
                 case Utility.DEV_TYPE_METER_POWER:
                     {
                         sw.WriteLine(indexCode + "  名称：" + name + "         类型：电量计量" + "        RS485地址： " + modbusAddr);
-                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_METER_POWER);
+                        querySQL = Controlpoint.GetSelectSQL(model);
                         break;
                     }
                 case Utility.DEV_TYPE_VENT:
                     {
                         sw.WriteLine(indexCode + "  名称：" + name + "         类型：新风系统" + "        Modbus地址： " + modbusAddr);
-                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_VENT);
+                        querySQL = Controlpoint.GetSelectSQL(model);
+
                         break;
                     }
                 case Utility.DEV_TYPE_AIRCON:
                     {
                         sw.WriteLine(indexCode + "  名称：" + name + "         类型：空气源主机" + "       Modbus地址： " + modbusAddr);
-                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_AIRCON);
+                        querySQL = Controlpoint.GetSelectSQL(model);
                         break;
                     }
                 case Utility.DEV_TYPE_CTRL_AIR:
                     {
                         sw.WriteLine(indexCode + "  名称：" + name + "         类型：空调面板" + "        Modbus地址： " + modbusAddr);
-                        querySQL = Controlpoint.GetSelectSQL(Utility.DEV_TYPE_CTRL_AIR);
+                        querySQL = Controlpoint.GetSelectSQL(model);
                         break;
                     }
                 case Utility.DEV_TYPE_CTRL_HEAT:
                     {
                         sw.WriteLine(indexCode + "  名称：" + name + "         类型：地暖面板" + "        Modbus地址： " + modbusAddr);
-                        querySQL = Controlpoint.GetSelectSQL(Utility.DEVID_CTRL_HEAT);
+                        querySQL = Controlpoint.GetSelectSQL(model);
                         break;
                     }
                 default:
@@ -161,7 +162,7 @@ namespace AllHomeDBConfig
                 string subtype = tempReader["subtype"].ToString();
                 string givenname = tempReader["givenname"].ToString();
                 string brand = tempReader["brand"].ToString();
-                string model = tempReader["model"].ToString();
+                string devmodel = tempReader["model"].ToString();
                 string point = tempReader["point"].ToString();
                 string channel = tempReader["channel"].ToString();
                 string address = modbusAddr;
@@ -176,7 +177,7 @@ namespace AllHomeDBConfig
                                                              subtype,
                                                              givenname,
                                                              brand,
-                                                             model,
+                                                             devmodel,
                                                              point,
                                                              channel,
                                                              address,

@@ -92,13 +92,12 @@ namespace AllHomeNode.controller
             try
             {
                 //先判断是否手机号已被注册
-                // Debug
-                //UserData checkUser = repository.Get(item.Mobile);
-                //if(checkUser != null)
-                //{
-                //    ret.Result = CommandUtil.RETURN.ERROR_USER_MOBILEUSED;
-                //    return ret;
-                //}
+                UserData checkUser = repository.Get(item.Mobile);
+                if (checkUser != null)
+                {
+                    ret.Result = CommandUtil.RETURN.ERROR_USER_MOBILEUSED;
+                    return ret;
+                }
 
                 UserData user = repository.Add(item);
 
@@ -131,25 +130,18 @@ namespace AllHomeNode.controller
 
             ReturnResult ret = new ReturnResult();
             
-            bool checkRandomCode = Service_SMS.Instance().CheckRandomCode(item.Mobile, item.RandomCode);
-            if (checkRandomCode == false)
-            {
-                LogHelper.WriteLog(LogLevel.Error, t, "RandomCode Invalid");
+            // 简单起见，不做随机码的验证。
+            //bool checkRandomCode = Service_SMS.Instance().CheckRandomCode(item.Mobile, item.RandomCode);
+            //if (checkRandomCode == false)
+            //{
+            //    LogHelper.WriteLog(LogLevel.Error, t, "RandomCode Invalid");
 
-                ret.Result = CommandUtil.RETURN.ERROR_RANDOMCODE_INVALID;
-                return ret;
-            }
+            //    ret.Result = CommandUtil.RETURN.ERROR_RANDOMCODE_INVALID;
+            //    return ret;
+            //}
 
             try
             {
-                //先判断是否手机号已被注册
-                UserData checkUser = repository.Get(item.Mobile);
-                if (checkUser != null)
-                {
-                    ret.Result = CommandUtil.RETURN.ERROR_USER_MOBILEUSED;
-                    return ret;
-                }
-
                 bool success = repository.Update(item);
 
                 if (success)
@@ -225,9 +217,9 @@ namespace AllHomeNode.controller
             return rsp;
         }
 
-        // 重置密码
-        // POST api/user/resetpassword
-        public ReturnResult ResetPassword([FromBody] ResetPasswordReqData item)
+        // 修改手机号
+        // POST api/user/changemobile
+        public ReturnResult ChangeMobile([FromBody] ChangeMobileReqData item)
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
@@ -242,6 +234,67 @@ namespace AllHomeNode.controller
                 rsp.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
                 return rsp;
             }
+
+            bool checkRandomCode = Service_SMS.Instance().CheckRandomCode(item.NewMobile, item.RandomCode);
+            if (checkRandomCode == false)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, "RandomCode Invalid");
+
+                rsp.Result = CommandUtil.RETURN.ERROR_RANDOMCODE_INVALID;
+                return rsp;
+            }
+
+            try
+            {
+                //先判断是否手机号已被注册
+                UserData checkuser = repository.Get(item.NewMobile);
+                if (checkuser != null)
+                {
+                    rsp.Result = CommandUtil.RETURN.ERROR_USER_MOBILEUSED;
+                    return rsp;
+                }
+
+                bool ret = repository.ChangeMobile(item.Mobile, item.NewMobile, item.Password);
+
+                if (ret)
+                {
+                    rsp.Result = CommandUtil.RETURN.SUCCESS;
+                }
+                else
+                {
+                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                }
+            }
+            catch (Exception exp)
+            {
+                LogHelper.WriteLog(LogLevel.Error, t, exp);
+
+                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                return rsp;
+            }
+
+            return rsp;
+        }
+
+        // 重置密码
+        // POST api/user/resetpassword
+        public ReturnResult ResetPassword([FromBody] ResetPasswordReqData item)
+        {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+            LogHelper.WriteLog(LogLevel.Warn, t, item);
+
+            ReturnResult rsp = new ReturnResult();
+
+            // Removed.
+            // 忘记密码的时候。是没有获取token的 我现在token是登录以后才可以获得
+            //bool checkToken = ServiceToken.Intance().isTokenValid(item.Mobile, item.Token);
+            //if (checkToken == false)
+            //{
+            //    LogHelper.WriteLog(LogLevel.Error, t, "Token Invalid");
+
+            //    rsp.Result = CommandUtil.RETURN.ERROR_TOKEN_INVALID;
+            //    return rsp;
+            //}
 
             bool checkRandomCode = Service_SMS.Instance().CheckRandomCode(item.Mobile, item.RandomCode);
             if (checkRandomCode == false)
