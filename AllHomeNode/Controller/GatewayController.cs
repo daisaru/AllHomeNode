@@ -48,7 +48,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 ret.Shares = null;
                 return ret;
             }
@@ -91,7 +91,7 @@ namespace AllHomeNode.controller
                 bool uninstallRet = repository.DeleteAllDeviceFromGateway(item.GatewayId);
                 if (uninstallRet == false)
                 {
-                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                     return ret;
                 }
             }
@@ -99,7 +99,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 return ret;
             }
 
@@ -141,7 +141,7 @@ namespace AllHomeNode.controller
                 bool deleteDevice = repository.DeleteDeviceFromGateway(item.DeviceId);
                 if(deleteDevice == false)
                 {
-                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                     return ret;
                 }
             }
@@ -149,7 +149,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 return ret;
             }
 
@@ -186,7 +186,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 return ret;
             }
 
@@ -223,7 +223,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 ret.Gateway = null;
                 return ret;
             }
@@ -261,7 +261,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 return ret;
             }
 
@@ -297,7 +297,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 return ret;
             }
               
@@ -331,7 +331,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 return ret;
             }
             
@@ -411,7 +411,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 ret.Device = null;
                 return ret;
             }
@@ -452,7 +452,7 @@ namespace AllHomeNode.controller
                 bool addRet = repository.AddDeviceToGateway(item.GatewayId, item.Device);   
                 if(addRet == false)
                 {
-                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                     return ret;
                 }
             }
@@ -460,7 +460,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 return ret;
             }
 
@@ -488,7 +488,7 @@ namespace AllHomeNode.controller
                 }
                 else
                 {
-                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    rsp.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 }
 
                 rsp.TimeStamp = DateTime.Now.ToString();
@@ -497,7 +497,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 rsp.TimeStamp = DateTime.Now.ToString();
                 return rsp;
             }
@@ -525,7 +525,7 @@ namespace AllHomeNode.controller
                 }
                 else
                 {
-                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    rsp.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 }
                 rsp.TimeStamp = DateTime.Now.ToString();
             }
@@ -533,7 +533,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 rsp.TimeStamp = DateTime.Now.ToString();
                 return rsp;
             }

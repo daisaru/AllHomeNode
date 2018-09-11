@@ -49,7 +49,7 @@ namespace AllHomeNode.Controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 ret.AirQuality = null;
                 return ret;
             }
@@ -100,7 +100,7 @@ namespace AllHomeNode.Controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 ret.PowerConsume = null;
                 return ret;
             }

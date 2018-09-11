@@ -15,8 +15,12 @@ namespace AllHomeNode.Front
             public static string ERROR_TOKEN_INVALID = "E00001";
             public static string ERROR_RANDOMCODE_INVALID = "E00002";
             public static string ERROR_NO_PRIVILEGE = "E00003";
+            public static string ERROR_SERVICE_UNAVAILABLE = "E00004";
+            public static string ERROR_DATABASE_ERROR = "E00005";
 
             public static string ERROR_USER_MOBILEUSED = "E10001";  //手机号已经被使用
+            public static string ERROR_USER_NOTFOUND = "E10002";    //用户不存在
+            public static string ERROR_USER_LOGINFAILED = "E10003"; //用户名或密码不正确
         }
 
         public static class PRIVILEGE

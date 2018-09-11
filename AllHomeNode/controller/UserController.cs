@@ -63,7 +63,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_USER_NOTFOUND;
                 ret.User = null;
                 return ret;
             }
@@ -107,14 +107,14 @@ namespace AllHomeNode.controller
                 }
                 else
                 {
-                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 }
             }
             catch(Exception exp)
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 return ret;
             }
 
@@ -150,14 +150,14 @@ namespace AllHomeNode.controller
                 }
                 else
                 {
-                    ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    ret.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 }
             }
             catch(Exception exp)
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 return ret;
             }
 
@@ -196,7 +196,7 @@ namespace AllHomeNode.controller
                 }
                 else
                 {
-                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    rsp.Result = CommandUtil.RETURN.ERROR_USER_LOGINFAILED;
                     rsp.UserData = null;
                     rsp.Token = "";
                     rsp.TimeStamp = "";
@@ -207,7 +207,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 rsp.Token = "";
                 rsp.TimeStamp = "";
                 rsp.TokenLife = "";
@@ -262,14 +262,14 @@ namespace AllHomeNode.controller
                 }
                 else
                 {
-                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    rsp.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 }
             }
             catch (Exception exp)
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 return rsp;
             }
 
@@ -315,14 +315,14 @@ namespace AllHomeNode.controller
                 }
                 else
                 {
-                    rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                    rsp.Result = CommandUtil.RETURN.ERROR_DATABASE_ERROR;
                 }
             }
             catch(Exception exp)
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                rsp.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                rsp.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 return rsp;
             }
 
@@ -359,7 +359,7 @@ namespace AllHomeNode.controller
             {
                 LogHelper.WriteLog(LogLevel.Error, t, exp);
 
-                ret.Result = CommandUtil.RETURN.ERROR_UNKNOW;
+                ret.Result = CommandUtil.RETURN.ERROR_SERVICE_UNAVAILABLE;
                 return ret;
             }
 
