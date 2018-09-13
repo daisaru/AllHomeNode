@@ -65,8 +65,8 @@ namespace AllHomeDBConfig
             // 填充控制点数据
             string idGateway = confHelper.InsertDeviceAndControlpoints("网关",
                                                                        Utility.DEV_TYPE_GATEWAY,
-                                                                       Utility.MODEL_GATEWAY_JADECORE, 
-                                                                       "0", 
+                                                                       Utility.MODEL_GATEWAY_JADECORE,
+                                                                       "0",
                                                                        "0");
 
             ShowMsgWithString("填充网关数据成功。");
@@ -75,83 +75,83 @@ namespace AllHomeDBConfig
             {
                 int defaultAddr = 1;    // 1-4
                 int count = int.Parse(cb_count_vent_v2.SelectedItem.ToString());
-                for(int i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("新风1代", 
-                                                                        Utility.DEV_TYPE_VENT, 
-                                                                        Utility.MODEL_VENT_EAWADA_V1, 
-                                                                        i.ToString(), 
+                    string id = confHelper.InsertDeviceAndControlpoints("新风1代",
+                                                                        Utility.DEV_TYPE_VENT,
+                                                                        Utility.MODEL_VENT_EAWADA_V1,
+                                                                        i.ToString(),
                                                                         (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充新风1代设备数据成功。");
             }
 
-            if(rb_vent_eavada_v2.Checked)
+            if (rb_vent_eavada_v2.Checked)
             {
                 int defaultAddr = 1;    // 1-4
                 int count = int.Parse(cb_count_vent_v2.SelectedItem.ToString());
-                for(int i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("新风2代", 
-                                                                        Utility.DEV_TYPE_VENT, 
+                    string id = confHelper.InsertDeviceAndControlpoints("新风2代",
+                                                                        Utility.DEV_TYPE_VENT,
                                                                         Utility.MODEL_VENT_EAWASA_V2,
-                                                                        i.ToString(), 
+                                                                        i.ToString(),
                                                                         (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充新风2代设备数据成功。");
             }
 
-            if(cb_ctrlpanel_aircon_yilin.Checked)
+            if (cb_ctrlpanel_aircon_yilin.Checked)
             {
                 int defaultAddr = 5;   // 5-10
                 int count = int.Parse(cb_count_cp_aircon.SelectedItem.ToString());
                 for (int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("空调温控器", 
-                                                                        Utility.DEV_TYPE_CTRL_AIR, 
+                    string id = confHelper.InsertDeviceAndControlpoints("空调温控器",
+                                                                        Utility.DEV_TYPE_CTRL_AIR,
                                                                         Utility.MODEL_CTRL_AIR_YILIN,
-                                                                        i.ToString(), 
+                                                                        i.ToString(),
                                                                         (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充空调温控器设备数据成功。");
             }
 
-            if(cb_ctrlpanel_heater_yilin.Checked)
+            if (cb_ctrlpanel_heater_yilin.Checked)
             {
                 int defaultAddr = 11;  // 11-16
                 int count = int.Parse(cb_count_cp_heater.SelectedItem.ToString());
                 for (int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("地暖温控器", 
-                                                                        Utility.DEV_TYPE_CTRL_HEAT, 
+                    string id = confHelper.InsertDeviceAndControlpoints("地暖温控器",
+                                                                        Utility.DEV_TYPE_CTRL_HEAT,
                                                                         Utility.MODEL_CTRL_HEAT_YILIN,
-                                                                        i.ToString(), 
+                                                                        i.ToString(),
                                                                         (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充地暖温控器数据成功。");
             }
 
-            if(cb_meter_jsy.Checked)
+            if (cb_meter_jsy.Checked)
             {
                 int defaultAddr = 1;
-                string id = confHelper.InsertDeviceAndControlpoints("电量计量", 
-                                                                    Utility.DEV_TYPE_METER_POWER, 
+                string id = confHelper.InsertDeviceAndControlpoints("电量计量",
+                                                                    Utility.DEV_TYPE_METER_POWER,
                                                                     Utility.MODEL_METER_POWER_JSY,
-                                                                    "0", 
+                                                                    "0",
                                                                     defaultAddr.ToString());
                 ShowMsgWithString("填充电量计量数据成功。");
             }
 
-            if(cb_aircon_lineshow.Checked)
+            if (cb_aircon_lineshow.Checked)
             {
                 int defaultAddr = 17;   // 17-18
                 int count = int.Parse(cb_count_aircon.SelectedItem.ToString());
                 for (int i = 0; i < count; i++)
                 {
-                    string id = confHelper.InsertDeviceAndControlpoints("空气源主机", 
+                    string id = confHelper.InsertDeviceAndControlpoints("空气源主机",
                                                                         Utility.DEV_TYPE_AIRCON,
                                                                         Utility.MODEL_AIRCON_LINESHOW,
-                                                                        i.ToString(), 
+                                                                        i.ToString(),
                                                                         (defaultAddr + i).ToString());
                 }
                 ShowMsgWithString("填充空气源数据成功。");
@@ -177,7 +177,7 @@ namespace AllHomeDBConfig
                         tb_log.Clear();
                     }
                     tb_log.AppendText(s + "\r\n");
- 
+
                 }), args.Args);
             }
             else
@@ -201,9 +201,9 @@ namespace AllHomeDBConfig
             string gatewayId = this.tb_gwid.Text.Trim();
             string gatewayName = this.tb_gwname.Text.Trim();
 
-            if(gatewayId == "" || gatewayName == "")
+            if (gatewayId == "" || gatewayName == "")
             {
-                MessageBox.Show(this, "网关ID和网关名称不可以为空！", "注意",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "网关ID和网关名称不可以为空！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -255,7 +255,7 @@ namespace AllHomeDBConfig
             }
 
             LoginRspData loginRsp = HttpHelper.Instance().UserLogin(username, password);
-            if(!loginRsp.Result.Equals("Success"))
+            if (!loginRsp.Result.Equals("Success"))
             {
                 MessageBox.Show(this, "密码错误，登陆失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -263,16 +263,16 @@ namespace AllHomeDBConfig
 
             // 获取所有设备信息
             GetAllGatewayRspData deviceData = HttpHelper.Instance().GetAllGateways(username);
-            foreach(UserGatewayData gateway in deviceData.Gateway)
+            foreach (UserGatewayData gateway in deviceData.Gateway)
             {
                 string gwname = gateway.GatewayName;
                 string gwid = gateway.GatewayId;
                 string gwonline = gateway.OnineState;
                 string privilege = gateway.Privilege;
-                TreeNode node = treeview_devices.Nodes.Add(gwid, gwname + " " + privilege, " " + gwonline);
+                TreeNode node = treeview_devices.Nodes.Add(gwid, gwname + " " + privilege + " " + gwonline);
 
                 GetControlPointsRspData cpDatas = HttpHelper.Instance().GetAllControlPoints(username, gwid);
-                foreach(DeviceData device in cpDatas.Device)
+                foreach (DeviceData device in cpDatas.Device)
                 {
                     string devid = device.DeviceId;
                     string devname = device.Name;
@@ -283,18 +283,56 @@ namespace AllHomeDBConfig
         }
 
         #endregion
-    }
 
-    public class LogsEventArgs : EventArgs
-    {
-        private string _args = string.Empty;
-        public LogsEventArgs(string args)
+        public class LogsEventArgs : EventArgs
         {
-            _args = args;
+            private string _args = string.Empty;
+            public LogsEventArgs(string args)
+            {
+                _args = args;
+            }
+            public string Args
+            {
+                get { return _args; }
+            }
         }
-        public string Args
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            get { return _args; }
+            if (e.Button != MouseButtons.Right) return;
+            //if (e.Node.Level == 0) return;
+            TreeNode currentNode = this.treeview_devices.GetNodeAt(new Point(e.X, e.Y));
+            ContextMenuStrip cms = new ContextMenuStrip();
+            if (currentNode != null)
+            {
+                ToolStripMenuItem editDeleteproduct = new ToolStripMenuItem("删除节点");
+                editDeleteproduct.Click += new EventHandler(editDeleteproduct_Click);
+                cms.Items.Add(editDeleteproduct); cms.Show(this.treeview_devices, e.X, e.Y);
+                this.treeview_devices.SelectedNode = currentNode;
+            }
+        }
+
+        private void editDeleteproduct_Click(object sender, EventArgs e)
+        {
+            TreeNode treenode = this.treeview_devices.SelectedNode;
+            this.DeleteNode(treenode);
+            this.treeview_devices.ExpandAll();
+        }
+
+        //删除节点
+        private void DeleteNode(TreeNode treenode)
+        {
+            if (treenode.Nodes.Count == 0)   //如果该节点下没有子节点直接删除
+            {
+                this.treeview_devices.Nodes.Remove(treenode);
+            }
+            else if (treenode.Nodes.Count > 0)//该节点下有节点 提示是否全部删除该节点的所有内容
+            {
+                if ((MessageBox.Show("是否删除该项目下的所有子项？", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)) == DialogResult.OK)
+                {
+                    this.treeview_devices.Nodes.Remove(treenode);
+                }
+            }
         }
     }
 }

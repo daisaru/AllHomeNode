@@ -75,6 +75,7 @@
             this.tb_gwname = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -461,9 +462,11 @@
             this.treeview_devices.Name = "treeview_devices";
             this.treeview_devices.Size = new System.Drawing.Size(826, 212);
             this.treeview_devices.TabIndex = 14;
+            this.treeview_devices.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Controls.Add(this.tb_password);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.btn_searchdevice);
@@ -574,6 +577,15 @@
             this.label19.TabIndex = 9;
             this.label19.Text = "网关名称：";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(280, 53);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "解绑";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -652,6 +664,7 @@
         private System.Windows.Forms.TreeView treeview_devices;
         private System.Windows.Forms.TextBox tb_password;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button button1;
     }
 }
 
