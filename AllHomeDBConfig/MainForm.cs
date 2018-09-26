@@ -15,6 +15,9 @@ namespace AllHomeDBConfig
 {
     public partial class MainForm : Form
     {
+        private string _strLoginName = "";
+        private string _strLoginPassword = "";
+
         private delegate void DlgAsynShowMsg(string s);
 
         public MainForm()
@@ -190,6 +193,12 @@ namespace AllHomeDBConfig
             }
         }
 
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox about = new AboutBox();
+            about.ShowDialog();
+        }
+
         #endregion
 
         #region WebAPIs
@@ -260,6 +269,13 @@ namespace AllHomeDBConfig
                 MessageBox.Show(this, "密码错误，登陆失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            else
+            {
+                MessageBox.Show(this, "登陆成功！", "返回", MessageBoxButtons.OK, MessageBoxIcon.None);
+            }
+
+            _strLoginName = username;
+            _strLoginPassword = password;
 
             // 获取所有设备信息
             GetAllGatewayRspData deviceData = HttpHelper.Instance().GetAllGateways(username);
@@ -269,6 +285,8 @@ namespace AllHomeDBConfig
                 string gwid = gateway.GatewayId;
                 string gwonline = gateway.OnineState;
                 string privilege = gateway.Privilege;
+
+                treeview_devices.Nodes.Clear();
                 TreeNode node = treeview_devices.Nodes.Add(gwid, gwname + " " + privilege + " " + gwonline);
 
                 GetControlPointsRspData cpDatas = HttpHelper.Instance().GetAllControlPoints(username, gwid);
@@ -305,7 +323,7 @@ namespace AllHomeDBConfig
             ContextMenuStrip cms = new ContextMenuStrip();
             if (currentNode != null)
             {
-                ToolStripMenuItem editDeleteproduct = new ToolStripMenuItem("删除节点");
+                ToolStripMenuItem editDeleteproduct = new ToolStripMenuItem("删除设备");
                 editDeleteproduct.Click += new EventHandler(editDeleteproduct_Click);
                 cms.Items.Add(editDeleteproduct); cms.Show(this.treeview_devices, e.X, e.Y);
                 this.treeview_devices.SelectedNode = currentNode;
@@ -315,6 +333,7 @@ namespace AllHomeDBConfig
         private void editDeleteproduct_Click(object sender, EventArgs e)
         {
             TreeNode treenode = this.treeview_devices.SelectedNode;
+            
             this.DeleteNode(treenode);
             this.treeview_devices.ExpandAll();
         }
@@ -322,17 +341,53 @@ namespace AllHomeDBConfig
         //删除节点
         private void DeleteNode(TreeNode treenode)
         {
+
             if (treenode.Nodes.Count == 0)   //如果该节点下没有子节点直接删除
             {
-                this.treeview_devices.Nodes.Remove(treenode);
+                if(treenode.Parent == null)
+                {
+                    MessageBox.Show(this, "网关不可以删除，请使用解绑操作！", "返回", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                if ((MessageBox.Show("是否删除该设备？", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)) == DialogResult.OK)
+                {
+                    TreeNode parent = treenode.Parent;
+                    string deviceid = treenode.Name;
+                    string gatewayid = parent.Name;
+                    DeleteDeviceRspData retData = HttpHelper.Instance().DeleteDevice(_strLoginName, gatewayid, deviceid);
+                    if (retData.Result.Equals("Success"))
+                    {
+                        this.treeview_devices.Nodes.Remove(treenode);
+                        MessageBox.Show(this, "删除成功！", "返回", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    }
+                    else
+                    {
+                        MessageBox.Show(this, "后台操作错误！" + retData.Result, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
             }
             else if (treenode.Nodes.Count > 0)//该节点下有节点 提示是否全部删除该节点的所有内容
             {
-                if ((MessageBox.Show("是否删除该项目下的所有子项？", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)) == DialogResult.OK)
+                if ((MessageBox.Show("是否删除该网关下的所有设备？", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)) == DialogResult.OK)
                 {
-                    this.treeview_devices.Nodes.Remove(treenode);
+                    string gatewayid = treenode.Name;
+                    DeleteAllDeviceRspData retData = HttpHelper.Instance().DeleteAllDevices(_strLoginName, gatewayid);
+                    if(retData.Result.Equals("Success"))
+                    {
+                        this.treeview_devices.Nodes.Remove(treenode);
+                        MessageBox.Show(this, "删除成功！", "返回", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    }
+                    else
+                    {
+                        MessageBox.Show(this, "后台操作错误！" + retData.Result, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
             }
         }
+
+
     }
 }

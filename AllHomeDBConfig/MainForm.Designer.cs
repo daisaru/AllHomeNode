@@ -64,6 +64,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.treeview_devices = new System.Windows.Forms.TreeView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tb_password = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btn_searchdevice = new System.Windows.Forms.Button();
@@ -75,7 +76,9 @@
             this.tb_gwname = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -85,6 +88,7 @@
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox12.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label10
@@ -399,10 +403,10 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(11, 12);
+            this.tabControl1.Location = new System.Drawing.Point(11, 27);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(846, 366);
+            this.tabControl1.Size = new System.Drawing.Size(846, 351);
             this.tabControl1.TabIndex = 15;
             // 
             // tabPage1
@@ -418,7 +422,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(838, 340);
+            this.tabPage1.Size = new System.Drawing.Size(838, 325);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "网关数据库配置";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -451,16 +455,16 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(838, 340);
+            this.tabPage2.Size = new System.Drawing.Size(838, 325);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "网关及设备管理";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // treeview_devices
             // 
-            this.treeview_devices.Location = new System.Drawing.Point(6, 122);
+            this.treeview_devices.Location = new System.Drawing.Point(6, 102);
             this.treeview_devices.Name = "treeview_devices";
-            this.treeview_devices.Size = new System.Drawing.Size(826, 212);
+            this.treeview_devices.Size = new System.Drawing.Size(826, 217);
             this.treeview_devices.TabIndex = 14;
             this.treeview_devices.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
@@ -478,6 +482,15 @@
             this.groupBox3.TabIndex = 13;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "查询网关及附属设备：";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(280, 53);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "解绑";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // tb_password
             // 
@@ -577,14 +590,30 @@
             this.label19.TabIndex = 9;
             this.label19.Text = "网关名称：";
             // 
-            // button1
+            // menuStrip1
             // 
-            this.button1.Location = new System.Drawing.Point(280, 53);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "解绑";
-            this.button1.UseVisualStyleBackColor = true;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(869, 25);
+            this.menuStrip1.TabIndex = 16;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(47, 21);
+            this.toolStripMenuItem1.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -593,8 +622,10 @@
             this.ClientSize = new System.Drawing.Size(869, 492);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.tb_log);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "AllHome工具 v0.1";
+            this.Text = "AllHome网关配置工具";
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -611,6 +642,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -665,6 +698,9 @@
         private System.Windows.Forms.TextBox tb_password;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

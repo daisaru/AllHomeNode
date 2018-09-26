@@ -92,7 +92,7 @@ namespace AllHomeDBConfig
             data.Token = _strLoginToken;
 
             string jsonData = JsonConvert.SerializeObject(data);
-            string retStr = SendRequest(jsonData, _strUninstallAllDevices);
+            string retStr = SendRequest(jsonData, _strUninstallAllDevices_test);
 
             ret = JsonConvert.DeserializeObject<DeleteAllDeviceRspData>(retStr);
 
@@ -110,7 +110,7 @@ namespace AllHomeDBConfig
             data.Token = _strLoginToken;
 
             string jsonData = JsonConvert.SerializeObject(data);
-            string retStr = SendRequest(jsonData, _strUninstallDevice);
+            string retStr = SendRequest(jsonData, _strUninstallDevice_test);
 
             ret = JsonConvert.DeserializeObject<DeleteDeviceRspData>(retStr);
 

@@ -80,7 +80,7 @@ namespace AllHomeNode.Database.Manager
             using (var session = NHibernateHelper.OpenSession())
             {
                 IList<UserGatewayBind> list = session.QueryOver<UserGatewayBind>().Where(
-                    c => c.Id_User != userId && c.Id_Gateway == gatewayId).List();
+                    c => c.Id_User == userId && c.Id_Gateway == gatewayId).List();
                 return list;
             }
         }

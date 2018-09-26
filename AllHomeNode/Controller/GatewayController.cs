@@ -512,7 +512,7 @@ namespace AllHomeNode.controller
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
             LogHelper.WriteLog(LogLevel.Warn, t, item);
-
+            
             GatewayUploadCtrlPointsRspData rsp = new GatewayUploadCtrlPointsRspData();
 
             try
