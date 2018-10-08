@@ -22,10 +22,11 @@ namespace AllHomeNode.controller
         public LogHelper Log { get; set; }
 
         // GET /api/user
-        public IEnumerable<UserData> GetAllUsers()
+        public ReturnResult GetAllUsers()
         {
-            //return repository.GetAll();
-            return null;
+            ReturnResult ret = new ReturnResult();
+            ret.Result = "Hello World!";
+            return ret;
         }
 
         // 获取用户信息

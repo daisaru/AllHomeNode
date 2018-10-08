@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Reflection;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 using Microsoft.Owin.Hosting;
 using MySql.Data;
@@ -21,10 +22,18 @@ using AllHomeNode.Service.MQTT.Device;
 using AllHomeNode.Repository;
 using AllHomeNode.Auth;
 
+
 namespace AllHomeNode
 {
     class Program
     {
+        [DllImport("User32.dll ", EntryPoint = "FindWindow")]
+        private static extern int FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("user32.dll ", EntryPoint = "GetSystemMenu")]
+        extern static IntPtr GetSystemMenu(IntPtr hWnd, IntPtr bRevert);
+        [DllImport("user32.dll ", EntryPoint = "RemoveMenu")]
+        extern static int RemoveMenu(IntPtr hMenu, int nPos, int flags);
+
         static void Main(string[] args)
         {
             Type t = MethodBase.GetCurrentMethod().DeclaringType;
@@ -55,9 +64,9 @@ namespace AllHomeNode
                 //                                        null);
                 //Console.ReadLine();
 
-                //string baseAddress = "http://localhost:9000/";              // Local Machine
-                string baseAddress = "http://10.105.214.156:9000/";               // Tencent
-                //string baseAddress = "http://172.17.0.5:9000/";
+                //string baseAddress = "http://localhost:9000/";                // Local Machine
+                //string baseAddress = "http://10.105.214.156:9000/";             // Tencent
+                string baseAddress = "https://172.17.0.5:9000/";               // Tencent, Production
                 //string baseAddress = "http://192.168.3.10:9000/";             // Local Network
 
                 // NHibernate Test
@@ -78,10 +87,18 @@ namespace AllHomeNode
                 // Start SMS Service
                 #region
                 Configuration_SMS _configSMS = new Configuration_SMS();
-                _configSMS.AppId = 1400082480;
-                _configSMS.AppKey = "d40aaca2c8bb41b607ad33b3bc7a63ff";
-                _configSMS.TemplateId = 106928;
-                _configSMS.SignatureName = "大猿实验室";
+                
+                //测试环境
+                //_configSMS.AppId = 1400082480;
+                //_configSMS.AppKey = "d40aaca2c8bb41b607ad33b3bc7a63ff";
+                //_configSMS.TemplateId = 106928;
+                //_configSMS.SignatureName = "大猿实验室";
+                //生产环境
+                _configSMS.AppId = 1400147314;
+                _configSMS.AppKey = "fa4401b5d1f7afce64d0cb1e9647e473";
+                _configSMS.TemplateId = 206320;
+                _configSMS.SignatureName = "全屋集成建筑技术有限公司";
+
                 Service_SMS smsService = Service_SMS.Instance();
                 smsService.InitializeService(_configSMS);
                 smsService.ServiceStart();
@@ -111,6 +128,16 @@ namespace AllHomeNode
             {
                 LogHelper.WriteLog(LogLevel.Error, t, startExp);
             }
+
+            //与控制台标题名一样的路径
+            string fullPath = System.Environment.CurrentDirectory + "\\AllHomeNode.exe";
+            //根据控制台标题找控制台
+            int WINDOW_HANDLER = FindWindow(null, fullPath);
+            //找关闭按钮
+            IntPtr CLOSE_MENU = GetSystemMenu((IntPtr)WINDOW_HANDLER, IntPtr.Zero);
+            int SC_CLOSE = 0xF060;
+            //关闭按钮禁用
+            RemoveMenu(CLOSE_MENU, SC_CLOSE, 0x0);
 
             string ctrlCmd = "";
             do
