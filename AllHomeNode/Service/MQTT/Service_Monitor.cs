@@ -164,6 +164,9 @@ namespace AllHomeNode.Service.MQTT
                             VENT_EAWADA eawadaObj = JsonHelper.FromJSON<VENT_EAWADA>(data);
                             if(eawadaObj != null)
                             {
+                                Type t = MethodBase.GetCurrentMethod().DeclaringType;
+                                LogHelper.WriteLog(LogLevel.Warn, t, "AIR DATA FROM " + eawadaObj.DeviceId);
+
                                 bool ret = dataRepo.AddAirData(eawadaObj);
                             }
                         }
@@ -172,6 +175,9 @@ namespace AllHomeNode.Service.MQTT
                             SWITCH_JSY jsyObj = JsonHelper.FromJSON<SWITCH_JSY>(data);
                             if(jsyObj != null)
                             {
+                                Type t = MethodBase.GetCurrentMethod().DeclaringType;
+                                LogHelper.WriteLog(LogLevel.Warn, t, "POWER DATA FROM " + jsyObj.DeviceId);
+
                                 bool ret = dataRepo.AddPowerData(jsyObj, code);
                             }
                         }

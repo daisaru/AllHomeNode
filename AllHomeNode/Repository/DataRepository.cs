@@ -13,6 +13,7 @@ using AllHomeNode.Service.MQTT.Device;
 using AllHomeNode.Help;
 using AllHomeNode.Data.Weather;
 using AllHomeNode.Data.Air;
+using System.Reflection;
 
 namespace AllHomeNode.Repository
 {
@@ -339,8 +340,11 @@ namespace AllHomeNode.Repository
 
         public bool AddPowerData(SWITCH_JSY data, string code)
         {
+            Type t = MethodBase.GetCurrentMethod().DeclaringType;
+
             if (data == null)
             {
+                LogHelper.WriteLog(LogLevel.Error, t, "POWER DATA OBJ IS NULL, PLEASE CHECK THE JSON FORMAT!");
                 throw new ArgumentNullException("AddPowerData");
             }
 
@@ -354,11 +358,15 @@ namespace AllHomeNode.Repository
                 try
                 {
                     GatewayManager gtwMgr = new GatewayManager();
-                    Gateway gateway = gtwMgr.GetGatewayByGatewayIdentifier(item.GatewayId).ToList()[0];
-                    powerbase = gateway.PowerBase;
+                    List<Gateway> gateways = gtwMgr.GetGatewayByGatewayIdentifier(item.GatewayId).ToList();
+                    LogHelper.WriteLog(LogLevel.Warn, t, "FOUND POWERBASE FOR GATEWAY: " 
+                                                        + item.GatewayId 
+                                                        + " COUNT:" + gateways.Count);
+                    powerbase = gateways[0].PowerBase;
                 }
                 catch(Exception exp)
                 {
+                    LogHelper.WriteLog(LogLevel.Error, t, exp);
                     Console.WriteLine("ERROR:" + exp.Message);
                 }
 

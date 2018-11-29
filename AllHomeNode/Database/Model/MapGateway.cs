@@ -15,6 +15,7 @@ namespace AllHomeNode.Database.Model
 
             Map(x => x.GatewayId).Column("GatewayId");
             Map(x => x.GatewayName).Column("GatewayName");
+            Map(x => x.PowerBase).Column("PowerBase");
             Map(x => x.TimeStamp).Column("TimeStamp");
 
             Table("tb_gateway");
