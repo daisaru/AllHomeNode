@@ -27,12 +27,14 @@ namespace AllHomeNode
 {
     class Program
     {
+        #region Win32DLL引入
         [DllImport("User32.dll ", EntryPoint = "FindWindow")]
         private static extern int FindWindow(string lpClassName, string lpWindowName);
         [DllImport("user32.dll ", EntryPoint = "GetSystemMenu")]
         extern static IntPtr GetSystemMenu(IntPtr hWnd, IntPtr bRevert);
         [DllImport("user32.dll ", EntryPoint = "RemoveMenu")]
         extern static int RemoveMenu(IntPtr hMenu, int nPos, int flags);
+        #endregion
 
         static void Main(string[] args)
         {
@@ -65,9 +67,8 @@ namespace AllHomeNode
                 //Console.ReadLine();
 
                 //string baseAddress = "http://localhost:9000/";                // Local Machine
-                //string baseAddress = "http://10.105.214.156:9000/";             // Tencent
-                string baseAddress = "https://172.17.0.5:9000/";               // Tencent, Production
-                //string baseAddress = "http://192.168.3.10:9000/";             // Local Network
+                //string baseAddress = "http://10.105.214.156:9000/";             // 腾讯云，测试环境
+                string baseAddress = "https://172.17.0.5:9000/";               // 腾讯云，生产环境
 
                 // NHibernate Test
                 //UserManager userManager = new UserManager();
@@ -107,7 +108,8 @@ namespace AllHomeNode
                 // Start MQTT Service
                 #region
                 Configuration_MQTT _configMQTT = new Configuration_MQTT();
-                _configMQTT.BrokerURL = "115.159.78.40";
+                //_configMQTT.BrokerURL = "115.159.78.40";      // 测试环境
+                _configMQTT.BrokerURL = "115.159.72.249";       // 生产环境
                 _configMQTT.Port = 1883;
                 _configMQTT.Username = "admin";
                 _configMQTT.Password = "admin";

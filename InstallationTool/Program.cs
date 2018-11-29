@@ -15,8 +15,6 @@ namespace InstallationTool
         static void Main(string[] args)
         {
             //List<RoomData> roomInfos = DBUtil.Instance().GetControlPoints();
-            string deviceId = "00606EC247BD";
-            string deviceName = "测试设备";
             string deviceSignature = DateTime.Now.ToString();
 
             //GatewayRegisterRspData registerRet =

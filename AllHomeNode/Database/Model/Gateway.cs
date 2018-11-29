@@ -12,6 +12,7 @@ namespace AllHomeNode.Database.Model
         public virtual string Id { get; set; }
         public virtual string GatewayId { get; set; }
         public virtual string GatewayName { get; set; }
+        public virtual string PowerBase { get; set; }
         public virtual DateTime TimeStamp { get; set; }
     }
 }

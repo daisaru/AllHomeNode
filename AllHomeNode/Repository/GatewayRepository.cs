@@ -23,6 +23,7 @@ namespace AllHomeNode.Repository
             Gateway device = new Gateway();
             device.GatewayId = data.GatewayId;
             device.GatewayName = data.GatewayName;
+            device.PowerBase = "0";
             return device;
         }
 
@@ -409,6 +410,7 @@ namespace AllHomeNode.Repository
                 dev.Id = Guid.NewGuid().ToString("N");
                 dev.GatewayId = gatewayId;
                 dev.GatewayName = gatewayName;
+                dev.PowerBase = "0";
                 dev.TimeStamp = DateTime.Now;
 
                 devMgr.Add(dev);

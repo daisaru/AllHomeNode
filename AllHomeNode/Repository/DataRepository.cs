@@ -349,7 +349,22 @@ namespace AllHomeNode.Repository
                 PowerData item = new PowerData();
                 item.GatewayId = data.DeviceId;
                 item.CPCode = code;
-                item.PowerConsume = data.CurrentPower.ToString();
+
+                string powerbase = "0";
+                try
+                {
+                    GatewayManager gtwMgr = new GatewayManager();
+                    Gateway gateway = gtwMgr.GetGatewayByGatewayIdentifier(item.GatewayId).ToList()[0];
+                    powerbase = gateway.PowerBase;
+                }
+                catch(Exception exp)
+                {
+                    Console.WriteLine("ERROR:" + exp.Message);
+                }
+
+                double totalPower = double.Parse(powerbase) + data.CurrentPower;
+ 
+                item.PowerConsume = totalPower.ToString();
                 item.PowerType = data.ConsumerType.ToString();
                 item.TimeStamp = DateTime.Now;
                 PowerDataManager powerDataMgr = new PowerDataManager();
