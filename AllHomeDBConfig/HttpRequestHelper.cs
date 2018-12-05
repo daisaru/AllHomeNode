@@ -18,13 +18,21 @@ namespace AllHomeDBConfig
     {
         private static HttpHelper _instance = null;
 
-        private const string _strRegisterGatewayUrl = "http://115.159.78.40:9000/api/gateway/registerdevice";
-        private const string _strUoloadControlPointsUrl = "http://115.159.78.40:9000/api/gateway/uploadcontrolpoints";
-        private const string _strLoginUrl = "http://115.159.78.40:9000/api/user/login";
-        private const string _strUninstallAllDevices = "http://115.159.78.40:9000/api/gateway/uninstallalldevice";
-        private const string _strUninstallDevice = "http://115.159.78.40:9000/api/gateway/uninstalldevice";
-        private const string _strGetAllGateway = "http://115.159.78.40:9000/api/gateway/fetchallgateway";
-        private const string _strGetAllControlpoints = "http://115.159.78.40:9000/api/gateway/fetchcontrolpoints";
+        private const string _strRegisterGatewayUrl = "https://115.159.72.249:9000/api/gateway/registerdevice";
+        private const string _strUoloadControlPointsUrl = "https://115.159.72.249:9000/api/gateway/uploadcontrolpoints";
+        private const string _strLoginUrl = "https://115.159.72.249:9000/api/user/login";
+        private const string _strUninstallAllDevices = "https://115.159.72.249:9000/api/gateway/uninstallalldevice";
+        private const string _strUninstallDevice = "https://115.159.72.249:9000/api/gateway/uninstalldevice";
+        private const string _strGetAllGateway = "https://115.159.72.249:9000/api/gateway/fetchallgateway";
+        private const string _strGetAllControlpoints = "https://115.159.72.249:9000/api/gateway/fetchcontrolpoints";
+
+        //private const string _strRegisterGatewayUrl = "http://115.159.78.40:9000/api/gateway/registerdevice";
+        //private const string _strUoloadControlPointsUrl = "http://115.159.78.40:9000/api/gateway/uploadcontrolpoints";
+        //private const string _strLoginUrl = "http://115.159.78.40:9000/api/user/login";
+        //private const string _strUninstallAllDevices = "http://115.159.78.40:9000/api/gateway/uninstallalldevice";
+        //private const string _strUninstallDevice = "http://115.159.78.40:9000/api/gateway/uninstalldevice";
+        //private const string _strGetAllGateway = "http://115.159.78.40:9000/api/gateway/fetchallgateway";
+        //private const string _strGetAllControlpoints = "http://115.159.78.40:9000/api/gateway/fetchcontrolpoints";
 
         private const string _strRegisterGatewayUrl_test = "http://localhost:9000/api/device/registerdevice";
         private const string _strUoloadControlPointsUrl_test = "http://localhost:9000/api/device/uploadcontrolpoints";
@@ -179,17 +187,21 @@ namespace AllHomeDBConfig
         {
             string htmlStr = string.Empty;
 
-            //创建一个客户端的Http请求实例
-            HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
-            request.ContentType = "application/json";
-            request.Method = "POST";
-            request.ContentLength = data.Length;
-            Stream requestStream = request.GetRequestStream();
-            requestStream.Write(data, 0, data.Length);
-            requestStream.Close();
+            Encoding encoding = Encoding.GetEncoding("gb2312");
 
-            //获取当前Http请求的响应实例
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+            HttpWebResponse response = HttpWebResponseUtility.CreatePostJSONHttpResponse(requestUrl, data, null, null, encoding, null);
+
+            ////创建一个客户端的Http请求实例
+            //HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+            //request.ContentType = "application/json";
+            //request.Method = "POST";
+            //request.ContentLength = data.Length;
+            //Stream requestStream = request.GetRequestStream();
+            //requestStream.Write(data, 0, data.Length);
+            //requestStream.Close();
+
+            ////获取当前Http请求的响应实例
+            //HttpWebResponse response = request.GetResponse() as HttpWebResponse;
             Stream responseStream = response.GetResponseStream();
             using (StreamReader reader = new StreamReader(responseStream, Encoding.GetEncoding("UTF-8")))
             {
