@@ -161,8 +161,16 @@ namespace AllHomeNode.Repository
             foreach(Gateway d in devices)
             {
                 string deviceId = d.GatewayId;
-                DateTime startTimeThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, 1);
+                // Fixed Bug, 20190105,1月1日统计上月电量，起始时间计算出错。
+                int currentMonth = (DateTime.Now.Month == 1) ? 12 : (DateTime.Now.Month - 1);
+                int currentYear = DateTime.Now.Year;
+                if(currentMonth == 12)
+                {
+                    currentYear = currentYear - 1;
+                }
+                DateTime startTimeThisMonth = new DateTime(currentYear, currentMonth, 1);
                 DateTime endTimeThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMinutes(-1);
+                //
 
                 List<PowerDataSummary> powerSummaryData = powerDataSummaryMgr.GetDayPowerConsumeSummary(deviceId, startTimeThisMonth, endTimeThisMonth).ToList();
 

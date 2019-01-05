@@ -26,7 +26,11 @@ namespace AllHomeNode.Service.Quartz
         public void StartTimer()
         {
             //设置定时间隔(毫秒为单位)
-            int interval = 1000 * 60 * 60;     
+            int interval = 1000 * 60 * 60;
+
+            //For test
+            //interval = 1000;
+
             _dailyTimer = new System.Timers.Timer(interval);
             _dailyTimer.Elapsed += new System.Timers.ElapsedEventHandler(TimerUp);
             //设置执行一次（false）还是一直执行(true)
